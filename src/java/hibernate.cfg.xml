@@ -11,5 +11,6 @@
     <property name="hbm2ddl.auto">update</property>
     <mapping resource="com/tsp/gespro/hibernate/pojo/UsuarioMonitor.hbm.xml"/>
     <mapping resource="com/tsp/gespro/hibernate/pojo/Moneda.hbm.xml"/>
+    <mapping resource="com/tsp/gespro/hibernate/pojo/Proyecto.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
