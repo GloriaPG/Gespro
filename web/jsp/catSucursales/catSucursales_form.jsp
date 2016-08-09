@@ -85,7 +85,66 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
         <jsp:include page="../include/jsFunctions.jsp"/>
         
         <script type="text/javascript">
+                        //Recarga de BD dinámicamente el listado de clientes de la empresa
+            function recargarSelectClientes(idEmpresa){    
+                $.ajax({
+                    type: "POST",
+                    url: "catSucursales_ajax.jsp",
+                    data: { mode: 'recargar_select_clientes', id_empresa : idEmpresa},
+                    beforeSend: function(objeto){
+                        $("#action_buttons").fadeOut("slow");
+                        $("#ajax_loading").html('<div style=""><center>Procesando...<br/><img src="../../images/ajax_loader.gif" alt="Cargando.." /></center></div>');
+                        $("#ajax_loading").fadeIn("slow");
+                    },
+                    success: function(datos){
+                        if(datos.indexOf("--EXITO-->", 0)>0){
+                            $("#div_select_cliente").html(datos);
+                            $("#ajax_loading").fadeOut("slow");
+                            $("#action_buttons").fadeIn("slow");
+                            iniciarFlexSelect();
+                        }else{
+                            $("#ajax_loading").html(datos);
+                            $("#action_buttons").fadeIn("slow");
+                        }
+                    }
+                });
+            }
             
+            
+            function selectCliente(idCliente){
+                    $.ajax({
+                        type: "POST",
+                        url: "catSucursales_ajax.jsp",
+                        data: { mode: 'select_matriz', id_cliente : idCliente },
+                        beforeSend: function(objeto){
+                            $("#action_buttons").fadeOut("slow");
+                            $("#ajax_loading").html('<div style=""><center>Procesando...<br/><img src="../../images/ajax_loader.gif" alt="Cargando.." /></center></div>');
+                            $("#ajax_loading").fadeIn("slow");
+                        },
+                        success: function(datos){
+                            if(datos.indexOf("--EXITO-->", 0)>0){
+                               strJSONCliente = $.trim(datos.replace('<!--EXITO-->',''));
+                               
+                               $("#ajax_loading").fadeOut("slow");
+                               $("#action_buttons").fadeIn("slow");
+                           }else{
+                               $("#ajax_loading").html(datos);
+                               $("#action_buttons").fadeIn("slow");
+                           }
+                        }
+                    });
+            }
+            
+            function iniciarFlexSelect(){
+                $("#matriz").flexselect({
+                    jsFunction:  function(id) { selectCliente(id); }
+                });
+
+                $("select.flexselect").flexselect();
+            }
+            //****-----------------FIN ACCIONES DE SELECCION CLIENTE
+            
+
             function grabar(){
                 if(validar()){                            
                     $.ajax({
@@ -148,6 +207,11 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                     
             }
             
+             $(document).ready(function() {
+                recargarSelectClientes(<%= idEmpresa %>);
+                //Si se recibio el parametro para que el modo sea en forma de popup
+                <%= mode.equals("3")? "mostrarFormPopUpMode();":""%>
+            });
         </script>
     </head>
     <body>
@@ -210,6 +274,12 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                         <input maxlength="30" type="text" id="nombreSucursal" name="nombreSucursal" style="width:300px"
                                                value="<%=empresasDto!=null &&  !mode.equals("")?empresaBO.getEmpresa().getNombreComercial():"" %>"/>                                        
                                     </p>
+                                    <br/>
+                                    <p>
+                                        <label>Matriz:</label><br/>
+                                        <div id="div_select_cliente" name="div_select_cliente" style="display: inline;" >
+                                        </div>
+                                    </p>  
                                     <br/>                                    
                                     <p>
                                         <label>Estatus:</label>

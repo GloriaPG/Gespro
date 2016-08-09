@@ -42,8 +42,10 @@
                 <li><a href="../../jsp/user/perfil.jsp"><img src="../../images/user_male_16.png"/>Mi Perfil</a></li>                                         
                 <li><a href="../../jsp/catImagenPersonal/catImagenPersonal_list.jsp"><img src="../../images/icon_imagenPersonal.png"/>Logo</a></li>                        
                 <li><a href="../../jsp/catLicencias/catLicencias_list.jsp"><img src="../../images/license.png"/>Licencias</a></li>         
-                <li><a href="../../jsp/catUsuarios/catUsuarios_list.jsp"><img src="../../images/icon_users.png"/>Usuarios</a></li>  
-                <li><a href="../../jsp/catSucursales/catSucursales_list.jsp"><img src="../../images/icon_sucursales.png"/>Sucursales</a></li>  
+                <li><a href="../../jsp/catUsuarios/catUsuarios_list.jsp"><img src="../../images/icon_users.png"/>Usuarios</a></li>
+                <li><a href="../../jsp/catUsuariosMonitor/lista.jsp"><img src="../../images/icon_users.png"/>Usuarios monitor</a></li>
+                <li><a href="../../jsp/catSucursales/catSucursales_list.jsp"><img src="../../images/icon_sucursales.png"/>Sucursales</a></li>
+                <li><a href="../../jsp/catMonedas/lista.jsp"><img src="../../images/icon_reloj.png"/>Moneda</a></li>
                 <li><a href="../../jsp/catZonaHoraria/catZonaHoraria_form.jsp"><img src="../../images/icon_reloj.png"/>Zona Horaria</a></li>
                 <li><a href="../../jsp/catCargaManual/catCargaManual_list.jsp"><img src="../../images/icon_excel.png"/>Importar Excel</a></li>
             </ul>	

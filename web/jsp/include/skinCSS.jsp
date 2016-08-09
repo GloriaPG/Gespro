@@ -59,6 +59,9 @@
             <link href="../../js/jwysiwyg/jquery.wysiwyg.css" rel="stylesheet" type="text/css" media="all"/>
             <link href="../../js/fancybox/jquery.fancybox-1.3.0.css" rel="stylesheet" type="text/css" media="all"/>
             <link href="../../css/pace/themes/pace_theme_corner_indicator_navy_blue.css" rel="stylesheet" type="text/css" media="all"/>
+            <link href="../../css/slick-carousel/slick.css" rel="stylesheet" type="text/css" media="all"/>
+            <link href="../../css/slick-carousel/slick-theme.css" rel="stylesheet" type="text/css" media="all"/>
+            <link href="../../css/slick-carousel/slick-lightbox.css" rel="stylesheet" type="text/css" media="all"/>
             <!--[if IE]>
                     <link href="../../css/ie.css" rel="stylesheet" type="text/css" media="all">
                     <script type="text/javascript" src="../../js/excanvas.js"></script>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 7/08/2016 11:50:39 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.tsp.gespro.hibernate.pojo.Proyecto" table="proyecto" catalog="gespro">
+        <id name="idProyecto" type="java.lang.Integer">
+            <column name="ID_PROYECTO" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="NOMBRE" not-null="true" />
+        </property>
+        <property name="fechaInicio" type="date">
+            <column name="FECHA_INICIO" length="10" not-null="true" />
+        </property>
+        <property name="fechaProgramada" type="date">
+            <column name="FECHA_PROGRAMADA" length="10" not-null="true" />
+        </property>
+        <property name="fechaReal" type="date">
+            <column name="FECHA_REAL" length="10" not-null="true" />
+        </property>
+        <property name="idCliente" type="int">
+            <column name="ID_CLIENTE" not-null="true" />
+        </property>
+        <property name="avance" type="float">
+            <column name="AVANCE" precision="5" not-null="true" />
+        </property>
+        <property name="idPromotor" type="int">
+            <column name="ID_PROMOTOR" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

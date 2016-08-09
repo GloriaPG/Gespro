@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 18/07/2016 09:46:10 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.tsp.gespro.hibernate.pojo.Moneda" table="moneda" catalog="gespro">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="45" not-null="true" />
+        </property>
+        <property name="codigo" type="string">
+            <column name="codigo" length="45" />
+        </property>
+        <property name="simbolo" type="string">
+            <column name="simbolo" length="1" not-null="true" />
+        </property>
+        <property name="activo" type="java.lang.Boolean">
+            <column name="activo" />
+        </property>
+    </class>
+</hibernate-mapping>

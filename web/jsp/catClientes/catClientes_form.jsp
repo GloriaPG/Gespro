@@ -417,7 +417,7 @@
                                                 %>
                                         </select>                                        
                                     </p>  
-                                    <br/> 
+                                    <br/>
                                     
                                     <p>
                                         <input type="checkbox" class="checkbox" <%=clientesDto!=null?(clientesDto.getIdEstatus()==1?"checked":""):"checked" %> id="estatus" name="estatus" value="1"> <label for="estatus">Activo</label>

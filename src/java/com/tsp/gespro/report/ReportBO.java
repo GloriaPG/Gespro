@@ -236,6 +236,12 @@ public class ReportBO {
                 fieldList.add(getDataInfo("CORREO","Correo","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("ID_ESTATUS","Estatus","","",""+DATA_BOOLEAN,"Activo|Inactivo"));                
                 fieldList.add(getDataInfo("FECHA_REGISTRO","Fecha Registro","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CALLE","Calle","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("COLONIA","Colonia","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("MUNICIPIO","Municipio","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("ESTADO","Estado","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("LONGITUD","Longitud","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("LATITUD","Latitud","","",""+DATA_STRING,""));
                 break;
                 
             case PRODUCTO_REPORT:
@@ -348,6 +354,12 @@ public class ReportBO {
             hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + dto.getCorreo() ));
             hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + dto.getIdEstatus() ));            
             hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + fechaReg));
+            hashData.put((String)dataInfo.get(6).get("field"), getRealData(dataInfo.get(6), "" + dto.getCalle() ));
+            hashData.put((String)dataInfo.get(7).get("field"), getRealData(dataInfo.get(7), "" + dto.getColonia() ));
+            hashData.put((String)dataInfo.get(8).get("field"), getRealData(dataInfo.get(8), "" + dto.getMunicipio() ));
+            hashData.put((String)dataInfo.get(9).get("field"), getRealData(dataInfo.get(9), "" + dto.getEstado() ));
+            hashData.put((String)dataInfo.get(10).get("field"), getRealData(dataInfo.get(10), "" + dto.getLongitud() ));
+            hashData.put((String)dataInfo.get(11).get("field"), getRealData(dataInfo.get(11), "" + dto.getLatitud() ));
 
             dataList.add(hashData);
 
