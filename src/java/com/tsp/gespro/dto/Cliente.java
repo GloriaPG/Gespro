@@ -1072,7 +1072,7 @@ public class Cliente implements Serializable
 	{
 		return idUsuarioAltaModified;
 	}
-
+        
 	/**
 	 * Method 'equals'
 	 * 
@@ -1269,7 +1269,7 @@ public class Cliente implements Serializable
 		if (idUsuarioAltaModified != _cast.idUsuarioAltaModified) {
 			return false;
 		}
-		
+                
 		return true;
 	}
 

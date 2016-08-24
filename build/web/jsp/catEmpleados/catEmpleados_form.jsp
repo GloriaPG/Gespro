@@ -251,6 +251,12 @@
                                         <input maxlength="100" type="text" id="emailEmpleado" name="emailEmpleado" style="width:300px"
                                                value="<%=datosUsuarioDto!=null?datosUsuarioDto.getCorreo():"" %>"/>
                                     </p>  
+                                    <br/>
+                                    <p>
+                                        <label>Ciudad:</label><br/>
+                                        <input maxlength="100" type="text" id="ciudad" name="ciudad" style="width:300px"
+                                               value="<%=datosUsuarioDto!=null?datosUsuarioDto.getCiudad():"" %>"/>
+                                    </p>  
                                     <br/> 
                                     <p>
                                         <label>Dirección:</label><br/>
@@ -393,8 +399,6 @@
             </div>
             <!-- Fin de Contenido-->
         </div>
-
-
     </body>
 </html>
 <%}%>

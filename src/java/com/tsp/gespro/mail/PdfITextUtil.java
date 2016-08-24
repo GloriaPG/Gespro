@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.tsp.gespro.pdf;
+package com.tsp.gespro.mail;
 
 
 import com.lowagie.text.*;

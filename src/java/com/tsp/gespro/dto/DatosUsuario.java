@@ -100,6 +100,9 @@ public class DatosUsuario implements Serializable
 	 * This attribute maps to the column CORREO in the datos_usuario table.
 	 */
 	protected String correo;
+        
+        private String ciudad;
+        protected boolean ciudadModified=false;
 
 	/** 
 	 * This attribute represents whether the attribute correo has been modified since being read from the database.
@@ -161,6 +164,16 @@ public class DatosUsuario implements Serializable
 		return nombre;
 	}
 
+	/**
+	 * Method 'getNombreCompleto'
+	 * 
+	 * @return String
+	 */
+	public String getNombreCompleto()
+	{
+		return nombre + " " + apellidoPat + "" + apellidoMat;
+	}
+        
 	/**
 	 * Method 'setNombre'
 	 * 
@@ -446,7 +459,37 @@ public class DatosUsuario implements Serializable
 	{
 		return correoModified;
 	}
+        
+        /** 
+	 * Sets the value of Ciudad
+	 */
+	public void setCiudadModified(boolean ciudadModified)
+	{
+		this.ciudadModified = ciudadModified;
+	}
 
+	/** 
+	 * Gets the value of ciudadModified
+	 */
+	public boolean isCiudadModified()
+	{
+		return ciudadModified;
+	}
+        
+        /**
+        * @return the ciudad
+        */
+       public String getCiudad() {
+           return ciudad;
+       }
+
+       /**
+        * @param ciudad the ciudad to set
+        */
+       public void setCiudad(String ciudad) {
+           this.ciudad = ciudad;
+           this.ciudadModified = true;
+       }
 	/**
 	 * Method 'equals'
 	 * 
@@ -539,6 +582,14 @@ public class DatosUsuario implements Serializable
 		if (correoModified != _cast.correoModified) {
 			return false;
 		}
+                if (ciudad == null ? _cast.ciudad != ciudad : !ciudad.equals( _cast.ciudad )) {
+			return false;
+		}
+		
+		if (ciudadModified != _cast.ciudadModified) {
+			return false;
+		}
+                
 		
 		return true;
 	}
@@ -591,6 +642,10 @@ public class DatosUsuario implements Serializable
 		if (correo != null) {
 			_hashCode = 29 * _hashCode + correo.hashCode();
 		}
+                _hashCode = 29 * _hashCode + (ciudadModified ? 1 : 0);
+                if (ciudad != null) {
+			_hashCode = 29 * _hashCode + ciudad.hashCode();
+		}
 		
 		_hashCode = 29 * _hashCode + (correoModified ? 1 : 0);
 		return _hashCode;
@@ -624,7 +679,10 @@ public class DatosUsuario implements Serializable
 		ret.append( ", extension=" + extension );
 		ret.append( ", celular=" + celular );
 		ret.append( ", correo=" + correo );
+                ret.append( ", ciudad=" + ciudad );
 		return ret.toString();
 	}
+
+   
 
 }

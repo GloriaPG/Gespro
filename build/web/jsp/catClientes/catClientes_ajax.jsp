@@ -698,6 +698,7 @@
                     //clienteDto.setIdCliente(idClienteNuevo);
 
                     clienteDto.setIdEstatus(estatus);
+
                     /*clienteDto.setRfcCliente(rfc);
                     clienteDto.setRazonSocial(razonSocial);
                     clienteDto.setNombreCliente(nombre);
@@ -791,7 +792,7 @@
                         ex.printStackTrace();
                     }*/
 
-                    out.print("<!--EXITO-->Registro creado satisfactoriamente.<br/>");
+                    out.print("<!--EXITO-->Registro creado satisfactoriamente.<br/>:"+clienteDto.getIdCliente());
 
                 }catch(Exception e){
                     e.printStackTrace();

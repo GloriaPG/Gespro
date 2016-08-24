@@ -33,6 +33,7 @@
 
         %>
         <li><a href="../../jsp/inicio/main.jsp" id="idInicioLeftContent"><img src="../../images/icon_home.png" alt="Inicio"/>Inicio</a></li>
+        <li><a href="../../jsp/catMonitor/monitor.jsp" id="monitor"><img src="../../images/icon_home.png" alt="Inicio"/>Monitor</a></li>
 
 
         <li style="position: relative; z-index: 99;">
@@ -42,10 +43,21 @@
                 <li><a href="../../jsp/user/perfil.jsp"><img src="../../images/user_male_16.png"/>Mi Perfil</a></li>                                         
                 <li><a href="../../jsp/catImagenPersonal/catImagenPersonal_list.jsp"><img src="../../images/icon_imagenPersonal.png"/>Logo</a></li>                        
                 <li><a href="../../jsp/catLicencias/catLicencias_list.jsp"><img src="../../images/license.png"/>Licencias</a></li>         
-                <li><a href="../../jsp/catUsuarios/catUsuarios_list.jsp"><img src="../../images/icon_users.png"/>Usuarios</a></li>  
-                <li><a href="../../jsp/catSucursales/catSucursales_list.jsp"><img src="../../images/icon_sucursales.png"/>Sucursales</a></li>  
+                <li><a href="../../jsp/catUsuarios/catUsuarios_list.jsp"><img src="../../images/icon_users.png"/>Usuarios</a></li>
+                <li><a href="../../jsp/catUsuariosMonitor/lista.jsp"><img src="../../images/icon_users.png"/>Usuarios monitor</a></li>
+                <li><a href="../../jsp/catSucursales/catSucursales_list.jsp"><img src="../../images/icon_sucursales.png"/>Sucursales</a></li>
+                <li><a href="../../jsp/catMonedas/lista.jsp"><img src="../../images/icon_reloj.png"/>Moneda</a></li>
                 <li><a href="../../jsp/catZonaHoraria/catZonaHoraria_form.jsp"><img src="../../images/icon_reloj.png"/>Zona Horaria</a></li>
                 <li><a href="../../jsp/catCargaManual/catCargaManual_list.jsp"><img src="../../images/icon_excel.png"/>Importar Excel</a></li>
+                <li><a href="../../jsp/catConfiguracionCampos/lista.jsp"><img src="../../images/icon_sar_config.png"/>Configuración de campos</a></li>
+            </ul>	
+        </li>
+        
+        <li>
+            <a href="" id="idAdministracionLeftContent"><img src="../../images/icon_validaXML.png" alt="Proyectos"/>Proyectos</a>
+            <ul>
+                <li><a href="../../jsp/catProyectos/catProyectos.jsp"><img src="../../images/icon_validaXML.png"/>Ver Proyectos</a></li>
+                <li><a href="../../jsp/catCoberturas/catCoberturas_list.jsp"><img src="../../images/camion_icono_16.png"/>Cobertura</a></li>
             </ul>	
         </li>
 
@@ -117,7 +129,7 @@
                 <li><a href="../../jsp/mapa/logistica.jsp" id="idPretorianoMovilLeftContentLogistica"><img src="../../images/icon_logistica.png"/>Log&iacute;stica</a></li>
                 <li><a href="../../jsp/catSeguimiento/catSeguimiento_list.jsp"><img src="../../images/icon_seguimiento.png"/>Seguimiento</a></li>
                 <li><a href="../../jsp/catHorarios/catHorarios_list.jsp"><img src="../../images/clock.png"/>Horarios</a></li>
-                <li><a href="../../jsp/catEmpleados/catEmpleados_Registro_list.jsp"><img src="../../images/icon_movimiento.png"/>Bitácora</a></li
+                <li><a href="../../jsp/catEmpleados/catEmpleados_Registro_list.jsp"><img src="../../images/icon_movimiento.png"/>Bitácora</a></li>
             </ul>	
 
         <!--<li>

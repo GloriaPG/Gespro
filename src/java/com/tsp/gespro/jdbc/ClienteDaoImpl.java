@@ -108,7 +108,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 * Index of column NUMERO_INTERIOR
 	 */
 	protected static final int COLUMN_NUMERO_INTERIOR = 10;
-
+        
 	/** 
 	 * Index of column COLONIA
 	 */
@@ -163,7 +163,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 * Number of columns
 	 */
 	protected static final int NUMBER_OF_COLUMNS = 20;
-
+        
 	/** 
 	 * Index of primary-key column ID_CLIENTE
 	 */
@@ -408,7 +408,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				values.append( "?" );
 				modifiedCount++;
 			}
-		
+                        
 			if (modifiedCount==0) {
 				// nothing to insert
 				throw new IllegalStateException( "Nothing to insert" );
@@ -1211,7 +1211,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		if (rs.wasNull()) {
 			dto.setIdUsuarioAltaNull( true );
 		}
-		
+                
 		reset(dto);
 	}
 

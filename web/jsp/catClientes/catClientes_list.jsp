@@ -134,6 +134,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
     String urlTo3 = "../catCodigoBarras/catCodigoBarras_form.jsp";
     String urlTo4 = "../catPop/catConceptoRegistroFotografico_form.jsp";
     String urlTo5 = "../catEstanteria/catConceptoEstanteria_list.jsp";
+    String urlTo6 = "../catClientes/catClientes_descargar_imagenes.jsp";
     
     String paramName = "idCliente";
     String parametrosPaginacion="inactivos="+buscar_isMostrarSoloActivos+"&q_idvendedor="+buscar_idvendedor+"&idClienteCategoria="+idClienteCategoria; // "idEmpresa="+idEmpresa;
@@ -420,8 +421,10 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                                 &nbsp;&nbsp;
                                                 <!--<a href="<%=urlTo3%>?<%=paramName%>=<%=item.getIdCliente()%>&acc=CodigoBarras"><img src="../../images/icon_barras.png" alt="codigoBarras" class="help" title="Código Barras"/></a>-->
                                                 <a href="<%=urlTo4%>?<%=paramName%>=<%=item.getIdCliente()%>&acc=Pop"><img src="../../images/icon_pop.png" alt="pop" class="help" title="Pop"/>
-                                                    &nbsp;&nbsp;
-                                                    <a href="<%=urlTo5%>?<%=paramName%>=<%=item.getIdCliente()%>&acc=Estanteria"><img src="../../images/icon_estanteria.png" alt="pop" class="help" title="Estanteria"/>
+                                                &nbsp;&nbsp;
+                                                <a href="<%=urlTo5%>?<%=paramName%>=<%=item.getIdCliente()%>&acc=Estanteria"><img src="../../images/icon_estanteria.png" alt="pop" class="help" title="Estanteria"/>
+                                                &nbsp;&nbsp;
+                                                <a href="<%=urlTo6%>?<%=paramName%>=<%=item.getIdCliente()%>&acc=DescargarImagenes"><img src="../../images/download.png" alt="downloadImages" class="help" title="Descargar imagenes"/>
                                             </td>
                                         </tr>
                                         <%      }catch(Exception ex){

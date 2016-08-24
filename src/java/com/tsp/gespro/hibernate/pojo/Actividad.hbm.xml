@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 14/08/2016 07:43:38 PM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.tsp.gespro.hibernate.pojo.Actividad" table="actividad" catalog="gespro">
+        <id name="idActividad" type="java.lang.Integer">
+            <column name="id_actividad" />
+            <generator class="identity"></generator>
+        </id>
+        <property name="actividad" type="string">
+            <column name="actividad" not-null="true" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="65535" not-null="true" />
+        </property>
+        <property name="tipoActividad" type="int">
+            <column name="tipo_actividad" not-null="true" />
+        </property>
+        <property name="idUser" type="java.lang.Integer">
+            <column name="id_user" />
+        </property>
+        <property name="idPunto" type="java.lang.Integer">
+            <column name="id_punto" />
+        </property>
+        <property name="avance" type="float">
+            <column name="avance" precision="100" not-null="true" />
+        </property>
+        <property name="idProyecto" type="int">
+            <column name="id_proyecto" not-null="true" />
+        </property>
+        <property name="checkin" type="timestamp">
+            <column name="checkin" length="19" />
+        </property>
+        <property name="idProducto" type="java.lang.Integer">
+            <column name="id_producto" />
+        </property>
+        <property name="cantidad" type="java.lang.Float">
+            <column name="cantidad" precision="100" />
+        </property>
+        <property name="recibio" type="string">
+            <column name="recibio" />
+        </property>
+        <property name="comentarios" type="string">
+            <column name="comentarios" length="65535" />
+        </property>
+    </class>
+</hibernate-mapping>

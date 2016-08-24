@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 15/08/2016 09:59:37 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.tsp.gespro.hibernate.pojo.Reparto" table="reparto" catalog="gespro">
+        <id name="idreparto" type="java.lang.Integer">
+            <column name="idreparto" />
+            <generator class="identity" />
+        </id>
+        <property name="idProyecto" type="int">
+            <column name="idProyecto" not-null="true" />
+        </property>
+        <property name="idLugar" type="int">
+            <column name="idLugar" not-null="true" />
+        </property>
+        <property name="idProducto" type="int">
+            <column name="idProducto" not-null="true" />
+        </property>
+        <property name="cantidad" type="float">
+            <column name="cantidad" precision="100" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

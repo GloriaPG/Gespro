@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 1/08/2016 04:33:47 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="com.tsp.gespro.hibernate.pojo.CampoAdicionalSucursalValor" table="campo_adicional_sucursal_valor" catalog="gespro" optimistic-lock="version">
+        <id name="idCampoAdicionalSucursalValor" type="int">
+            <column name="ID_CAMPO_ADICIONAL_SUCURSAL_VALOR" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="campoAdicionalSucursal" class="com.tsp.gespro.hibernate.pojo.CampoAdicionalSucursal" fetch="select">
+            <column name="ID_CAMPO_ADICIONAL_SUCURSAL" />
+        </many-to-one>
+        <property name="valor" type="string">
+            <column name="VALOR" length="250" />
+        </property>
+        <property name="idSucursal" type="java.lang.Integer">
+            <column name="ID_SUCURSAL" />
+        </property>
+    </class>
+</hibernate-mapping>

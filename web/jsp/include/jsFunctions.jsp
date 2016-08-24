@@ -4,16 +4,15 @@
     Author     : ISC Cesar Martinez poseidon24@hotmail.com
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-            <script type="text/javascript" src="../../js/jquery.js"></script>
-            <script type="text/javascript" src="../../js/jquery-ui.js"></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.js"></script>
             <script type="text/javascript" src="../../js/jquery.img.preload.js"></script>
             <script type="text/javascript" src="../../js/hint.js"></script>
             <script type="text/javascript" src="../../js/visualize/jquery.visualize.js"></script>
             <script type="text/javascript" src="../../js/jwysiwyg/jquery.wysiwyg.js"></script>
             <script type="text/javascript" src="../../js/fancybox/jquery.fancybox-1.3.0.js"></script>
             <script type="text/javascript" src="../../js/jquery.tipsy.js"></script>
-            
+           
             <script type="text/javascript" src="../../js/custom_blue.js"></script>
 
             <!--apprise alert http://thrivingkings.com/apprise/-->
@@ -70,7 +69,8 @@
             <!-- Pace Page Loader Indicator -->
             
               <!--timepicker-->
-            <link rel="stylesheet" href="../../js/timePicker/jquery-ui-timepicker-addon.css" type="text/css" />
+            <link rel="stylesheet" href="../../js/timePicker/jquery-ui-timepicker-addon.css" type="text/css"/>
             <script type="text/javascript" src="../../js/timePicker/jquery-ui-sliderAccess.js"></script>
             <script type="text/javascript" src="../../js/timePicker/jquery-ui-timepicker-addon.js"></script>
             <!--timepicker-->
+            

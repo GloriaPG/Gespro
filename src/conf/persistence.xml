@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="GesproPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.tsp.gespro.ws.Producto</class>
+    <class>com.tsp.gespro.ws.Punto</class>
+    <class>com.tsp.gespro.ws.Proyecto</class>
+    <class>com.tsp.gespro.ws.DatosUsuario</class>
+    <class>com.tsp.gespro.ws.Usuarios</class>
+    <class>com.tsp.gespro.ws.Cliente</class>
+    <class>com.tsp.gespro.ws.TipoEmpresa</class>
+    <class>com.tsp.gespro.ws.Empresa</class>
+    <class>com.tsp.gespro.ws.Actividad</class>
+    <class>com.tsp.gespro.ws.Cobertura</class>
+    <class>com.tsp.gespro.ws.Ubicacion</class>
+    <class>com.tsp.gespro.ws.Estatus</class>
+    <class>com.tsp.gespro.ws.Roles</class>
+    <class>com.tsp.gespro.ws.Ldap</class>
+    <class>com.tsp.gespro.rest.Cobertura</class>
+    <class>com.tsp.gespro.rest.Ubicacion</class>
+    <class>com.tsp.gespro.rest.Usuarios</class>
+    <class>com.tsp.gespro.rest.Actividad</class>
+    <class>com.tsp.gespro.rest.Punto</class>
+    <class>com.tsp.gespro.rest.Cliente</class>
+    <class>com.tsp.gespro.rest.Roles</class>
+    <class>com.tsp.gespro.rest.Producto</class>
+    <class>com.tsp.gespro.rest.Estatus</class>
+    <class>com.tsp.gespro.rest.Ldap</class>
+    <class>com.tsp.gespro.rest.Empresa</class>
+    <class>com.tsp.gespro.rest.DatosUsuario</class>
+    <class>com.tsp.gespro.rest.TipoEmpresa</class>
+    <class>com.tsp.gespro.rest.Proyecto</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.17.0.2:3306/gespro?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="cruzade"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -36,7 +36,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT ID_DATOS_USUARIO, NOMBRE, APELLIDO_PAT, APELLIDO_MAT, DIRECCION, TELEFONO, EXTENSION, CELULAR, CORREO FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT ID_DATOS_USUARIO, NOMBRE, APELLIDO_PAT, APELLIDO_MAT, DIRECCION, TELEFONO, EXTENSION, CELULAR, CORREO, CIUDAD FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -46,12 +46,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( ID_DATOS_USUARIO, NOMBRE, APELLIDO_PAT, APELLIDO_MAT, DIRECCION, TELEFONO, EXTENSION, CELULAR, CORREO ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( ID_DATOS_USUARIO, NOMBRE, APELLIDO_PAT, APELLIDO_MAT, DIRECCION, TELEFONO, EXTENSION, CELULAR, CORREO,CIUDAD) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET ID_DATOS_USUARIO = ?, NOMBRE = ?, APELLIDO_PAT = ?, APELLIDO_MAT = ?, DIRECCION = ?, TELEFONO = ?, EXTENSION = ?, CELULAR = ?, CORREO = ? WHERE ID_DATOS_USUARIO = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET ID_DATOS_USUARIO = ?, NOMBRE = ?, APELLIDO_PAT = ?, APELLIDO_MAT = ?, DIRECCION = ?, TELEFONO = ?, EXTENSION = ?, CELULAR = ?, CORREO = ?, CIUDAD = ? WHERE ID_DATOS_USUARIO = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -102,11 +102,16 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 * Index of column CORREO
 	 */
 	protected static final int COLUMN_CORREO = 9;
+        
+        /** 
+	 * Index of column CIUDAD
+	 */
+	protected static final int COLUMN_CIUDAD = 10;
 
 	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 9;
+	protected static final int NUMBER_OF_COLUMNS = 10;
 
 	/** 
 	 * Index of primary-key column ID_DATOS_USUARIO
@@ -231,6 +236,16 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				values.append( "?" );
 				modifiedCount++;
 			}
+                        if (dto.isCiudadModified()) {
+				if (modifiedCount>0) {
+					sql.append( ", " );
+					values.append( ", " );
+				}
+		
+				sql.append( "CIUDAD" );
+				values.append( "?" );
+				modifiedCount++;
+			}
 		
 			if (modifiedCount==0) {
 				// nothing to insert
@@ -276,6 +291,9 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		
 			if (dto.isCorreoModified()) {
 				stmt.setString( index++, dto.getCorreo() );
+			}
+                        if (dto.isCiudadModified()) {
+				stmt.setString( index++, dto.getCiudad() );
 			}
 		
 			System.out.println( "Executing " + sql.toString() + " with values: " + dto );
@@ -404,6 +422,15 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				sql.append( "CORREO=?" );
 				modified=true;
 			}
+                        
+                        if (dto.isCiudadModified()) {
+				if (modified) {
+					sql.append( ", " );
+				}
+		
+				sql.append( "CIUDAD=?" );
+				modified=true;
+			}
 		
 			if (!modified) {
 				// nothing to update
@@ -448,6 +475,10 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		
 			if (dto.isCorreoModified()) {
 				stmt.setString( index++, dto.getCorreo() );
+			}
+                        
+                        if (dto.isCiudadModified()) {
+				stmt.setString( index++, dto.getCiudad() );
 			}
 		
 			stmt.setInt( index++, pk.getIdDatosUsuario() );
@@ -602,6 +633,11 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	{
 		return findByDynamicSelect( SQL_SELECT + " WHERE CORREO = ? ORDER BY CORREO", new Object[] { correo } );
 	}
+        
+        public DatosUsuario[] findWhereCiudadEquals(String ciudad) throws DatosUsuarioDaoException
+	{
+		return findByDynamicSelect( SQL_SELECT + " WHERE CIUDAD = ? ORDER BY CIUDAD", new Object[] { ciudad } );
+	}
 
 	/**
 	 * Method 'DatosUsuarioDaoImpl'
@@ -693,6 +729,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		dto.setExtension( rs.getString( COLUMN_EXTENSION ) );
 		dto.setCelular( rs.getString( COLUMN_CELULAR ) );
 		dto.setCorreo( rs.getString( COLUMN_CORREO ) );
+                dto.setCiudad( rs.getString( COLUMN_CIUDAD ) );
 		reset(dto);
 	}
 
@@ -710,6 +747,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		dto.setExtensionModified( false );
 		dto.setCelularModified( false );
 		dto.setCorreoModified( false );
+                dto.setCiudadModified( false );
 	}
 
 	/** 

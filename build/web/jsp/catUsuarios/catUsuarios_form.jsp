@@ -165,7 +165,7 @@
             <!-- Inicio de Contenido -->
             <div id="content">
 
-                <div class="inner" id="leito">
+                <div class="inner">
                     <h1>Catálogos</h1>
 
                     <div id="ajax_loading" class="alert_info" style="display: none;"></div>

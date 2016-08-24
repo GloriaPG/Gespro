@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 13/08/2016 01:30:18 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="com.tsp.gespro.hibernate.pojo.Usuarios" table="usuarios" catalog="gespro">
+        <id name="idUsuarios" type="java.lang.Integer">
+            <column name="ID_USUARIOS" />
+            <generator class="identity"></generator>
+        </id>
+        <property name="idEmpresa" type="int">
+            <column name="ID_EMPRESA" not-null="true" />
+        </property>
+        <property name="idDatosUsuario" type="int">
+            <column name="ID_DATOS_USUARIO" not-null="true" />
+        </property>
+        <property name="idEstatus" type="int">
+            <column name="ID_ESTATUS" not-null="true" />
+        </property>
+        <property name="idRoles" type="int">
+            <column name="ID_ROLES" not-null="true" />
+        </property>
+        <property name="idLdap" type="int">
+            <column name="ID_LDAP" not-null="true" />
+        </property>
+        <property name="userName" type="string">
+            <column name="USER_NAME" length="100" />
+        </property>
+        <property name="fechaAlta" type="date">
+            <column name="FECHA_ALTA" length="10" />
+        </property>
+        <property name="fechaVigencia" type="date">
+            <column name="FECHA_VIGENCIA" length="10" />
+        </property>
+        <property name="fechaUltimoAcceso" type="timestamp">
+            <column name="FECHA_ULTIMO_ACCESO" length="19" not-null="true" />
+        </property>
+        <property name="intentos" type="java.lang.Integer">
+            <column name="INTENTOS" />
+        </property>
+        <property name="contrato" type="java.lang.Integer">
+            <column name="CONTRATO" />
+        </property>
+        <property name="fechaContrato" type="date">
+            <column name="FECHA_CONTRATO" length="10" />
+        </property>
+        <property name="login" type="java.lang.Boolean">
+            <column name="LOGIN" />
+        </property>
+        <property name="latitud" type="java.lang.Double">
+            <column name="LATITUD" precision="22" scale="0" />
+        </property>
+        <property name="longitud" type="java.lang.Double">
+            <column name="LONGITUD" precision="22" scale="0" />
+        </property>
+        <property name="ultimaUbicacion" type="timestamp">
+            <column name="ULTIMA_UBICACION" length="19" />
+        </property>
+        <property name="idDispositivo" type="java.lang.Integer">
+            <column name="ID_DISPOSITIVO" />
+        </property>
+        <property name="clientesCodigoBarras" type="java.lang.Integer">
+            <column name="CLIENTES_CODIGO_BARRAS">
+                <comment>PODRA BUSCAR A SUS CLIENTES, POR MEDIO DEL CODIGO DE BARRAS, 1 SI, 2 NO</comment>
+            </column>
+        </property>
+        <property name="permisoVentaCredito" type="java.lang.Integer">
+            <column name="PERMISO_VENTA_CREDITO">
+                <comment>CANDADO DE VENTA A CREDITO, PARA PERMITIR O NO HACER UNA VENTA A CREDITO POR DEFAULT ESTA DESACTIVADO EL PERMISO, 1 SI, 2 NO</comment>
+            </column>
+        </property>
+        <property name="trabajarFueraLinea" type="java.lang.Integer">
+            <column name="TRABAJAR_FUERA_LINEA">
+                <comment>EN EL MOVIL DEL EMPLEADO, EN ADMINISTRACION SE HABILITARA OPCION DE TRABAJAR FUERA DE LINEA, LA CUAL PERMITA AL EMPLEADO ELEGIR SI QUERE TRABAJAR
+                SINCRONIZANDO EN LINEA SUS DATOS O NO, 1 SI, 2 NO</comment>
+            </column>
+        </property>
+        <property name="distanciaObligatorio" type="java.lang.Double">
+            <column name="DISTANCIA_OBLIGATORIO" precision="22" scale="0">
+                <comment>DISTANCIA MINIMA, EN METROS, A LA QUE DEBERA DE ESTAR EL VENDEDOR PARA REGISTRAR UN MOVIMIENTO O VENTA A UN CLIENTE</comment>
+            </column>
+        </property>
+        <property name="precioDeCompra" type="java.lang.Integer">
+            <column name="PRECIO_DE_COMPRA">
+                <comment>EN LOS REPORTES DE LOS VENDEDORES (DEL CELULAR) LES APARECERA ESTE PRECIO, 1 SI, 2 NO</comment>
+            </column>
+        </property>
+        <property name="permisoAccionesCliente" type="java.lang.Integer">
+            <column name="PERMISO_ACCIONES_CLIENTE">
+                <comment>CAMPO PARA PERMISO DE CREAR CLIENTES EN LA NUEVA APK POS MOVIL</comment>
+            </column>
+        </property>
+        <property name="numEmpleado" type="string">
+            <column name="NUM_EMPLEADO" length="30">
+                <comment>IDENTIFICADOR INTERNO DE EMPLEADO</comment>
+            </column>
+        </property>
+        <property name="idHorarioAsignado" type="java.lang.Integer">
+            <column name="ID_HORARIO_ASIGNADO">
+                <comment>HORARIO ASIGNADO AL USUARIO</comment>
+            </column>
+        </property>
+        <property name="idEstadoEmpleado" type="int">
+            <column name="ID_ESTADO_EMPLEADO" not-null="true">
+                <comment>ESTADO ACTUAL DEL EMPLEADO</comment>
+            </column>
+        </property>
+        <property name="minutosEstatus" type="int">
+            <column name="MINUTOS_ESTATUS" not-null="true">
+                <comment>SOLICITAR ESTATUS CADA N MINUTOS</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>
