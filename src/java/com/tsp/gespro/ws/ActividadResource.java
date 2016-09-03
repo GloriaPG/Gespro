@@ -6,6 +6,7 @@ package com.tsp.gespro.ws;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.tsp.gespro.Services.ActividadFullObject;
 import com.tsp.gespro.Services.Allservices;
 import com.tsp.gespro.hibernate.dao.ActividadDAO;
 import com.tsp.gespro.hibernate.pojo.Actividad;
@@ -44,7 +45,7 @@ public class ActividadResource {
      */
     @GET
     @Produces("application/json")
-    @Path("/query")
+    @Path("/proyecto")
     public String getActividadByProyecto(@QueryParam("proyecto") String proyecto) {
         Allservices service=new Allservices();
         List<Actividad> list=null;
@@ -58,8 +59,36 @@ public class ActividadResource {
             list=service.QueryActividadDAO(where);
         }
         
+        List<ActividadFullObject> listFull=service.getActividadesFull(list);
         Gson gson = new Gson();
-        String jsonResponse=gson.toJson(list);
+        String jsonResponse=gson.toJson(listFull);
+        //TODO return proper representation object
+        return jsonResponse;
+        
+    }
+    
+     /**
+     * Retrieves representation of an instance of com.tsp.gespro.ws.ActividadResource
+     * @return an instance of java.lang.String
+     */
+    @GET
+    @Produces("application/json")
+    @Path("/promotor")
+    public String getActividadByPromotor(@QueryParam("promotor") String promotor) {
+        Allservices service=new Allservices();
+        List<Actividad> list=null;
+        if(promotor==null || promotor==""){
+            ActividadDAO obj= new ActividadDAO();
+            list= obj.getLista();
+            
+        }else{
+            String where="where id_user="+promotor;
+            list=service.QueryActividadDAO(where);
+        }
+        
+        List<ActividadFullObject> listFull=service.getActividadesFull(list);
+        Gson gson = new Gson();
+        String jsonResponse=gson.toJson(listFull);
         //TODO return proper representation object
         return jsonResponse;
         

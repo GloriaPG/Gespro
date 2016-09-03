@@ -40,13 +40,13 @@ public class ProyectoResource {
      * Retrieves representation of an instance of com.tsp.gespro.ws.ProyectoResource
      * @return an instance of java.lang.String
      */
-    @GET
-    @Produces("application/json")
-   @Path("/query")
+   @GET
+   @Produces("application/json")
+   @Path("/cliente")
     public String getPryectoByCliente(@QueryParam("cliente") String cliente) {
         Allservices service=new Allservices();
         List<Proyecto> list=null;
-        System.out.println("Cliente : " + cliente);
+
         if(cliente==null || cliente==""){
             ProyectoDAO obj= new ProyectoDAO();
             list= obj.getLista();
@@ -54,6 +54,28 @@ public class ProyectoResource {
         }else{
             String where="where id_cliente="+cliente;
             list=service.queryProyectoDAO(where);
+        }
+        
+        Gson gson = new Gson();
+        String jsonResponse=gson.toJson(list);
+        //TODO return proper representation object
+        return jsonResponse;
+        
+    }
+   
+   @GET
+   @Produces("application/json")
+   @Path("/empresa")
+    public String getPryectoByEmpresa(@QueryParam("empresa") String empresa) {
+        Allservices service=new Allservices();
+        List<Proyecto> list=null;
+
+        if(empresa==null || empresa==""){
+            ProyectoDAO obj= new ProyectoDAO();
+            list= obj.getLista();
+            
+        }else{
+            list=service.getProyectoByEmpresa(empresa);
         }
         
         Gson gson = new Gson();

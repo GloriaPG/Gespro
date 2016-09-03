@@ -33,7 +33,7 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <%
-            List<Proyecto> proyectoList = new ProyectoDAO().lista();
+            List<Proyecto> proyectoList = new Allservices().queryProyectoDAO("where status=1");
             List<Usuarios> promotores=new Allservices().QueryUsuariosDAO("where ID_ROLES=4");
             RolesDaoImpl rolesDaoImpl=new RolesDaoImpl(user.getConn());
             Roles rol=rolesDaoImpl.findByPrimaryKey(user.getUser().getIdRoles());

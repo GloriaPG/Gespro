@@ -1,5 +1,5 @@
 package com.tsp.gespro.hibernate.pojo;
-// Generated 14/08/2016 09:21:37 PM by Hibernate Tools 3.2.1.GA
+// Generated 3/09/2016 09:38:24 AM by Hibernate Tools 3.2.1.GA
 
 
 import java.util.Date;
@@ -18,23 +18,21 @@ public class Proyecto  implements java.io.Serializable {
      private int idCliente;
      private float avance;
      private int status;
-     private Integer idPromotor;
      private Integer idUser;
+     private Integer idPromotor;
 
     public Proyecto() {
     }
 
 	
-    public Proyecto(String nombre, Date fechaInicio, Date fechaProgramada, Date fechaReal, int idCliente, float avance, int status) {
+    public Proyecto(String nombre, Date fechaInicio, int idCliente, float avance, int status) {
         this.nombre = nombre;
         this.fechaInicio = fechaInicio;
-        this.fechaProgramada = fechaProgramada;
-        this.fechaReal = fechaReal;
         this.idCliente = idCliente;
         this.avance = avance;
         this.status = status;
     }
-    public Proyecto(String nombre, Date fechaInicio, Date fechaProgramada, Date fechaReal, int idCliente, float avance, int status, Integer idPromotor, Integer idUser) {
+    public Proyecto(String nombre, Date fechaInicio, Date fechaProgramada, Date fechaReal, int idCliente, float avance, int status, Integer idUser, Integer idPromotor) {
        this.nombre = nombre;
        this.fechaInicio = fechaInicio;
        this.fechaProgramada = fechaProgramada;
@@ -42,8 +40,8 @@ public class Proyecto  implements java.io.Serializable {
        this.idCliente = idCliente;
        this.avance = avance;
        this.status = status;
-       this.idPromotor = idPromotor;
        this.idUser = idUser;
+       this.idPromotor = idPromotor;
     }
    
     public Integer getIdProyecto() {
@@ -102,19 +100,19 @@ public class Proyecto  implements java.io.Serializable {
     public void setStatus(int status) {
         this.status = status;
     }
-    public Integer getIdPromotor() {
-        return this.idPromotor;
-    }
-    
-    public void setIdPromotor(Integer idPromotor) {
-        this.idPromotor = idPromotor;
-    }
     public Integer getIdUser() {
         return this.idUser;
     }
     
     public void setIdUser(Integer idUser) {
         this.idUser = idUser;
+    }
+    public Integer getIdPromotor() {
+        return this.idPromotor;
+    }
+    
+    public void setIdPromotor(Integer idPromotor) {
+        this.idPromotor = idPromotor;
     }
 
 

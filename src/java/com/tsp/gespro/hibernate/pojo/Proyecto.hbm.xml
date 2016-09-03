@@ -1,38 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 14/08/2016 09:21:38 PM by Hibernate Tools 3.2.1.GA -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 3/09/2016 09:38:24 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="gespro" name="com.tsp.gespro.hibernate.pojo.Proyecto" table="proyecto">
-    <id name="idProyecto" type="java.lang.Integer">
-      <column name="ID_PROYECTO"/>
-      <generator class="identity"/>
-    </id>
-    <property name="nombre" type="string">
-      <column name="NOMBRE" not-null="true"/>
-    </property>
-    <property name="fechaInicio" type="date">
-      <column length="10" name="FECHA_INICIO" not-null="true"/>
-    </property>
-    <property name="fechaProgramada" type="date">
-      <column length="10" name="FECHA_PROGRAMADA" not-null="true"/>
-    </property>
-    <property name="fechaReal" type="date">
-      <column length="10" name="FECHA_REAL" not-null="true"/>
-    </property>
-    <property name="idCliente" type="int">
-      <column name="ID_CLIENTE" not-null="true"/>
-    </property>
-    <property name="avance" type="float">
-      <column name="AVANCE" not-null="true" precision="5"/>
-    </property>
-    <property name="status" type="int">
-      <column name="STATUS" not-null="true"/>
-    </property>
-    <property name="idPromotor" type="java.lang.Integer">
-      <column name="ID_PROMOTOR"/>
-    </property>
-    <property name="idUser" type="java.lang.Integer">
-      <column name="id_user"/>
-    </property>
-  </class>
+    <class name="com.tsp.gespro.hibernate.pojo.Proyecto" table="proyecto" catalog="gespro">
+        <id name="idProyecto" type="java.lang.Integer">
+            <column name="ID_PROYECTO" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="NOMBRE" not-null="true" />
+        </property>
+        <property name="fechaInicio" type="date">
+            <column name="FECHA_INICIO" length="10" not-null="true" />
+        </property>
+        <property name="fechaProgramada" type="date">
+            <column name="FECHA_PROGRAMADA" length="10" />
+        </property>
+        <property name="fechaReal" type="date">
+            <column name="FECHA_REAL" length="10" />
+        </property>
+        <property name="idCliente" type="int">
+            <column name="ID_CLIENTE" not-null="true" />
+        </property>
+        <property name="avance" type="float">
+            <column name="AVANCE" precision="5" not-null="true" />
+        </property>
+        <property name="status" type="int">
+            <column name="STATUS" not-null="true" />
+        </property>
+        <property name="idUser" type="java.lang.Integer">
+            <column name="id_user" />
+        </property>
+        <property name="idPromotor" type="java.lang.Integer">
+            <column name="ID_PROMOTOR" />
+        </property>
+    </class>
 </hibernate-mapping>

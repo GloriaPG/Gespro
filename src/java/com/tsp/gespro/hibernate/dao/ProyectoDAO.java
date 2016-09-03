@@ -99,7 +99,7 @@ public class ProyectoDAO {
         List<Proyecto> lista=null;
         try {
             iniciaOperacion();
-            lista = sesion.createQuery("from Proyecto where idCliente=:idCliente").setParameter("idCliente", idCliente).list();
+            lista = sesion.createQuery("from Proyecto where status=1 AND idCliente=:idCliente").setParameter("idCliente", idCliente).list();
         } finally {
             sesion.close();
         }
@@ -114,7 +114,7 @@ public class ProyectoDAO {
         try 
         { 
             iniciaOperacion(); 
-            lista = sesion.createQuery("from Proyecto").list(); 
+            lista = sesion.createQuery("from Proyecto where status=1").list(); 
         }
         finally 
         { 
