@@ -63,7 +63,7 @@
         File tempDir = null;
         File fileToZip = null;
         if (os.indexOf("win") >= 0) {
-            tempDir = new File(configuration.getApp_content_path() + "\\tmp\\");
+            tempDir = new File(configuration.getApp_content_path() + "tmp\\");
             filename = tempDir.getPath()+ "\\imagenes" + System.currentTimeMillis() + ".zip";
             fileToZip = new File(configuration.getApp_content_path() + "\\" + rfcEmpresaMatriz);
         } else {
