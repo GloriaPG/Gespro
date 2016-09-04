@@ -105,7 +105,7 @@ public class FotoActividadResource {
     private String folder(Actividad act){
         Configuration conf=new Configuration();
         String path=conf.getApp_content_path();
-        path+="proyectos/"+String.valueOf(act.getIdProyecto())+"/actividades/";
+        path+="/proyectos/"+String.valueOf(act.getIdProyecto())+"/actividades/";
         path+=String.valueOf(act.getIdActividad())+"/";
         System.out.println("Ruta : " + path);
         File folder = new File(path);

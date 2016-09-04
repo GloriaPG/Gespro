@@ -30,7 +30,7 @@
         File fileToZip = null;
             tempDir = new File(configuration.getApp_content_path() + "\\tmp\\");
             filename = tempDir.getPath()+"\\Actividad"+objActividad.getIdActividad()+"pictures.zip";;
-            fileToZip = new File(configuration.getApp_content_path() +"proyectos\\"+objActividad.getIdProyecto()+"\\actividades\\"+objActividad.getIdActividad());
+            fileToZip = new File(configuration.getApp_content_path() +"\\proyectos\\"+objActividad.getIdProyecto()+"\\actividades\\"+objActividad.getIdActividad());
         
         if (!tempDir.exists()) {
             tempDir.mkdirs();
