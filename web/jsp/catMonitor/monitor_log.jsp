@@ -4,6 +4,9 @@
     Author     : Fabian
 --%>
 
+<%@page import="com.tsp.gespro.hibernate.pojo.LoginCliente"%>
+<%@page import="com.tsp.gespro.dto.Roles"%>
+<%@page import="com.tsp.gespro.jdbc.RolesDaoImpl"%>
 <%@page import="com.tsp.gespro.bo.EmpresaBO"%>
 <%@page import="com.tsp.gespro.hibernate.pojo.Proyecto"%>
 <%@page import="com.tsp.gespro.hibernate.pojo.Cliente"%>
@@ -24,16 +27,36 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
     response.flushBuffer();
 }
 // Obtener parametros
-String buscar = request.getParameter("q")!=null? new String(request.getParameter("q").getBytes("ISO-8859-1"),"UTF-8") :"";    //
-
+ String buscar = request.getParameter("q")!=null? new String(request.getParameter("q").getBytes("ISO-8859-1"),"UTF-8") :"";    //
+ RolesDaoImpl rolesDaoImpl=new RolesDaoImpl(user.getConn());
+ Roles rol=rolesDaoImpl.findByPrimaryKey(user.getUser().getIdRoles());
+ int idCliente=0;
+ if(rol.getNombre().equals("CLIENTE")){
+     LoginClienteDAO loginClienteDAO=new LoginClienteDAO(user.getConn());
+     LoginCliente lc=loginClienteDAO.getByIdUsuario(user.getUser().getIdUsuarios());
+     idCliente=lc.getIdCliente();
+ }
 // crear consulta de filtro
 String filtroBusqueda = ""; //"AND ID_ESTATUS=1 ";
 if (!buscar.trim().equals("")) {
-    filtroBusqueda += " WHERE (NOMBRE LIKE '%" + buscar + "%')";
+    if(idCliente != 0){
+        filtroBusqueda += "(NOMBRE LIKE '%" + buscar + "%') AND status=1 AND ID_CLIENTE="+ String.valueOf(idCliente);
+    }else{
+        filtroBusqueda += " (NOMBRE LIKE '%" + buscar + "%') AND status=1";
+    }
 }
 String filtroBusquedaEncoded = java.net.URLEncoder.encode(filtroBusqueda, "UTF-8");
 Allservices allservices = new Allservices();
 List<Proyecto> proyectos = allservices.queryProyectoDAO(filtroBusqueda);
+if(filtroBusqueda.equals("")){
+    if(idCliente != 0){
+        String where="WHERE status=1 AND ID_CLIENTE="+String.valueOf(idCliente);
+        proyectos = allservices.queryProyectoDAO(where);
+    }else{
+        String where="WHERE status=1";
+        proyectos = allservices.queryProyectoDAO(where);
+    }
+}
 
 EmpresaBO empresaBO = new EmpresaBO(user.getConn());
 int idEmpresaMatriz = empresaBO.getEmpresaMatriz(user.getUser().getIdEmpresa()).getIdEmpresa();
@@ -120,16 +143,7 @@ UsuariosDAO usuarioModel = new UsuariosDAO();
                                     <tbody>
                                         <% 
                                             for(Proyecto proyecto : proyectos){
-                                                Usuarios userproyecto = null;
-                                                boolean isSameEmpresa = false;
-                                                if(proyecto.getIdPromotor()!=null){
-                                                    userproyecto = usuarioModel.getById(proyecto.getIdPromotor());
-                                                    int idEmpresaMatrizProyecto = empresaBO.getEmpresaMatriz(userproyecto.getIdEmpresa()).getIdEmpresa();
-                                                    if(idEmpresaMatrizProyecto==idEmpresaMatriz)
-                                                        isSameEmpresa = true;
-                                                    
-                                                }
-                                                if(proyecto.getStatus() == 1 && isSameEmpresa){
+                                               
                                         %> 
                                         <tr>
                                             <td><% out.print(proyecto.getNombre()); %></td>
@@ -149,7 +163,7 @@ UsuariosDAO usuarioModel = new UsuariosDAO();
                                           </tr>        
                                          
                                         <%        
-                                                }
+                                                
                                             }
                                         %>
                                     </tbody>
