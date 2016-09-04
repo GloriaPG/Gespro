@@ -1,4 +1,5 @@
 
+<%@page import="com.tsp.gespro.hibernate.pojo.Coberturaproyecto"%>
 <%@page import="com.tsp.gespro.hibernate.pojo.Proyecto"%>
 <%@page import="com.tsp.gespro.hibernate.dao.UsuariosDAO"%>
 <%@page import="com.tsp.gespro.hibernate.pojo.Promotorproyecto"%>
@@ -41,7 +42,25 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
     List<ActividadFullObject> actividadesFullObjects = allServicesObject.getActividadesFull( actividades );
     UsuariosDAO usuarioModel = new UsuariosDAO();
     ProyectoDAO proyectoDAO = new ProyectoDAO();
-    
+
+    // Obtengo las cobertiras de este proyecto, sus puntos y actividades
+    List<Coberturaproyecto> cobertura_proyecto_list = allServicesObject.queryCoberturaProyecto( "where idProyecto = " + proyectoId );
+    String query_for_puntos = "";
+
+    for( Coberturaproyecto cobertura_proyecto : cobertura_proyecto_list ) {
+
+        System.out.println( "Cobertura:   " + cobertura_proyecto.getIdCobertura() );
+        if( query_for_puntos.contains( "WHERE" ) ) {
+            query_for_puntos += " OR idCobertura ='"+ cobertura_proyecto.getIdCobertura() +"'";
+        }else{
+            query_for_puntos += " WHERE idCobertura ='"+ cobertura_proyecto.getIdCobertura() +"'";
+        }
+    }
+
+    List< Punto > puntos = allServicesObject.queryPuntoDAO( query_for_puntos );
+
+    System.out.println( "Puntos:   " + puntos );
+
     Proyecto proyecto = proyectoDAO.getById( Integer.parseInt( proyectoId ));
     float avance_proyecto = proyecto.getAvance();
     List<Promotorproyecto> promotoresProyecto = allServicesObject.queryPromotorProyectoDAO("WHERE id_proyecto = " + proyectoId);
@@ -58,16 +77,16 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
 
 
     // Obtener los puntos de las actividades para poder mapearlos
-    List< Punto > puntos             = new ArrayList< Punto >();
     List< Punto > puntos_con_checkin = new ArrayList< Punto >();
 
     for( ActividadFullObject actividad: actividadesFullObjects ) {
         // Obtenermos todos los puntos en el List puntos y los punto completados en el List puntos_con_checkin
-        puntos.add( actividad.getPunto() );
         if( actividad.getActividad().getCheckin() instanceof Date ) {
             puntos_con_checkin.add( actividad.getPunto() );
         }
     }
+
+    System.out.println( "Puntos con checkin:     " + puntos_con_checkin );
 
     int idEmpresa = user.getUser().getIdEmpresa();
     Empresa empresa = new Empresa();   
@@ -780,7 +799,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                     </thead>
                                     <tbody>
 
-                                        <% 
+                                        <%
                                             for( ActividadFullObject actividadFull : actividadesFullObjects ) {
                                         %>
                                          <tr>
@@ -790,7 +809,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                             <td><% out.print( actividadFull.getPunto().getLugar() ); %></td>
                                             <td><% out.print( actividadFull.getActividad().getAvance() ); %></td>
                                             <td><% out.print( ( actividadFull.getActividad().getCheckin() instanceof Date ) ? actividadFull.getActividad().getCheckin().toString() : "-" ); %></td>
-                                            <td><% out.print( producto.getById( actividadFull.getActividad().getIdProducto() ).getNombre() ); %></td>
+                                            <td><% out.print( ( actividadFull.getActividad().getIdProducto() != null ) ? producto.getById( actividadFull.getActividad().getIdProducto() ).getNombre() : " - " ); %></td>
                                             <td><% out.print( actividadFull.getActividad().getCantidad() ); %></td>
                                             <td><% out.print( ( actividadFull.getActividad().getRecibio() == null ) ? "-" : actividadFull.getActividad().getRecibio() ); %></td>
                                          </tr>
