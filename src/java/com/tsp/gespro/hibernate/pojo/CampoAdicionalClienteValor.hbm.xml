@@ -8,7 +8,7 @@
             <column name="ID_CAMPO_ADICIONAL_CLIENTE_VALOR" />
             <generator class="identity" />
         </id>
-        <many-to-one name="campoAdicionalCliente" class="com.tsp.gespro.hibernate.pojo.CampoAdicionalCliente" fetch="select">
+        <many-to-one name="campoAdicionalCliente" class="com.tsp.gespro.hibernate.pojo.CampoAdicionalCliente" fetch="select" lazy="false">
             <column name="ID_CAMPO_ADICIONAL_CLIENTE" />
         </many-to-one>
         <property name="valor" type="string">
