@@ -3,9 +3,6 @@
     Created on : 26-oct-2012, 12:13:49
     Author     : ISCesarMartinez poseidon24@hotmail.com
 --%>
-
-<%@page import="com.tsp.gespro.hibernate.dao.ClientesClientesDAO"%>
-<%@page import="com.tsp.gespro.hibernate.pojo.ClientesClientes"%>
 <%@page import="com.tsp.gespro.hibernate.pojo.CampoAdicionalClienteValor"%>
 <%@page import="com.tsp.gespro.hibernate.dao.CampoAdicionalClienteValorDAO"%>
 <%@page import="java.util.List"%>
@@ -36,6 +33,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="user" scope="session" class="com.tsp.gespro.bo.UsuarioBO"/>
 <jsp:useBean id="helperEtiquetaCliente" class="com.tsp.gespro.hibernate.dao.EtiquetaFormularioClienteDAO"/>
+<jsp:useBean id="clienteModel" class="com.tsp.gespro.hibernate.dao.ClienteDAO"/>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
@@ -88,15 +86,9 @@
 
         ClienteBO clienteBO = new ClienteBO(user.getConn());
         Cliente clientesDto = null;
-        ClientesClientes relacionC=null;
         if (idCliente > 0) {
             clienteBO = new ClienteBO(idCliente, user.getConn());
             clientesDto = clienteBO.getCliente();
-            String where="where cliente_id="+idCliente;
-            int relacion=new ClientesClientesDAO().exist(where);
-            if(relacion!=0){
-                relacionC=new ClientesClientesDAO().getById(relacion);
-            }
             /*
             StringTokenizer tokensDias = new StringTokenizer(StringManage.getValidString(clientesDto.getDiasVisita()),",");
             String seleccion = "";
@@ -244,8 +236,7 @@
                                                     adicionalesCliente.push(adicionalCliente);
                                                 }
                                             });
-                                            console.log ("Probando :");
-                                            console.log(adicionalesCliente);
+
                                             $.ajax({
                                                 type: "POST",
                                                 url: "ajaxAdicionalesCliente.jsp",
@@ -363,11 +354,9 @@
                 ocultarTipoCliente();
                 if (tipoCliente == "1") {
                     $("#contenedor-cliente").hide("slow");
-                    $("#tipo").val(1);// Matriz
                 }
                 if (tipoCliente == "0") {
                     $("#contenedor-cliente").show("slow");
-                    $("#tipo").val(0);// Sucursal
                 }
               
             }
@@ -691,14 +680,12 @@
                                         <label>* ¿Eres matriz?:</label><br/>
                                         <input type="radio" name="tipoCliente" value="1"> Sí
                                         <input type="radio" name="tipoCliente" value="0"> No
-                                        <input type="hidden" id="tipo"/>
                                     </p>
                                     <br/>
                                     <div id="contenedor-cliente">
                                         <p>
-                                            <jsp:useBean id="clienteModel" class="com.tsp.gespro.hibernate.dao.ClienteDAO"/>
                                             <label>Cliente:</label><br/>
-                                            <c:set var="clientes" value="${clienteModel.lista()}"/>
+                                            <c:set var="clientes" value="${clienteModel.clientesMatrices()}"/>
                                             <select id="idC" name="idC" style="width:300px;">
                                                 <option value="0">Seleccione un cliente</option>
                                                 <c:forEach items="${clientes}" var="cliente">

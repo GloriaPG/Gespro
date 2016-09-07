@@ -15,7 +15,7 @@
             <column name="codigo" length="45" />
         </property>
         <property name="simbolo" type="string">
-            <column name="simbolo" length="1" not-null="true" />
+            <column name="simbolo" length="3" not-null="true" />
         </property>
         <property name="activo" type="java.lang.Boolean">
             <column name="activo" />

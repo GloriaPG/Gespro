@@ -71,13 +71,10 @@
     String nombreComercial="";
     
     int idSucursalEmpresaAsignado = idEmpresa;
-    int tipo=1;
-    
-    
-    if(request.getParameter("tipo")!=null){
-        tipo = Integer.parseInt(request.getParameter("tipo"));
+    int tipo=2;
+    if(request.getParameter("tipoCliente")!=null){
+        tipo = Integer.parseInt(request.getParameter("tipoCliente"));
     }
-    
     /*
     * Recepción de valores
     */
@@ -226,39 +223,17 @@
                      */
                     if(idCliente>0){
                         
+                        // Guardar relación clientes con sus sucursal matriz.
+                        ClientesClientesDAO obj=new ClientesClientesDAO();
+                        
+                        // tipo 1 significa que es matriz.
                         if(tipo==1){
-                          String where="where cliente_id="+idCliente+" AND cliente_sucursal_id="+idCliente;
-                          int relacion=new ClientesClientesDAO().exist(where);
-                          if(relacion==0){
-                              ClientesClientes relacionClientes=new ClientesClientes();
-                              relacionClientes.setClienteId(idCliente);
-                              relacionClientes.setClienteSucursalId(idCliente);
-                              ClientesClientesDAO obj=new ClientesClientesDAO();
-                              obj.guardar(relacionClientes);
-                          }else{
-                              ClientesClientesDAO obj=new ClientesClientesDAO();
-                              ClientesClientes relacionClientes=obj.getById(relacion);;
-                              relacionClientes.setClienteId(idCliente);
-                              relacionClientes.setClienteSucursalId(idCliente);
-                              obj.actualizar(relacionClientes);
-                          }
-                        }else{
+                         obj.crearRelacionClientes(idCliente, idCliente,tipo);
+                        }
+                        // tipo 0 significa que es sucursal.
+                        if(tipo==0){
                           int idC= Integer.parseInt(request.getParameter("idC"));
-                          String where="where cliente_id="+idCliente+" AND cliente_sucursal_id="+idC;
-                          int relacion=new ClientesClientesDAO().exist(where);
-                          if(relacion==0){
-                              ClientesClientes relacionClientes=new ClientesClientes();
-                              relacionClientes.setClienteId(idCliente);
-                              relacionClientes.setClienteSucursalId(idC);
-                              ClientesClientesDAO obj=new ClientesClientesDAO();
-                              obj.guardar(relacionClientes);
-                          }else{
-                              ClientesClientesDAO obj=new ClientesClientesDAO();
-                              ClientesClientes relacionClientes=obj.getById(relacion);;
-                              relacionClientes.setClienteId(idCliente);
-                              relacionClientes.setClienteSucursalId(idC);
-                              obj.actualizar(relacionClientes);
-                          }
+                          obj.crearRelacionClientes(idCliente,idC,tipo);
                         }
                         
                         //edita express
@@ -346,8 +321,8 @@
                             campoContenidoDaoImpl.insert(cliPersonalizados);
                         }*/
                         /////**--
-                        
-                        try{
+
+                            try{
                             new ClienteDaoImpl(user.getConn()).update(clienteDto.createPk(), clienteDto);
 
                             out.print("<!--EXITO-->Registro actualizado satisfactoriamente");
@@ -432,7 +407,18 @@
                             }
                         }*/
                         /////**--
-
+                         // Guardar relación clientes con sus sucursal matriz.
+                        ClientesClientesDAO obj=new ClientesClientesDAO();
+                        
+                        // tipo 1 significa que es matriz.
+                        if(tipo==1){
+                         obj.crearRelacionClientes(clienteDto.getIdCliente(),clienteDto.getIdCliente(),tipo);
+                        }
+                        // tipo 0 significa que es sucursal.
+                        if(tipo==0){
+                          int idC= Integer.parseInt(request.getParameter("idC"));
+                          obj.crearRelacionClientes(clienteDto.getIdCliente(),idC,tipo);
+                        }    
                         //Relacion con vendedor
                         if (idVendedor > 0){
                             RelacionClienteVendedor clienteVendedorDto = new RelacionClienteVendedor();
@@ -488,7 +474,18 @@
             clienteDto.setMunicipio(municipio);
             clienteDto.setEstado(estado);
             clienteDto.setPais(pais);
-            //clienteDto.setSincronizacionMicrosip(2);
+            // Guardar relación clientes con sus sucursal matriz.
+            ClientesClientesDAO obj=new ClientesClientesDAO();
+
+            // tipo 1 significa que es matriz.
+            if(tipo==1){
+             obj.crearRelacionClientes(clienteDto.getIdCliente(),clienteDto.getIdCliente(),tipo);
+            }
+            // tipo 0 significa que es sucursal.
+            if(tipo==0){
+              int idC= Integer.parseInt(request.getParameter("idC"));
+              obj.crearRelacionClientes(clienteDto.getIdCliente(),idC,tipo);
+            }
 
             try{
                 new ClienteDaoImpl(user.getConn()).update(clienteDto.createPk(), clienteDto);
@@ -630,6 +627,19 @@
                     Cliente clienteDto = clienteBO.getCliente();
 
                     clienteDto.setIdEstatus(estatus);
+                    
+                    // Guardar relación clientes con sus sucursal matriz.
+                    ClientesClientesDAO obj=new ClientesClientesDAO();
+                    
+                    // tipo 1 significa que es matriz.
+                    if(tipo==1){
+                     obj.crearRelacionClientes(idCliente,idCliente,tipo);
+                    }
+                    // tipo 0 significa que es sucursal.
+                    if(tipo==0){
+                      int idC= Integer.parseInt(request.getParameter("idC"));
+                      obj.crearRelacionClientes(idCliente,idC,tipo);
+                    }
                     /*if (matriz > 0) {
                         clienteDto.setMatriz(matriz);
                     } else {
@@ -814,42 +824,20 @@
                      * Realizamos el insert
                      */
                     ClientePk clientePk = clientesDaoImpl.insert(clienteDto);
-                    int clienteid=clientePk.getIdCliente();
-                    if(tipo==1){
+                    
+                    // Guardar relación clientes con sus sucursal matriz.
+                    ClientesClientesDAO obj=new ClientesClientesDAO();
 
-                      String where="where cliente_id="+clienteid+" AND cliente_sucursal_id="+clienteid;
-                      int relacion=new ClientesClientesDAO().exist(where);
-                      if(relacion==0){
-                          ClientesClientes relacionClientes=new ClientesClientes();
-                          relacionClientes.setClienteId(clienteid);
-                          relacionClientes.setClienteSucursalId(clienteid);
-                          ClientesClientesDAO obj=new ClientesClientesDAO();
-                          obj.guardar(relacionClientes);
-                      }else{
-                          ClientesClientesDAO obj=new ClientesClientesDAO();
-                          ClientesClientes relacionClientes=obj.getById(relacion);;
-                          relacionClientes.setClienteId(clienteid);
-                          relacionClientes.setClienteSucursalId(clienteid);
-                          obj.actualizar(relacionClientes);
-                      }
-                    }else{
-                      int idC= Integer.parseInt(request.getParameter("idC"));
-                      String where="where cliente_id="+clienteid+" AND cliente_sucursal_id="+idC;
-                      int relacion=new ClientesClientesDAO().exist(where);
-                      if(relacion==0){
-                          ClientesClientes relacionClientes=new ClientesClientes();
-                          relacionClientes.setClienteId(clienteid);
-                          relacionClientes.setClienteSucursalId(idC);
-                          ClientesClientesDAO obj=new ClientesClientesDAO();
-                          obj.guardar(relacionClientes);
-                      }else{
-                          ClientesClientesDAO obj=new ClientesClientesDAO();
-                          ClientesClientes relacionClientes=obj.getById(relacion);;
-                          relacionClientes.setClienteId(clienteid);
-                          relacionClientes.setClienteSucursalId(idC);
-                          obj.actualizar(relacionClientes);
-                      }
+                    // tipo 1 significa que es matriz.
+                    if(tipo==1){
+                     obj.crearRelacionClientes(clientePk.getIdCliente(), clientePk.getIdCliente(),tipo);
                     }
+                    // tipo 0 significa que es sucursal.
+                    if(tipo==0){
+                      int idC= Integer.parseInt(request.getParameter("idC"));
+                      obj.crearRelacionClientes(clientePk.getIdCliente(),idC,tipo);
+                    }
+                        
                         
                     
                     /////**--Insertamos los registros de datos personalizados:

@@ -109,7 +109,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                     <br/>
                                     <p>
                                         <label>*Simbolo:</label><br/>
-                                        <input maxlength="1" type="text" id="simbolo" name="simbolo" style="width:300px;"
+                                        <input maxlength="3" type="text" id="simbolo" name="simbolo" style="width:300px;"
                                                value="${not empty obj.simbolo ? obj.simbolo : ""}"
                                                data-validation="length"
                                                data-validation-length="min1"

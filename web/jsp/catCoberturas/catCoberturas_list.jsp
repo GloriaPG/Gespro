@@ -159,7 +159,7 @@
                                                    <img src="../../images/icon_edit.png" alt="editar" class="help" title="Editar"/>
                                                 </a>
                                                     &nbsp;&nbsp;
-                                                    <a class="accion-eliminar" href="#" cobertura-id="<%=cobertura.getIdCobertura()%>"><img src="../../images/icon_delete.png" alt="editar" class="help" title="Editar"/></a>
+                                                    <a class="accion-eliminar" href="#" cobertura-id="<%=cobertura.getIdCobertura()%>"><img src="../../images/icon_delete.png" alt="editar" class="help" title="Eliminar"/></a>
                                                     &nbsp;&nbsp;
                                                 </td>
                                             </tr>

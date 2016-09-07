@@ -293,6 +293,7 @@ public class ReportBO {
                 fieldList.add(getDataInfo("CONTACTO","Contacto","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("CORREO","Correo","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("FECHA_REGISTRO","Fecha Registro","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("USUARIO_REGISTRO","Usuario Registro","","",""+DATA_STRING,""));
                 break;
             case BITACORA_REPORT:
                 fieldList.add(getDataInfo("ID_CHECK","ID","","",""+DATA_INT,""));
@@ -603,11 +604,17 @@ public class ReportBO {
                fechaReg = format.format(dto.getFechaRegistro());
             }catch(Exception e){}
 
+            DatosUsuario datosUsuarioVendedor = null;
+            try{
+                datosUsuarioVendedor = new UsuarioBO(dto.getIdUsuarioVendedor()).getDatosUsuario();
+            }catch(Exception r){}
+            
             hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + dto.getIdProspecto()));
             hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + dto.getRazonSocial() ));
             hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + dto.getContacto()!=null?dto.getContacto():"" ));
             hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + dto.getCorreo() ));
             hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + fechaReg));
+            hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + (datosUsuarioVendedor!=null? (datosUsuarioVendedor.getNombre() +" " + datosUsuarioVendedor.getApellidoPat()) :"") ));
 
 
             dataList.add(hashData);
