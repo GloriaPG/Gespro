@@ -126,6 +126,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                     $("#puntos").append(
                             '<div class="punto">'+
                                 '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
+                                '<input type="text" class="punto" name="punto_descripcion[]" value="'+data['descripcion']+'" />'+
                                 '<input type="text" class="punto" name="punto_nombre[]" value="'+data['ciudad']+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_longitud[]" value="'+data['longitud']+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_latitud[]" value="'+data['latitud']+'" readonly=""/>'+
@@ -141,6 +142,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                 $("#puntos").append(
                         '<div class="punto">'+
                             '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
+                            '<input type="text" class="punto" name="punto_descripcion[]" value="" />'+
                             '<input type="text" class="punto" name="punto_nombre[]" value="'+ciudad+'" readonly=""/>'+
                             '<input type="text" class="punto" name="punto_longitud[]" value="0" readonly=""/>'+
                             '<input type="text" class="punto" name="punto_latitud[]" value="0" readonly=""/>'+
@@ -265,6 +267,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                        $("#puntos").append(
                             '<div class="punto">'+
                                 '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
+                                '<input type="text" class="punto" name="punto_descripcion[]" value="" />'+
                                 '<input type="text" class="punto" name="punto_nombre[]" value="'+ciudad+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_longitud[]" value="'+lng+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_latitud[]" value="'+lat+'" readonly=""/>'+
@@ -568,6 +571,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                                             <c:forEach items="<%=puntosList%>" var="punto">
                                                 <div class="punto">
                                                     <input type="hidden" class="punto" name="punto_id[]" value="${punto.idPunto}" readonly=""/>
+                                                    <input type="text" placeholder="Nombre" class="punto" name="punto_descripcion[]" value="${punto.descripcion}" readonly="readonly"/>
                                                     <input type="text" class="punto" name="punto_nombre[]" value="${punto.lugar}" readonly=""/>
                                                     <input type="text" class="punto" name="punto_longitud[]" value="${punto.longitud}" readonly=""/>
                                                     <input type="text" class="punto" name="punto_latitud[]" value="${punto.latitud}" readonly=""/>

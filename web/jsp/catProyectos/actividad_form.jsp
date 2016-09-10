@@ -203,7 +203,7 @@ if(proyecto.getIdPromotor()!=null){
                                                         }
                                                     }
                                                     out.print(">");
-                                                    out.print(punto.getLugar());
+                                                    out.print(punto.getDescripcion());
                                                     out.print("</option>");
                                                 }
                                             %>
