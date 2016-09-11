@@ -257,14 +257,13 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                     if(marcador.getMap()!=null){
                        var lat=marcador.getPosition().lat();
                        var lng=marcador.getPosition().lng();
+                       console.log ("Lat long " + " " + lat + " " + lng)
                        var pointLocation=lat+","+lng;
-                       var ciudad="Ciudad de México";
+                       var ciudad="";
                        $.get( "https://maps.googleapis.com/maps/api/geocode/json?&latlng="+pointLocation, function( data ) {
-                            if(data.status=="OK"){
-                               ciudad=data.results[0].address_components[5].long_name; 
-                            }
-                       });
-                       $("#puntos").append(
+                            ciudad=data.results[0].address_components[3].long_name; 
+                            console.log("location : " + pointLocation);
+                            $("#puntos").append(
                             '<div class="punto">'+
                                 '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_descripcion[]" value="" />'+
@@ -274,7 +273,8 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                                 '<input type="hidden" class="punto" name="punto_tipo[]" value="3" readonly=""/>'+
                                 '<button class="boton-eliminar-punto">Eliminar</button>'+
                             '</div>'
-                       );
+                            );
+                       });                  
                     }
                 }
                 apprise("Los puntos se guardaran cuando guardes la cobertura.",{'info':true, 'animate':true});
