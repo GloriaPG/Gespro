@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 13/08/2016 01:30:18 AM by Hibernate Tools 3.6.0 -->
+<!-- Generated 10/09/2016 08:08:53 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.tsp.gespro.hibernate.pojo.Usuarios" table="usuarios" catalog="gespro">
+    <class name="com.tsp.gespro.hibernate.pojo.Usuarios" table="usuarios" catalog="gesproprod" optimistic-lock="version">
         <id name="idUsuarios" type="java.lang.Integer">
             <column name="ID_USUARIOS" />
-            <generator class="identity"></generator>
+            <generator class="identity" />
         </id>
         <property name="idEmpresa" type="int">
             <column name="ID_EMPRESA" not-null="true" />
@@ -87,7 +87,7 @@
         </property>
         <property name="permisoAccionesCliente" type="java.lang.Integer">
             <column name="PERMISO_ACCIONES_CLIENTE">
-                <comment>CAMPO PARA PERMISO DE CREAR CLIENTES EN LA NUEVA APK POS MOVIL</comment>
+                <comment>PERMISO ACCIONES CON CLIENTES DESDE MOVIL 0 = NINGUN PERMISO , 1 = SOLO CREAR , 2 = SOLO EDITAR ,3 = CREAR Y EDITAR</comment>
             </column>
         </property>
         <property name="numEmpleado" type="string">

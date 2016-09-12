@@ -1,5 +1,5 @@
 package com.tsp.gespro.hibernate.pojo;
-// Generated 1/08/2016 04:33:46 AM by Hibernate Tools 4.3.1
+// Generated 10/09/2016 07:54:03 PM by Hibernate Tools 4.3.1
 
 
 
@@ -9,7 +9,7 @@ package com.tsp.gespro.hibernate.pojo;
 public class EtiquetaFormularioCliente  implements java.io.Serializable {
 
 
-     private int idEtiquetaFormularioCliente;
+     private Integer idEtiquetaFormularioCliente;
      private String campo;
      private Integer idUsuario;
      private String etiqueta;
@@ -18,23 +18,18 @@ public class EtiquetaFormularioCliente  implements java.io.Serializable {
     public EtiquetaFormularioCliente() {
     }
 
-	
-    public EtiquetaFormularioCliente(int idEtiquetaFormularioCliente) {
-        this.idEtiquetaFormularioCliente = idEtiquetaFormularioCliente;
-    }
-    public EtiquetaFormularioCliente(int idEtiquetaFormularioCliente, String campo, Integer idUsuario, String etiqueta, Integer obligatorio) {
-       this.idEtiquetaFormularioCliente = idEtiquetaFormularioCliente;
+    public EtiquetaFormularioCliente(String campo, Integer idUsuario, String etiqueta, Integer obligatorio) {
        this.campo = campo;
        this.idUsuario = idUsuario;
        this.etiqueta = etiqueta;
        this.obligatorio = obligatorio;
     }
    
-    public int getIdEtiquetaFormularioCliente() {
+    public Integer getIdEtiquetaFormularioCliente() {
         return this.idEtiquetaFormularioCliente;
     }
     
-    public void setIdEtiquetaFormularioCliente(int idEtiquetaFormularioCliente) {
+    public void setIdEtiquetaFormularioCliente(Integer idEtiquetaFormularioCliente) {
         this.idEtiquetaFormularioCliente = idEtiquetaFormularioCliente;
     }
     public String getCampo() {

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 14/08/2016 07:43:38 PM by Hibernate Tools 3.6.0 -->
+<!-- Generated 10/09/2016 07:24:04 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.tsp.gespro.hibernate.pojo.Actividad" table="actividad" catalog="gespro">
+    <class name="com.tsp.gespro.hibernate.pojo.Actividad" table="actividad" catalog="gesproprod" optimistic-lock="version">
         <id name="idActividad" type="java.lang.Integer">
             <column name="id_actividad" />
-            <generator class="identity"></generator>
+            <generator class="identity" />
         </id>
         <property name="actividad" type="string">
             <column name="actividad" not-null="true" />
@@ -23,11 +23,11 @@
         <property name="idPunto" type="java.lang.Integer">
             <column name="id_punto" />
         </property>
-        <property name="avance" type="float">
-            <column name="avance" precision="100" not-null="true" />
+        <property name="avance" type="java.lang.Float">
+            <column name="avance" precision="12" scale="0" />
         </property>
-        <property name="idProyecto" type="int">
-            <column name="id_proyecto" not-null="true" />
+        <property name="idProyecto" type="java.lang.Integer">
+            <column name="id_proyecto" />
         </property>
         <property name="checkin" type="timestamp">
             <column name="checkin" length="19" />
@@ -36,7 +36,7 @@
             <column name="id_producto" />
         </property>
         <property name="cantidad" type="java.lang.Float">
-            <column name="cantidad" precision="100" />
+            <column name="cantidad" precision="12" scale="0" />
         </property>
         <property name="recibio" type="string">
             <column name="recibio" />

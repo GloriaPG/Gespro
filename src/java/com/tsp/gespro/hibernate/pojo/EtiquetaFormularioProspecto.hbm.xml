@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 1/08/2016 04:33:47 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 10/09/2016 07:54:03 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.tsp.gespro.hibernate.pojo.EtiquetaFormularioProspecto" table="etiqueta_formulario_prospecto" catalog="gespro" optimistic-lock="version">
-        <id name="idEtiquetaFormularioProspecto" type="int">
+    <class name="com.tsp.gespro.hibernate.pojo.EtiquetaFormularioProspecto" table="etiqueta_formulario_prospecto" catalog="gesproprod" optimistic-lock="version">
+        <id name="idEtiquetaFormularioProspecto" type="java.lang.Integer">
             <column name="ID_ETIQUETA_FORMULARIO_PROSPECTO" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="campo" type="string">
             <column name="CAMPO" length="150" />

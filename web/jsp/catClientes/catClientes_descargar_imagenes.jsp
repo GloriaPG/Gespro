@@ -4,6 +4,12 @@
     Author     : ISCesarMartinez poseidon24@hotmail.com
 --%>
 
+<%@page import="com.tsp.gespro.hibernate.pojo.ConceptoRegistroFotografico"%>
+<%@page import="java.util.List"%>
+<%@page import="com.tsp.gespro.hibernate.dao.ConceptoRegistroFotograficoDAO"%>
+<%@page import="java.util.zip.ZipEntry"%>
+<%@page import="java.util.zip.ZipOutputStream"%>
+<%@page import="java.io.FileOutputStream"%>
 <%@page import="com.tsp.gespro.dto.Empresa"%>
 <%@page import="java.io.FileInputStream"%>
 <%@page import="com.tsp.gespro.config.Configuration"%>
@@ -61,27 +67,54 @@
         String os = System.getProperty("os.name").toLowerCase();
         String filename = "";
         File tempDir = null;
-        File fileToZip = null;
+        String pathImages = null;
         if (os.indexOf("win") >= 0) {
-            tempDir = new File(configuration.getApp_content_path() + "\\tmp\\");
-            filename = tempDir.getPath()+ "\\imagenes" + System.currentTimeMillis() + ".zip";
-            fileToZip = new File(configuration.getApp_content_path() + "\\" + rfcEmpresaMatriz);
+            tempDir = new File(configuration.getApp_content_path() + "tmp\\");
+            filename = tempDir.getPath() + "\\imagenes" + System.currentTimeMillis() + ".zip";
+            pathImages = configuration.getApp_content_path() + "\\" + rfcEmpresaMatriz + "\\ImagenConcepto\\pop\\";
         } else {
             tempDir = new File(configuration.getApp_content_path() + "tmp/");
-            filename = tempDir.getAbsolutePath() + "imagenes" + System.currentTimeMillis() + ".zip";            
-            fileToZip = new File(configuration.getApp_content_path() + rfcEmpresaMatriz);
+            filename = tempDir.getAbsolutePath() + "imagenes" + System.currentTimeMillis() + ".zip";
+            pathImages = configuration.getApp_content_path() + "/" + rfcEmpresaMatriz + "/ImagenConcepto/pop/";
         }
         if (!tempDir.exists()) {
             tempDir.mkdirs();
         }
-        
-        //
-        if (!fileToZip.exists()) {
-            fileToZip.mkdir();
-        }
 
+       
+        // Archivos a comprimir
+        ConceptoRegistroFotograficoDAO dao=new ConceptoRegistroFotograficoDAO();
+        List<ConceptoRegistroFotografico> filesToZip=dao.listaByCliente(idCliente);
         // Comprimir el archivo
-        ZipUtil.zipFile(fileToZip.getPath(), filename, true);
+        FileInputStream fis = null;
+        FileOutputStream fos = new FileOutputStream(filename);
+        ZipOutputStream zipos = new ZipOutputStream(fos);
+        byte[] buffer = new byte[1024];
+        // comprimir ficheros
+        for (ConceptoRegistroFotografico fileToZip : filesToZip) {
+            if(fileToZip.getNombreFoto()!= null && fileToZip.getNombreFoto() != ""){
+                File file=new File(pathImages + fileToZip.getNombreFoto());
+                if(file.exists() && !file.isDirectory()){
+                    String path=pathImages + fileToZip.getNombreFoto();
+                    fis = new FileInputStream(path);
+                    ZipEntry zipEntry = new ZipEntry(fileToZip.getNombreFoto());
+                    zipos.putNextEntry(zipEntry);
+                    int len = 0;
+                    // zippear
+                    while ((len = fis.read(buffer, 0, 1024)) != -1) {
+                        zipos.write(buffer, 0, len);
+                    }
+                } 
+            }
+        }
+        // volcar la memoria al disco
+        zipos.flush();
+        // cerramos los files
+        zipos.close();
+        if(fis!=null){
+            fis.close();
+        }
+        fos.close();
 
         // Descargar el archivo
         File file = new File(filename);

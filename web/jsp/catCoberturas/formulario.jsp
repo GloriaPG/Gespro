@@ -67,6 +67,46 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                 cargarPaises();
             });
             
+            function deletePointHTML(obj){
+                 $(obj).parent().remove();
+            }
+            function addPointHTML(ciudad, lng, lat){
+                $("#puntos").append(
+                   '<div class="punto">'+
+                       '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
+                       '<input type="text" class="punto" name="punto_descripcion[]" value="" />'+
+                       '<input type="text" class="punto" name="punto_nombre[]" value="'+ciudad+'" readonly=""/>'+
+                       '<input type="text" class="punto" name="punto_longitud[]" value="'+lng+'" readonly=""/>'+
+                       '<input type="text" class="punto" name="punto_latitud[]" value="'+lat+'" readonly=""/>'+
+                       '<input type="hidden" class="punto" name="punto_tipo[]" value="3" readonly=""/>'+
+                       '<input type="button" onClick="deletePointHTML(this);" id="bntEliminar" class="boton-eliminar-punto" value="Eliminar"/>'+
+                   '</div>'
+                );
+            }
+            
+            function buildPointHTML(pointLocation, lng, lat){
+                 $.ajax({
+                    // The URL for the request
+                    url:"https://maps.googleapis.com/maps/api/geocode/json?&latlng="+pointLocation,
+                    // Whether this is a POST or GET request
+                    type: "GET",
+                    // The type of data we expect back
+                    dataType : "json",
+                })
+                  // Code to run if the request succeeds (is done);
+                  // The response is passed to the function
+                  .done(function( data ) {
+                     var ciudad=data.results[0].address_components[3].long_name;
+                     addPointHTML(ciudad,lng,lat);
+                  })
+                  // Code to run if the request fails; the raw request and
+                  // status codes are passed to the function
+                  .fail(function( xhr, status, errorThrown ) {
+                    console.log( "Error: " + errorThrown );
+                    console.log( "Status: " + status );
+                    console.dir( xhr );
+                  })
+            }
             function cargarPaises() {
                 $.getJSON( "/Gespro/json/countriesToCities.json", function( data ) {
                     $.each( data, function( key, val ) {
@@ -131,7 +171,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                                 '<input type="text" class="punto" name="punto_longitud[]" value="'+data['longitud']+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_latitud[]" value="'+data['latitud']+'" readonly=""/>'+
                                 '<input type="hidden" class="punto" name="punto_tipo[]" value="1" readonly=""/>'+
-                                '<button class="boton-eliminar-punto">Eliminar</button>'+
+                                '<input type="button" onClick="deletePointHTML(this);" id="bntEliminar" class="boton-eliminar-punto" value="Eliminar"/>'+
                                 '<br>'+
                             '</div>'
                     );
@@ -147,7 +187,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                             '<input type="text" class="punto" name="punto_longitud[]" value="0" readonly=""/>'+
                             '<input type="text" class="punto" name="punto_latitud[]" value="0" readonly=""/>'+
                             '<input type="hidden" class="punto" name="punto_tipo[]" value="2" readonly=""/>'+
-                            '<button class="boton-eliminar-punto">Eliminar</button>'+
+                            '<input type="button" onClick="deletePointHTML(this);" id="bntEliminar" class="boton-eliminar-punto" value="Eliminar"/>'+
                             '<br>'+
                         '</div>'
                 );
@@ -260,21 +300,8 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                        console.log ("Lat long " + " " + lat + " " + lng)
                        var pointLocation=lat+","+lng;
                        var ciudad="";
-                       $.get( "https://maps.googleapis.com/maps/api/geocode/json?&latlng="+pointLocation, function( data ) {
-                            ciudad=data.results[0].address_components[3].long_name; 
-                            console.log("location : " + pointLocation);
-                            $("#puntos").append(
-                            '<div class="punto">'+
-                                '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
-                                '<input type="text" class="punto" name="punto_descripcion[]" value="" />'+
-                                '<input type="text" class="punto" name="punto_nombre[]" value="'+ciudad+'" readonly=""/>'+
-                                '<input type="text" class="punto" name="punto_longitud[]" value="'+lng+'" readonly=""/>'+
-                                '<input type="text" class="punto" name="punto_latitud[]" value="'+lat+'" readonly=""/>'+
-                                '<input type="hidden" class="punto" name="punto_tipo[]" value="3" readonly=""/>'+
-                                '<button class="boton-eliminar-punto">Eliminar</button>'+
-                            '</div>'
-                            );
-                       });                  
+                       // Muestra los puntos como HMTL.
+                       buildPointHTML(pointLocation,lng, lat);
                     }
                 }
                 apprise("Los puntos se guardaran cuando guardes la cobertura.",{'info':true, 'animate':true});
@@ -483,6 +510,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
             <c:set var="where" value="where id_cobertura = ${id}"/>
             <c:set var="puntoLista" value="${services.queryPuntoDAO(where)}"/>
         </c:if>
+        <c:set var="empresaID" value="${user.getUser().getIdEmpresa()}"/>
         <c:if test="${empty param.id}">
             <fmt:parseNumber var="id" integerOnly="true" type="number" value="${param.id}" />
             <c:set var="obj" value="${helper.getById(0)}"/>
@@ -536,7 +564,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                                         <br/>                                    
                                         <p>
                                             <label>Cliente:</label><br/>
-                                            <c:set var="clientes" value="${clienteModel.lista()}"/>
+                                            <c:set var="clientes" value="${clienteModel.listaActivos(empresaID)}"/>
                                             <select id="idCliente" name="idCliente" style="width:300px;">
                                                 <option value="0">Seleccione un cliente</option>
                                                 <c:forEach items="${clientes}" var="cliente">
@@ -576,7 +604,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                                                     <input type="text" class="punto" name="punto_longitud[]" value="${punto.longitud}" readonly=""/>
                                                     <input type="text" class="punto" name="punto_latitud[]" value="${punto.latitud}" readonly=""/>
                                                     <input type="hidden" class="punto" name="punto_tipo[]" value="${punto.tipo}" readonly=""/>
-                                                    <button class="boton-eliminar-punto">Eliminar</button>
+                                                    <input type="button" onClick="deletePointHTML(this);" id="bntEliminar" class="boton-eliminar-punto" value="Eliminar"/>
                                                 </div>
                                                 <br>
                                             </c:forEach>
@@ -636,6 +664,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                  disabledFormFilter : 'form.toggle-disabled',
                  showErrorDialogs : true
              });
+             
             $("#frm_action").submit(function(e){
                e.preventDefault();
                guardar();
@@ -656,10 +685,9 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                     agregarZonaCiudad( $("#selector-ciudad").val() );
                 }
             });
-            $('.boton-eliminar-punto').click(function() {
-                $(this).parent().remove();
-            });
+            
         });
+        
         </script>
     </body>
 </html>

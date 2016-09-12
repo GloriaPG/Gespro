@@ -28,8 +28,8 @@ public class ClientGoogleServicesAPI {
        GeocodingResult[] results =  GeocodingApi.reverseGeocode(context,coordenadas).await();
        DataUbicacion ubicacion= new DataUbicacion();
        ubicacion.setCiudad(results[0].addressComponents[3].longName);
-       ubicacion.setEstado(results[0].addressComponents[5].longName);
-       ubicacion.setNombrCortoEstado(results[0].addressComponents[5].shortName);
+       ubicacion.setEstado(results[1].addressComponents[2].longName);
+       ubicacion.setNombrCortoEstado(results[1].addressComponents[2].shortName);
        ubicacion.setNombreCortoCiudad(results[0].addressComponents[3].shortName);
        ubicacion.setLat(lat);
        ubicacion.setLng(lng);

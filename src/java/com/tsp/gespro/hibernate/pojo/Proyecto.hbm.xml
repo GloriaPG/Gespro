@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 3/09/2016 09:38:24 AM by Hibernate Tools 3.2.1.GA -->
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/09/2016 08:05:49 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.tsp.gespro.hibernate.pojo.Proyecto" table="proyecto" catalog="gespro">
+    <class name="com.tsp.gespro.hibernate.pojo.Proyecto" table="proyecto" catalog="gesproprod" optimistic-lock="version">
         <id name="idProyecto" type="java.lang.Integer">
             <column name="ID_PROYECTO" />
             <generator class="identity" />
@@ -15,10 +15,10 @@
             <column name="FECHA_INICIO" length="10" not-null="true" />
         </property>
         <property name="fechaProgramada" type="date">
-            <column name="FECHA_PROGRAMADA" length="10" />
+            <column name="FECHA_PROGRAMADA" length="10" not-null="true" />
         </property>
         <property name="fechaReal" type="date">
-            <column name="FECHA_REAL" length="10" />
+            <column name="FECHA_REAL" length="10" not-null="true" />
         </property>
         <property name="idCliente" type="int">
             <column name="ID_CLIENTE" not-null="true" />

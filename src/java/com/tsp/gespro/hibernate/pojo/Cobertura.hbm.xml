@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 21/08/2016 05:44:17 PM by Hibernate Tools 3.6.0 -->
+<!-- Generated 10/09/2016 07:49:48 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.tsp.gespro.hibernate.pojo.Cobertura" table="cobertura" catalog="gespro">
+    <class name="com.tsp.gespro.hibernate.pojo.Cobertura" table="cobertura" catalog="gesproprod" optimistic-lock="version">
         <id name="idCobertura" type="java.lang.Integer">
             <column name="id_cobertura" />
             <generator class="identity" />

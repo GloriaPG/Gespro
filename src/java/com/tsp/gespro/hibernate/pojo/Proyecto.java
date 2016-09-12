@@ -1,5 +1,5 @@
 package com.tsp.gespro.hibernate.pojo;
-// Generated 3/09/2016 09:38:24 AM by Hibernate Tools 3.2.1.GA
+// Generated 10/09/2016 08:05:49 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -25,9 +25,11 @@ public class Proyecto  implements java.io.Serializable {
     }
 
 	
-    public Proyecto(String nombre, Date fechaInicio, int idCliente, float avance, int status) {
+    public Proyecto(String nombre, Date fechaInicio, Date fechaProgramada, Date fechaReal, int idCliente, float avance, int status) {
         this.nombre = nombre;
         this.fechaInicio = fechaInicio;
+        this.fechaProgramada = fechaProgramada;
+        this.fechaReal = fechaReal;
         this.idCliente = idCliente;
         this.avance = avance;
         this.status = status;

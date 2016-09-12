@@ -1,5 +1,5 @@
 package com.tsp.gespro.hibernate.pojo;
-// Generated 14/08/2016 07:43:32 PM by Hibernate Tools 3.6.0
+// Generated 10/09/2016 07:24:04 PM by Hibernate Tools 4.3.1
 
 
 import java.util.Date;
@@ -16,8 +16,8 @@ public class Actividad  implements java.io.Serializable {
      private int tipoActividad;
      private Integer idUser;
      private Integer idPunto;
-     private float avance;
-     private int idProyecto;
+     private Float avance;
+     private Integer idProyecto;
      private Date checkin;
      private Integer idProducto;
      private Float cantidad;
@@ -28,14 +28,12 @@ public class Actividad  implements java.io.Serializable {
     }
 
 	
-    public Actividad(String actividad, String descripcion, int tipoActividad, float avance, int idProyecto) {
+    public Actividad(String actividad, String descripcion, int tipoActividad) {
         this.actividad = actividad;
         this.descripcion = descripcion;
         this.tipoActividad = tipoActividad;
-        this.avance = avance;
-        this.idProyecto = idProyecto;
     }
-    public Actividad(String actividad, String descripcion, int tipoActividad, Integer idUser, Integer idPunto, float avance, int idProyecto, Date checkin, Integer idProducto, Float cantidad, String recibio, String comentarios) {
+    public Actividad(String actividad, String descripcion, int tipoActividad, Integer idUser, Integer idPunto, Float avance, Integer idProyecto, Date checkin, Integer idProducto, Float cantidad, String recibio, String comentarios) {
        this.actividad = actividad;
        this.descripcion = descripcion;
        this.tipoActividad = tipoActividad;
@@ -92,18 +90,18 @@ public class Actividad  implements java.io.Serializable {
     public void setIdPunto(Integer idPunto) {
         this.idPunto = idPunto;
     }
-    public float getAvance() {
+    public Float getAvance() {
         return this.avance;
     }
     
-    public void setAvance(float avance) {
+    public void setAvance(Float avance) {
         this.avance = avance;
     }
-    public int getIdProyecto() {
+    public Integer getIdProyecto() {
         return this.idProyecto;
     }
     
-    public void setIdProyecto(int idProyecto) {
+    public void setIdProyecto(Integer idProyecto) {
         this.idProyecto = idProyecto;
     }
     public Date getCheckin() {

@@ -94,6 +94,33 @@
               <div class="col-md-1"></div>
               <div class="col-md-11">
                   <form class="form-inline">
+                    <div class="form-group region">
+                      <label for="region">Region</label>
+                      <select name="region" id="region" class="form-control">
+                        <option value="MX" selected>México</option>
+                        <option value="BZ">Belize</option>
+                        <option value="CR">Costa Rica</option>
+                        <option value="GT">Guatemala</option>
+                        <option value="HN">Honduras</option>
+                        <option value="NI">Nicaragua</option>
+                        <option value="PA">Panama</option>
+                        <option value="SV">El Salvador</option>
+                        <option value="AR">Argentina</option>
+                        <option value="BO">Bolivia</option>
+                        <option value="BR">Brazil</option>
+                        <option value="CL">Chile</option>
+                        <option value="CO">Colombia</option>
+                        <option value="EC">Ecuador</option>
+                        <option value="FK">Malvinas</option>
+                        <option value="GF">French Guiana</option>
+                        <option value="GY">Guyana</option>
+                        <option value="PE">Perú</option>
+                        <option value="PY">Paraguay</option>
+                        <option value="SR">Suriname</option>
+                        <option value="UY">Uruguay</option>
+                        <option value="VE">Venezuela</option>
+                      </select>
+                    </div>
                     <div class="form-group proyectos">
                       <label for="proyecto">Proyecto</label>
                       <input type="hidden" id="id_proyecto" value=""/>
@@ -300,8 +327,10 @@
              */
             function drawRegionsMap(regionsArray) {
                 var data = google.visualization.arrayToDataTable(regionsArray);
+                var region=$( "#region" ).val();
+                console.log("datos ; " + region);
                 var options = {
-                    region: 'MX',
+                    region: region,
                     resolution: 'provinces',
                     colorAxis: {colors: ['#70ad47', '#ffc000', '#ed7d31']}
                 };
@@ -316,8 +345,10 @@
              */
             function drawMarkersMap(markersArray) {
                 var data = google.visualization.arrayToDataTable(markersArray);
+                var region=$( "#region" ).val();
+                console.log("datos ; " + region);
                 var options = {
-                    region: 'MX',
+                    region: region,
                     displayMode: 'markers',
                     resolution: 'provinces',
                     colorAxis: {colors: ['#70ad47', '#ffc000', '#ed7d31']}

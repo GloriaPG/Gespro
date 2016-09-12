@@ -111,6 +111,23 @@ public class ConceptoRegistroFotograficoDAO {
 
         return lista; 
     }
+    
+    public List listaByCliente(int idCliente) throws HibernateException 
+    { 
+        List<ConceptoRegistroFotografico> lista = null;  
+
+        try 
+        { 
+            iniciaOperacion(); 
+            lista = sesion.createQuery("from ConceptoRegistroFotografico WHERE ID_CLIENTE="+idCliente).list(); 
+        }
+        finally 
+        { 
+            sesion.close(); 
+        }  
+
+        return lista; 
+    }
   
     public List getLista()
     { 

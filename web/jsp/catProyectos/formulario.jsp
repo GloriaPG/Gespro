@@ -270,6 +270,7 @@ int idEmpresaMatriz = empresaBO.getEmpresaMatriz(user.getUser().getIdEmpresa()).
         <jsp:useBean id="Services" class="com.tsp.gespro.Services.Allservices"/>
         <!--- @obj : Objeto de moneda a editar --->
         <c:set var="obj" value="${Proyecto}"/>
+        <c:set var="empresaID" value="${user.getUser().getIdEmpresa()}"/>
         <c:if test="${not empty param.id}">
             <fmt:parseNumber var="id" integerOnly="true" type="number" value="${param.id}" />
             <c:set var="obj" value="${helper.getById(id)}"/>
@@ -362,7 +363,7 @@ int idEmpresaMatriz = empresaBO.getEmpresaMatriz(user.getUser().getIdEmpresa()).
                                     <br/>                                    
                                     <p>
                                         <label>Cliente:</label><br/>
-                                        <c:set var="clientes" value="${clienteModel.lista()}"/>
+                                        <c:set var="clientes" value="${clienteModel.listaActivos(empresaID)}"/>
                                         <select id="idCliente" name="idCliente" style="width:300px;">
                                             <option value="0">Seleccione un cliente</option>
                                             <c:forEach items="${clientes}" var="cliente">

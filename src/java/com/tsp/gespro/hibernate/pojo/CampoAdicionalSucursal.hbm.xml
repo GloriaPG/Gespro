@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated 29/08/2016 07:07:27 AM by Hibernate Tools 3.2.1.GA -->
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/09/2016 07:54:03 PM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
-    <class name="com.tsp.gespro.hibernate.pojo.CampoAdicionalSucursal" table="campo_adicional_sucursal" catalog="gespro">
+    <class name="com.tsp.gespro.hibernate.pojo.CampoAdicionalSucursal" table="campo_adicional_sucursal" catalog="gesproprod" optimistic-lock="version">
         <id name="idCampoAdicionalSucursal" type="java.lang.Integer">
             <column name="ID_CAMPO_ADICIONAL_SUCURSAL" />
             <generator class="identity" />
@@ -20,7 +20,7 @@
         <property name="obligatorio" type="java.lang.Integer">
             <column name="OBLIGATORIO" />
         </property>
-        <set name="campoAdicionalSucursalValors" inverse="true">
+        <set name="campoAdicionalSucursalValors" table="campo_adicional_sucursal_valor" inverse="true" lazy="true" fetch="select">
             <key>
                 <column name="ID_CAMPO_ADICIONAL_SUCURSAL" />
             </key>

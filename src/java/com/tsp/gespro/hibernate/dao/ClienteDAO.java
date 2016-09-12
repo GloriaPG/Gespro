@@ -116,7 +116,23 @@ public class ClienteDAO {
     { 
         return lista(); 
     }    
-    
+    public List listaActivos(int empresaID) throws HibernateException 
+    { 
+        List<Cliente> lista = null;  
+
+        try 
+        { 
+            iniciaOperacion(); 
+            lista = sesion.createQuery("FROM Cliente WHERE ID_ESTATUS=1 AND ID_EMPRESA="+empresaID).list(); 
+        }
+        finally 
+        { 
+            sesion.close(); 
+        }  
+
+        return lista; 
+    }
+   
     public List clientesMatrices() throws HibernateException 
     { 
         List<Cliente> lista = null;  
