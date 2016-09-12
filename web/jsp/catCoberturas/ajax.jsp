@@ -70,6 +70,7 @@
             String[] longitud = request.getParameterValues("punto_longitud[]");
             String[] latitud = request.getParameterValues("punto_latitud[]");
             String[] tipo = request.getParameterValues("punto_tipo[]");
+            String[] descripcion = request.getParameterValues("punto_descripcion[]");
             Punto punto = new Punto();
             PuntoDAO puntoDao = new PuntoDAO();
             if (id != 0) {
@@ -87,7 +88,7 @@
                     punto.setLugar(lugar[i].toString());
                     punto.setLatitud(Double.parseDouble(latitud[i]));
                     punto.setLongitud(Double.parseDouble(longitud[i]));
-                    punto.setDescripcion("");
+                    punto.setDescripcion(descripcion[i].toString());
                     punto.setTipo(Integer.parseInt(tipo[i]));// cliente = 1, ciudad = 2, lugar = 3
                     puntoDao.guardar(punto);
                 }

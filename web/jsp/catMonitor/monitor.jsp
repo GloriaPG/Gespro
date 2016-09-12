@@ -33,7 +33,7 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <%
-            List<Proyecto> proyectoList = new ProyectoDAO().lista();
+            List<Proyecto> proyectoList = new Allservices().queryProyectoDAO("where status=1");
             List<Usuarios> promotores=new Allservices().QueryUsuariosDAO("where ID_ROLES=4");
             RolesDaoImpl rolesDaoImpl=new RolesDaoImpl(user.getConn());
             Roles rol=rolesDaoImpl.findByPrimaryKey(user.getUser().getIdRoles());
@@ -158,8 +158,8 @@
                       <th scope="row"><%= pro.getIdProyecto()%></th>
                     <td><%= pro.getNombre()%></td>
                     <td><%= pro.getAvance() %> %</td>
-                    <td><button href="#myModal" id="btnActividad" data-id="<%= pro.getIdProyecto() %>" data-toggle="modal" type="button" class="btn btn-link">Actividades</button></td>
-                    <td><button href="#modalPromotor" id="btnPromotor" data-id="<%= pro.getIdProyecto() %>" data-toggle="modal" type="button" class="btn btn-link">Promotores</button></td>
+                    <td><button href="#myModal" data-id="<%= pro.getIdProyecto() %>" data-toggle="modal" type="button" class="btn btn-link btnActividad">Actividades</button></td>
+                    <td><button href="#modalPromotor" data-id="<%= pro.getIdProyecto() %>" data-toggle="modal" type="button" class="btn btn-link btnPromotor">Promotores</button></td>
                   </tr>
                   <%}%>
                 </tbody>
@@ -185,8 +185,8 @@
                       <th scope="row"><%= pro.getIdProyecto()%></th>
                     <td><%= pro.getNombre()%></td>
                     <td><%= pro.getAvance() %> %</td>
-                    <td><button href="#myModal" id="btnActividad" data-id="<%= pro.getIdProyecto() %>" data-toggle="modal" type="button" class="btn btn-link">Actividades</button></td>
-                    <td><button href="#modalPromotor" id="btnPromotor" data-id="<%= pro.getIdProyecto() %>" data-toggle="modal" type="button" class="btn btn-link">Promotores</button></td>
+                    <td><button href="#myModal" data-id="<%= pro.getIdProyecto() %>" data-toggle="modal" type="button" class="btn btn-link btnActividad">Actividades</button></td>
+                    <td><button href="#modalPromotor" data-id="<%= pro.getIdProyecto() %>" data-toggle="modal" type="button" class="btn btn-link btnPromotor">Promotores</button></td>
                   </tr>
                   <%}%>
                 </tbody>
@@ -200,14 +200,12 @@
             $( document ).ready(function() {
                 var URLdomain = window.location.host;
                 function proyectos(){
-                    console.log("Proyectos");
                     var restURL="http://"+URLdomain+"/Gespro/rest/avance/proyecto/";
                     restURL+="?proyecto="+$("#id_proyecto").val();
                     printMaps(restURL);
                 }
 
                 function promotores(){
-                    console.log("Promotores");
                     var URLdomain = window.location.host;
                     var restURL="http://"+URLdomain+"/Gespro/rest/avance/promotor/";
                     restURL+="?promotor="+$("#id_promotor").val();
@@ -221,8 +219,8 @@
                    e.preventDefault();
                    promotores();
                 });
-                
-                $( "#btnActividad" ).click(function(e) {
+                $(".btnActividad").on('click', function(event) {
+                   event.preventDefault();
                    var restURL="http://"+URLdomain+"/Gespro/rest/avance/actividad";
                    restURL+="?proyecto="+$(this).attr('data-id');
                    $.get(restURL, function(data) {
@@ -265,7 +263,7 @@
                     })
                 });
                 
-                $( "#btnPromotor" ).click(function(e) {
+                $( ".btnPromotor").on('click', function(event) {
                    var restURL="http://"+URLdomain+"/Gespro/rest/avance/avance-promotor";
                    restURL+="?proyecto="+$(this).attr('data-id');
                    $.get(restURL, function(data) {
@@ -341,7 +339,6 @@
                 ];
 
                 $.get(restURL, function(data) {
-                    console.log(data);
                     var regions = data.regiones;
                     var cities = data.ciudades;
                     // Fill markers and regions if status response was 200

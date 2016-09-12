@@ -1,3 +1,5 @@
+<%@page import="java.io.OutputStream"%>
+<%@page import="com.tsp.gespro.util.ZipUtil"%>
 <%@page import="java.io.File"%>
 <%@page import="com.tsp.gespro.hibernate.pojo.Actividad"%>
 <%@page import="com.tsp.gespro.hibernate.dao.ActividadDAO"%>
@@ -18,63 +20,45 @@
     Actividad objActividad= new Actividad();
     objActividad = actividadDAO.getById(Integer.parseInt(idActividad));
 
-    File folderPictures = new File(appConfig.getApp_content_path() +"pictures");
-    File folderZip = new File(appConfig.getApp_content_path() +"files");
-    if(!folderPictures.exists()){
-        folderPictures.mkdir();
-    }
-    if(!folderZip.exists()){
-        folderZip.mkdir();
-    }
-        
-    String ubicacionImagenesProspectos = appConfig.getApp_content_path() +"proyectos/"+objActividad.getIdProyecto()+"/actividades/"+objActividad.getIdActividad()+"/";
-    String filezipName= appConfig.getApp_content_path() +"files/Actividad"+objActividad.getIdActividad()+"pictures.zip";
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment;filename=Actividad"+objActividad.getIdActividad()+"pictures.zip");
 
-    FileOutputStream fos = null;
-    ZipOutputStream zipos = null;
-    fos = new FileOutputStream(filezipName);
-    zipos = new ZipOutputStream(fos);
-    
-    byte[] buffer = new byte[2048];
-    try {
-        if(fotoActividad.size()>0){
-            for(FotoActividad foto: fotoActividad){
-                out.print(foto.getIdActividad());
-                String pFile = ubicacionImagenesProspectos+foto.getFoto();
-                File file = new File(pFile);
-                FileInputStream fis = null;
-                fis = new FileInputStream(pFile);
-                ZipEntry zipEntry = new ZipEntry(file.getName());
-                zipos.putNextEntry(zipEntry);        
-                int len = 0;
-                // zippear
-                while ((len = fis.read(buffer, 0, 1024)) != -1)
-                    zipos.write(buffer, 0, len);
-                
-                out.print(fis);
-                out.print(pFile);
-                fis.close();
-                zipos.closeEntry();
-            }
-            
-            response.setHeader("Content-Disposition", "attachment; filename=Actividad"+objActividad.getIdActividad()+"pictures.zip");
-            zipos.flush();
-            zipos.close();
-        }else{
-            File archivo = new File(filezipName);
-            archivo.delete();
-            %>
-            <script>
-                alert("No hay imagenes a descargar");
-                javascript:window.location.href = 'monitor_log_report.jsp?idProyecto=<% out.print(objActividad.getIdProyecto()); %>';
-            </script>
-            <%
+        Configuration configuration = null;
+        configuration = new Configuration();
+        String filename = "";
+        File tempDir = null;
+        File fileToZip = null;
+            tempDir = new File(configuration.getApp_content_path() + "\\tmp\\");
+            filename = tempDir.getPath()+"\\Actividad"+objActividad.getIdActividad()+"pictures.zip";;
+            fileToZip = new File(configuration.getApp_content_path() +"\\proyectos\\"+objActividad.getIdProyecto()+"\\actividades\\"+objActividad.getIdActividad());
+        
+        if (!tempDir.exists()) {
+            tempDir.mkdirs();
         }
-    }catch (Exception e) {
-            throw e;
-    } finally {
-            zipos.close();
-            fos.close();
-    }
+        
+        //
+        if (!fileToZip.exists()) {
+            fileToZip.mkdir();
+        }
+
+        // Comprimir el archivo
+        ZipUtil.zipFile(fileToZip.getPath(), filename, true);
+
+        // Descargar el archivo
+        File file = new File(filename);
+        FileInputStream fileIn = new FileInputStream(file);
+        OutputStream servletOutputStream = response.getOutputStream();
+
+        byte[] outputByte = new byte[4096];
+        //copy binary contect to output stream
+        while (fileIn.read(outputByte, 0, 4096) != -1) {
+            servletOutputStream.write(outputByte, 0, 4096);
+        }
+        fileIn.close();
+        servletOutputStream.flush();
+        servletOutputStream.close();
+        file.delete();
+        
+
 
 %>

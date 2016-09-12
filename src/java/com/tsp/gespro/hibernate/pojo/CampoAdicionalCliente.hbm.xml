@@ -26,7 +26,7 @@
             </key>
             <one-to-many class="com.tsp.gespro.hibernate.pojo.CampoAdicionalClienteValor" />
         </set>
-        <set name="campoAdicionalClienteValors_1" inverse="true">
+        <set name="campoAdicionalClienteValors_1" inverse="true" lazy="false">
             <key>
                 <column name="ID_CAMPO_ADICIONAL_CLIENTE" />
             </key>

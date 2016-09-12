@@ -110,7 +110,7 @@ UsuariosDAO usuarioModel = new UsuariosDAO();
             <div id="content">
 
                 <div class="inner">
-                    <h1>Administración</h1>
+                    <h1>Proyectos</h1>
                     
                     <div id="ajax_loading" class="alert_info" style="display: none;"></div>
                     <div id="ajax_message" class="alert_warning" style="display: none;"></div>
@@ -207,14 +207,8 @@ UsuariosDAO usuarioModel = new UsuariosDAO();
                                         <% 
                                             for(Proyecto proyecto : proyectos){
                                                 Usuarios userproyecto = null;
-                                                boolean isSameEmpresa = false;
-                                                if(proyecto.getIdPromotor()!=null){
-                                                    userproyecto = usuarioModel.getById(proyecto.getIdPromotor());
-                                                    int idEmpresaMatrizProyecto = empresaBO.getEmpresaMatriz(userproyecto.getIdEmpresa()).getIdEmpresa();
-                                                    if(idEmpresaMatrizProyecto==idEmpresaMatriz)
-                                                        isSameEmpresa = true;
-                                                    
-                                                }
+                                                boolean isSameEmpresa = true;
+                                                
                                                 if(proyecto.getStatus() == 1 && isSameEmpresa){
                                         %> 
                                         <tr>

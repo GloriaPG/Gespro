@@ -89,7 +89,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                 <table class="data" width="100%" cellpadding="0" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Actividas</th>
+                                            <th>Actividad</th>
                                             <th>descripcion</th>
                                             <th>Usuario</th>
                                             <th>Lugar</th>

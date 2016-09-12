@@ -76,7 +76,7 @@
             <ul>                            
                 <li><a href="../../jsp/catClientes/catClientes_list.jsp" id="idCatalogosLeftContentCliente" ><img src="../../images/icon_cliente.png"/>Clientes</a></li>                           
                 <li><a href="../../jsp/catClientesCategorias/catClientesCategorias_list.jsp" id="idCatalogosLeftContentCategoriaCliente"><img src="../../images/icon_clienteCategoria.png"/>Categoría de Clientes</a></li>                                                                                                                          
-                <li><a href="../../jsp/catProspectos/catProspectos_list.jsp" id="idCatalogosLeftContentProspecto"><img src="../../images/icon_prospecto.png"/>Prospectos</a></li>                                                   
+                <li><a href="../jsp/catProspectossss/catProspectos_list.jsp" id="idCatalogosLeftContentProspecto"><img src="../../images/icon_prospecto.png"/>Prospectos</a></li>                                                   
                 <li><a href="../../jsp/catConceptos/catConceptos_list.jsp" id="idAlmacenLeftContentProductos"><img src="../../images/icon_producto.png"/>Productos</a></li>
                 <li><a href="../../jsp/catCategorias/catCategorias_list.jsp" id="idAlmacenLeftContentCategorias"><img src="../../images/icon_categoria.png"/>Categorías</a></li>                               
                 <li><a href="../../jsp/catEmbalajes/catEmbalajes_list.jsp" id="idAlmacenLeftContentEmbalaje"><img src="../../images/icon_embalaje.png"/>Embalaje</a></li>                                

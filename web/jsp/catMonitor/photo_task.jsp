@@ -47,7 +47,7 @@
     if(fotografias.size()>0){
         for(FotoActividad foto: fotografias){
             listImages+="<div class='show_foto'>";
-            listImages+="<img src='file:///"+ubicacionImagenesProspectos+foto.getFoto()+"'>";
+            listImages+="<img src='showImage.jsp?p="+objActividad.getIdProyecto()+"&a="+objActividad.getIdActividad()+"&i="+foto.getFoto()+"'>";
             listImages+="</div>";
         }
     }else{

@@ -6,6 +6,7 @@ package com.tsp.gespro.Services;
 
 import com.tsp.gespro.hibernate.pojo.Actividad;
 import com.tsp.gespro.hibernate.pojo.Cliente;
+import com.tsp.gespro.hibernate.pojo.Producto;
 import com.tsp.gespro.hibernate.pojo.Promotorproyecto;
 import com.tsp.gespro.hibernate.pojo.Proyecto;
 import com.tsp.gespro.hibernate.pojo.Punto;
@@ -16,12 +17,13 @@ import com.tsp.gespro.hibernate.pojo.Usuarios;
  * @author gloria
  */
 public class ActividadFullObject {
-    private Punto punto;
     private Actividad actividad;
+    private Punto punto;
     private Proyecto proyecto;
     private Usuarios promotor;
     private DataUbicacion ubicacion;
     private Cliente cliente;
+    private Producto producto;
     
     public  ActividadFullObject() {
     
@@ -109,6 +111,20 @@ public class ActividadFullObject {
      */
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    /**
+     * @return the producto
+     */
+    public Producto getProducto() {
+        return producto;
+    }
+
+    /**
+     * @param producto the producto to set
+     */
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
 }

@@ -273,7 +273,7 @@ public class ReportBO {
                 fieldList.add(getDataInfo("PROMOTOR","Promotor","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("PROYECTOS","Proyectos","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("CAMPOS ADICIONALES","Campos Adicionales","","",""+DATA_STRING,""));
-                
+
                 break;
 
             case PRODUCTO_REPORT:
@@ -293,6 +293,7 @@ public class ReportBO {
                 fieldList.add(getDataInfo("CONTACTO","Contacto","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("CORREO","Correo","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("FECHA_REGISTRO","Fecha Registro","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("USUARIO_REGISTRO","Usuario Registro","","",""+DATA_STRING,""));
                 break;
             case BITACORA_REPORT:
                 fieldList.add(getDataInfo("ID_CHECK","ID","","",""+DATA_INT,""));
@@ -315,8 +316,8 @@ public class ReportBO {
                 fieldList.add(getDataInfo("PROMOTOR","Promotor","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("ESTATUS","Estatus","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("PRODUCTOS","Productos","","",""+DATA_STRING,""));
-                fieldList.add(getDataInfo("VISITAS REALIZADAS","Visitas realizadas","","",""+DATA_STRING,""));
-                fieldList.add(getDataInfo("RUTAS CUMPLIDAS","Rutas cumplidas","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("VISITAS CUMPLIDAS","Visitas cumplidas","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("ACTIVIDADES CUMPLIDAS","Actividades cumplidas","","",""+DATA_STRING,""));
                 break;
             case ACTIVIDAD_REPORT:
                 fieldList.add(getDataInfo("PROYECTO","Proyecto","","",""+DATA_STRING,""));
@@ -326,10 +327,10 @@ public class ReportBO {
                 fieldList.add(getDataInfo("PROMOTOR","Promotor","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("LUGAR","Lugar","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("TIPO","Tipo","","",""+DATA_STRING,""));
-                fieldList.add(getDataInfo("REALIZADA","Fecha Realizada","","",""+DATA_DATE,""));
+                fieldList.add(getDataInfo("REALIZADA","Fecha Realizada Final","","",""+DATA_DATE,""));
                 fieldList.add(getDataInfo("PRODUCTO","Producto","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("CANTIDAD","Cantidad","","",""+DATA_STRING,""));
-                fieldList.add(getDataInfo("RECIBIO","Recibio","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("RECIBIO","Fecha Recibio Final","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("COMENTARIO","Comentarios","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("Estatus","Estatus","","",""+DATA_STRING,""));
                 break;
@@ -522,12 +523,12 @@ public class ReportBO {
             CampoAdicionalClienteDAO campoAdicionalDAO = new CampoAdicionalClienteDAO();
             List<CampoAdicionalClienteValor> listaClienteValor = servicesObject.queryCampoAdicionalClienteValorDAO( "where idCliente = " + dto.getIdCliente() );
             String camposAdicionales = "";
-            
+
             for( CampoAdicionalClienteValor campoAdicionalValor : listaClienteValor ) {
                 CampoAdicionalCliente campoadicionalcliente = campoAdicionalValor.getCampoAdicionalCliente();
                 camposAdicionales += campoadicionalcliente.getEtiqueta() + " : " + campoAdicionalValor.getValor() + "\n";
             }
-            
+
             hashData.put( ( String ) dataInfo.get(14).get("field"), getRealData(dataInfo.get(14), "" + camposAdicionales ) );
 
             dataList.add(hashData);
@@ -603,11 +604,17 @@ public class ReportBO {
                fechaReg = format.format(dto.getFechaRegistro());
             }catch(Exception e){}
 
+            DatosUsuario datosUsuarioVendedor = null;
+            try{
+                datosUsuarioVendedor = new UsuarioBO(dto.getIdUsuarioVendedor()).getDatosUsuario();
+            }catch(Exception r){}
+            
             hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + dto.getIdProspecto()));
             hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + dto.getRazonSocial() ));
             hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + dto.getContacto()!=null?dto.getContacto():"" ));
             hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + dto.getCorreo() ));
             hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + fechaReg));
+            hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + (datosUsuarioVendedor!=null? (datosUsuarioVendedor.getNombre() +" " + datosUsuarioVendedor.getApellidoPat()) :"") ));
 
 
             dataList.add(hashData);
@@ -740,29 +747,32 @@ public class ReportBO {
             // Obtener actividades terminadas
             int totalActividades = actividadesFullObjects.size();
             int actividades_completadas = 0;
+            int tipo_actividad = 0;
+            int tipo_actividad_completas = 0;
+            int tipo_reparto = 0;
+            int tipo_reparto_completas = 0;
             double puntos_con_checkin = 0.0;
             String puntos = "";
             for( ActividadFullObject actividad: actividadesFullObjects ) {
-                Float avance = actividad.getActividad().getAvance();
-                Date checkin = actividad.getActividad().getCheckin();
-                Punto punto = actividad.getPunto();
 
-
-                if( avance == 100 ) {
-                    actividades_completadas += 1;
+                // Se obtienen las actividades
+                if( actividad.getActividad().getTipoActividad() == 0 ) {
+                    tipo_actividad += 1;
+                    if(  actividad.getActividad().getAvance() == 100 ) {
+                        tipo_actividad_completas += 1;
+                    }
+                }
+                // Se obtienen los repartos
+                if( actividad.getActividad().getTipoActividad() == 1 ) {
+                    tipo_reparto += 1;
+                    if(  actividad.getActividad().getAvance() == 100 ) {
+                        tipo_reparto_completas += 1;
+                    }
                 }
 
-                if( actividad.getActividad().getCheckin() instanceof Date ) {
-                    puntos_con_checkin += 1;
-                    puntos += punto.getLugar() + " ";
-                }
             }
-            String actividades_resumen = actividades_completadas + " de " + totalActividades;
-            if( puntos_con_checkin > 0 ) {
-                puntos_con_checkin = ( puntos_con_checkin * 100 ) / totalActividades;
-            }
-
-
+            String actividades_resumen = tipo_actividad_completas + " de " + tipo_actividad;
+            String repartos_resumen = tipo_reparto_completas + " de " + tipo_reparto;
 
 
             //Agregamos la informacion al reporte por cada proyecto
@@ -777,7 +787,7 @@ public class ReportBO {
             hashData.put((String)dataInfo.get(8).get("field"), getRealData(dataInfo.get(8), "" + (proyecto.getStatus() == 1 ? "Activo" : "Inactivo")));
             hashData.put((String)dataInfo.get(9).get("field"), getRealData(dataInfo.get(9), "" + productos));
             hashData.put((String)dataInfo.get(10).get("field"), getRealData(dataInfo.get(10), "" + actividades_resumen));
-            hashData.put((String)dataInfo.get(11).get("field"), getRealData(dataInfo.get(11), "" + puntos_con_checkin ));
+            hashData.put((String)dataInfo.get(11).get("field"), getRealData(dataInfo.get(11), "" + repartos_resumen ));
 
             dataList.add(hashData);
 
@@ -798,7 +808,7 @@ public class ReportBO {
         HashMap<String,String> hashData = new HashMap<String, String>();
         ArrayList<HashMap> dataInfo = getFieldList(ACTIVIDAD_REPORT);
         int cont = 1;
-        
+
         for(Actividad actividad:actividades){
 
             String usuario = (new UsuariosDAO()).getById(actividad.getIdUser()).getUserName();

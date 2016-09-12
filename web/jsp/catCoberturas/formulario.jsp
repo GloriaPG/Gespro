@@ -126,6 +126,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                     $("#puntos").append(
                             '<div class="punto">'+
                                 '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
+                                '<input type="text" class="punto" name="punto_descripcion[]" value="'+data['descripcion']+'" />'+
                                 '<input type="text" class="punto" name="punto_nombre[]" value="'+data['ciudad']+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_longitud[]" value="'+data['longitud']+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_latitud[]" value="'+data['latitud']+'" readonly=""/>'+
@@ -141,6 +142,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                 $("#puntos").append(
                         '<div class="punto">'+
                             '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
+                            '<input type="text" class="punto" name="punto_descripcion[]" value="" />'+
                             '<input type="text" class="punto" name="punto_nombre[]" value="'+ciudad+'" readonly=""/>'+
                             '<input type="text" class="punto" name="punto_longitud[]" value="0" readonly=""/>'+
                             '<input type="text" class="punto" name="punto_latitud[]" value="0" readonly=""/>'+
@@ -255,23 +257,24 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                     if(marcador.getMap()!=null){
                        var lat=marcador.getPosition().lat();
                        var lng=marcador.getPosition().lng();
+                       console.log ("Lat long " + " " + lat + " " + lng)
                        var pointLocation=lat+","+lng;
-                       var ciudad="Ciudad de México";
+                       var ciudad="";
                        $.get( "https://maps.googleapis.com/maps/api/geocode/json?&latlng="+pointLocation, function( data ) {
-                            if(data.status=="OK"){
-                               ciudad=data.results[0].address_components[5].long_name; 
-                            }
-                       });
-                       $("#puntos").append(
+                            ciudad=data.results[0].address_components[3].long_name; 
+                            console.log("location : " + pointLocation);
+                            $("#puntos").append(
                             '<div class="punto">'+
                                 '<input type="hidden" class="punto" name="punto_id[]" value="0" readonly=""/>'+
+                                '<input type="text" class="punto" name="punto_descripcion[]" value="" />'+
                                 '<input type="text" class="punto" name="punto_nombre[]" value="'+ciudad+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_longitud[]" value="'+lng+'" readonly=""/>'+
                                 '<input type="text" class="punto" name="punto_latitud[]" value="'+lat+'" readonly=""/>'+
                                 '<input type="hidden" class="punto" name="punto_tipo[]" value="3" readonly=""/>'+
                                 '<button class="boton-eliminar-punto">Eliminar</button>'+
                             '</div>'
-                       );
+                            );
+                       });                  
                     }
                 }
                 apprise("Los puntos se guardaran cuando guardes la cobertura.",{'info':true, 'animate':true});
@@ -568,6 +571,7 @@ List<Punto> puntosList = allservices.queryPuntoDAO("where id_cobertura = " + id)
                                             <c:forEach items="<%=puntosList%>" var="punto">
                                                 <div class="punto">
                                                     <input type="hidden" class="punto" name="punto_id[]" value="${punto.idPunto}" readonly=""/>
+                                                    <input type="text" placeholder="Nombre" class="punto" name="punto_descripcion[]" value="${punto.descripcion}" readonly="readonly"/>
                                                     <input type="text" class="punto" name="punto_nombre[]" value="${punto.lugar}" readonly=""/>
                                                     <input type="text" class="punto" name="punto_longitud[]" value="${punto.longitud}" readonly=""/>
                                                     <input type="text" class="punto" name="punto_latitud[]" value="${punto.latitud}" readonly=""/>
