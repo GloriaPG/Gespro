@@ -22,6 +22,8 @@ public class EstanteriaDescripcionDtoRequest {
     private Date fechaCaducidad;
     private String nombreEmbalaje;
     private int idRelacionConceptoCompetencia;
+    private double unidadesAlmacen;
+    private double precioOferta;
 
     /**
      * @return the idDescripcion
@@ -133,6 +135,19 @@ public class EstanteriaDescripcionDtoRequest {
      */
     public void setIdRelacionConceptoCompetencia(int idRelacionConceptoCompetencia) {
         this.idRelacionConceptoCompetencia = idRelacionConceptoCompetencia;
+    }
+    
+    public void setUnidadesAlmacen(double unidadesAlmacen){
+        this.unidadesAlmacen = unidadesAlmacen;
+    }
+    public double getUnidadesAlmacen(){
+        return this.unidadesAlmacen;
+    }
+    public void setPrecioOferta(double precioOferta){
+        this.precioOferta = precioOferta;
+    }
+    public double getPrecioOferta(){
+        return this.precioOferta;
     }
     
 }
