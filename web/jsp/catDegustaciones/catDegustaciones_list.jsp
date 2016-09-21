@@ -5,6 +5,7 @@
 --%>
 
 
+<%@page import="com.tsp.gespro.report.ReportBO"%>
 <%@page import="com.tsp.gespro.dto.DatosUsuario"%>
 <%@page import="com.tsp.gespro.bo.UsuarioBO"%>
 <%@page import="com.tsp.gespro.bo.RolesBO"%>
@@ -389,7 +390,11 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                 <//jsp:param name="parametrosCustom" value="<//%= filtroBusquedaEncoded %>" />
                             <///jsp:include>-->
                             <!-- FIN INCLUDE OPCIONES DE EXPORTACIÓN-->
-                                    
+                            <jsp:include page="../include/reportExportOptions.jsp" flush="true">
+                                <jsp:param name="idReport" value="<%= ReportBO.DEGUSTACION_REPORT %>" />
+                                <jsp:param name="parametrosCustom" value="<%= filtroBusquedaEncoded %>" />
+                            </jsp:include>         
+                            
                             <jsp:include page="../include/listPagination.jsp">
                                 <jsp:param name="paginaActual" value="<%=paginaActual%>" />
                                 <jsp:param name="numeroPaginasAMostrar" value="<%=numeroPaginasAMostrar%>" />

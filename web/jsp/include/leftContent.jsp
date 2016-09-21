@@ -102,7 +102,14 @@
         </li> -->
 
 
-      
+        <li>
+            <a href=""><img src="../../images/clipboard_report_bar_16_ns.png" alt="Reportes"/>Reportes</a>                            
+            <ul>                                    
+                <li><a href="../../jsp/reports/report_caducidad_list.jsp"><img src="../../images/report_gral.png"/>Caducidad</a></li> 
+                 <li><a href="../../jsp/reports/report_general_list.jsp"><img src="../../images/report_gral.png"/>General</a></li> 
+                  <li><a href="../../jsp/reports/report_competencia_list.jsp"><img src="../../images/report_gral.png"/>Competencia</a></li> 
+            </ul>                            
+        </li>
 
 
         <li>
@@ -118,14 +125,10 @@
                 <li><a href="../../jsp/catSeguimiento/catSeguimiento_list.jsp"><img src="../../images/icon_seguimiento.png"/>Seguimiento</a></li>
                 <li><a href="../../jsp/catHorarios/catHorarios_list.jsp"><img src="../../images/clock.png"/>Horarios</a></li>
                 <li><a href="../../jsp/catEmpleados/catEmpleados_Registro_list.jsp"><img src="../../images/icon_movimiento.png"/>Bitácora</a></li
-            </ul>	
+            </ul>
+        </li>
 
-        <!--<li>
-            <a href=""><img src="../../images/clipboard_report_bar_16_ns.png" alt="Reportes"/>Reportes</a>                            
-            <ul>                                    
-                <li><a href="../../jsp/reporte/reporte_menu.jsp"><img src="../../images/report_gral.png"/>Reportes Generales</a></li> 
-            </ul>                            
-        </li>-->
+      
 
         <%}%>
     </ul>
