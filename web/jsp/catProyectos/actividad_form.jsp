@@ -72,17 +72,7 @@ if(proyecto.getIdPromotor()!=null){
         <c:if test="${not empty param.idProyecto}">
             <fmt:parseNumber var="idProyecto" integerOnly="true" type="number" value="${param.idProyecto}" />
         </c:if>
-        <%
-            if(!isSameEmpresa){
-                %>
-                <script>
-                    javascript:window.location.href = 'catProyectos.jsp';
-                </script>
-                <%
-            }else{
-                
-            }
-        %>
+        
         <script type="text/javascript">
             function guardar(){ 
                     $.ajax({
@@ -279,8 +269,6 @@ if(proyecto.getIdPromotor()!=null){
             </div>
             <!-- Fin de Contenido-->
         </div>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
         <script>
 
          $(document).ready(function() {
@@ -299,12 +287,7 @@ if(proyecto.getIdPromotor()!=null){
                         $("#cantidad").attr("disabled",true).parent("p").hide("slow");
                 });
             });
-            $.validate({
-                 lang: 'en',
-                 modules : 'toggleDisabled',
-                 disabledFormFilter : 'form.toggle-disabled',
-                 showErrorDialogs : true
-             });
+           
             $("#frm_action").submit(function(e){
                e.preventDefault();
                guardar();

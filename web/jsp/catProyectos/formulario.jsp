@@ -38,7 +38,10 @@ int idEmpresaMatriz = empresaBO.getEmpresaMatriz(user.getUser().getIdEmpresa()).
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title><jsp:include page="../include/titleApp.jsp" /></title>
+        <jsp:include page="../include/keyWordSEO.jsp" />
+        <title><jsp:include page="../include/titleApp.jsp" /></title>        
+        <jsp:include page="../include/skinCSS.jsp" />
+        <jsp:include page="../include/jsFunctions.jsp"/>
         <style>
             .right_position {
                 text-align: right;
@@ -50,10 +53,6 @@ int idEmpresaMatriz = empresaBO.getEmpresaMatriz(user.getUser().getIdEmpresa()).
                 width: 20%;
             }
         </style>
-
-        <jsp:include page="../include/keyWordSEO.jsp" />
-        <jsp:include page="../include/skinCSS.jsp" />
-        <jsp:include page="../include/jsFunctions.jsp"/>
        
         <script type="text/javascript">
             function guardar(){ 
@@ -583,8 +582,7 @@ int idEmpresaMatriz = empresaBO.getEmpresaMatriz(user.getUser().getIdEmpresa()).
             </div>
             <!-- Fin de Contenido-->
         </div>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+       
         <script>
 
          $(document).ready(function() {
@@ -595,12 +593,7 @@ int idEmpresaMatriz = empresaBO.getEmpresaMatriz(user.getUser().getIdEmpresa()).
                     $(".label_active").addClass("label_inactive").removeClass("label_active").html("Inactivo");
                 }
             });
-            $.validate({
-                 lang: 'en',
-                 modules : 'toggleDisabled',
-                 disabledFormFilter : 'form.toggle-disabled',
-                 showErrorDialogs : true
-             });
+
             $("#btnAgregarProductos").click(function(){
                 $("#frm_productos").show("slow");
                 $(this).hide("fast");

@@ -75,8 +75,8 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                             <td>
                                                 <input type="button" id="nuevo" name="nuevo" class="right_switch" value="Regresar" 
                                                         style="float: right; width: 100px;" onclick="history.back()"/>&nbsp;&nbsp;
-                                                <input type="button" id="nuevo" name="nuevo" class="right_switch" value="Crear Nuevo" 
-                                                        style="float: right; width: 100px;" onclick="javascript:window.location.href='${formulario}?idProyecto=${not empty param.idProyecto ? param.idProyecto : 0}'"/>
+                                                <input type="button" id="nuevaActividad" name="nuevaActividad" class="right_switch" value="Crear Nuevo" 
+                                                        style="float: right; width: 100px;" onclick="window.location.href='${formulario}?idProyecto=${not empty param.idProyecto ? param.idProyecto : 0}'"/>
                                             </td>                                           
                                         </tr>
                                     </tbody>

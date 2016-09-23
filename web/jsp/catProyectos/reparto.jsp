@@ -262,8 +262,6 @@ List<Cobertura> coberturas = allservices.queryCobertura("where idCobertura in (s
             </div>
             <!-- Fin de Contenido-->
         </div>
-                <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
         <script>
 
          $(document).ready(function() {

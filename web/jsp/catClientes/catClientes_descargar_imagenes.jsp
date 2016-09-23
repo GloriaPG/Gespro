@@ -70,8 +70,8 @@
         String pathImages = null;
         if (os.indexOf("win") >= 0) {
             tempDir = new File(configuration.getApp_content_path() + "tmp\\");
-            filename = tempDir.getPath() + "\\imagenes" + System.currentTimeMillis() + ".zip";
-            pathImages = configuration.getApp_content_path() + "\\" + rfcEmpresaMatriz + "\\ImagenConcepto\\pop\\";
+            filename = tempDir.getPath()+ "\\imagenes" + System.currentTimeMillis() + ".zip";
+            fileToZip = new File(configuration.getApp_content_path() + "\\" + rfcEmpresaMatriz);
         } else {
             tempDir = new File(configuration.getApp_content_path() + "tmp/");
             filename = tempDir.getAbsolutePath() + "imagenes" + System.currentTimeMillis() + ".zip";
