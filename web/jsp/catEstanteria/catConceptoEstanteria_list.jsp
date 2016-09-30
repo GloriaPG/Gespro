@@ -4,6 +4,7 @@
     Author     : leonardo
 --%>
 
+<%@page import="com.tsp.gespro.report.ReportBO"%>
 <%@page import="com.tsp.gespro.util.DateManage"%>
 <%@page import="com.tsp.gespro.bo.ConceptoBO"%>
 <%@page import="com.tsp.gespro.dto.Concepto"%>
@@ -184,7 +185,21 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                         <tr <%=(item.getIdEstatus()!=1)?"class='inactive'":""%>>
                                             <!--<td><input type="checkbox"/></td>-->
                                             <td><%=item.getIdEstanteria() %></td>
-                                            <td><%=concepto!=null?concepto.getNombre():"" %></td>
+                                            <%
+                                                String producto = "";
+                                                   if(item.getIdConcepto() > 0){
+                                                       
+                                                       if(concepto!=null){
+                                                          producto = concepto.getNombre();
+                                                       }else{
+                                                           producto = "Sin producto";
+                                                       }
+                                                   }else{
+                                                       producto = "Sin producto";
+                                                   }
+                                               
+                                               %>
+                                               <td><%=producto %></td>
                                             <td><%=item.getCantidad()%></td>
                                             <td><%=item.getPrecio()%></td>
                                             <td><%=DateManage.formatDateToNormal(item.getFecha())%></td>
@@ -211,6 +226,10 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                 <//jsp:param name="parametrosCustom" value="<//%= filtroBusquedaEncoded %>" />
                             <///jsp:include>-->
                             <!-- FIN INCLUDE OPCIONES DE EXPORTACIÓN-->
+                            <jsp:include page="../include/reportExportOptions.jsp" flush="true">
+                                <jsp:param name="idReport" value="<%= ReportBO.ESTANTERIA_REPORT %>" />
+                                <jsp:param name="parametrosCustom" value="<%= filtroBusquedaEncoded %>" />
+                            </jsp:include>     
                                     
                             <jsp:include page="../include/listPagination.jsp">
                                 <jsp:param name="paginaActual" value="<%=paginaActual%>" />

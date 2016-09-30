@@ -49,6 +49,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
     
     String buscar = request.getParameter("q")!=null? new String(request.getParameter("q").getBytes("ISO-8859-1"),"UTF-8") :"";
     String buscar_idcliente = request.getParameter("q_idcliente")!=null?request.getParameter("q_idcliente"):"";
+    String buscar_idpromotor = request.getParameter("q_idpromotor")!=null?request.getParameter("q_idpromotor"):"";
     
     String filtroBusqueda = "";
     String parametrosPaginacion = ""; 
@@ -102,6 +103,13 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
         if(!parametrosPaginacion.equals(""))
                         parametrosPaginacion+="&";
         parametrosPaginacion+="q_idcliente="+buscar_idcliente;
+        
+    } 
+       if (!buscar_idpromotor.trim().equals("")){
+        filtroBusqueda += " AND ID_USUARIO='" + buscar_idpromotor +"' ";
+        if(!parametrosPaginacion.equals(""))
+                        parametrosPaginacion+="&";
+        parametrosPaginacion+="q_idpromotor="+buscar_idpromotor;
         
     } 
     
@@ -268,6 +276,13 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                     <%= new ClienteBO(user.getConn()).getClientesByIdHTMLCombo(idEmpresa, -1," AND ID_ESTATUS <> 2 " ) %>
                                 </select>
                                 </p>
+                                <p>
+                                <label>Promotor</label><br/>
+                                <select id="q_idpromotor" name="q_idpromotor" class="flexselect">
+                                    <option></option>
+                                    <%= new UsuariosBO(user.getConn()).getUsuariosByHTMLCombo(idEmpresa, -1," AND ID_ESTATUS <> 2 " ) %>
+                                </select>
+                                </p>
                                 <br/>
 
                                 <br/>
@@ -367,10 +382,21 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                             
                                             <td><%=empresa!=null? (empresa.getNombreComercial()) :"Sin empresa" %></td>
                                             <%
-                                             ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
-                                              Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());
-                                            %>
-                                            <td><%=item!=null? (concepto.getNombre()) :"Sin nombre" %></td>
+                                                String producto = "";
+                                                   if(item.getIdConcepto() > 0){
+                                                       ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
+                                                       Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());
+                                                       if(concepto!=null){
+                                                          producto = concepto.getNombre();
+                                                       }else{
+                                                           producto = "Sin producto";
+                                                       }
+                                                   }else{
+                                                       producto = "Sin producto";
+                                                   }
+                                               
+                                               %>
+                                               <td><%=producto %></td>
                                             <td><%=item!=null? (item.getPrecio()) :"0" %></td>
                                             <%
                                                 String competencias = "";

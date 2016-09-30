@@ -60,6 +60,7 @@ public class ReportBO {
     public static final int CADUCIDAD_REPORT = 8;
     public static final int GENERAL_REPORT = 9;
     public static final int COMPETENCIA_REPORT = 10;
+    public static final int ESTANTERIA_REPORT = 11;
     
     
     
@@ -147,6 +148,9 @@ public class ReportBO {
                 break;
             case COMPETENCIA_REPORT:
                 title = "Reporte de competencia";
+                break;
+            case ESTANTERIA_REPORT:
+                title = "Reporte de estanteria";
                 break;
         }
         
@@ -309,6 +313,7 @@ public class ReportBO {
                 break;
             case CADUCIDAD_REPORT:
                 fieldList.add(getDataInfo("FECHA","Fecha","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CLIENTE","Cliente","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("PROMOTOR","Promotor","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("PRODUCTO","Producto","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("FECHA_CADUCIDAD","Fecha caducidad","","",""+DATA_STRING,""));
@@ -333,6 +338,13 @@ public class ReportBO {
                 fieldList.add(getDataInfo("PRODUCTO","Producto","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("PRECIO_ANAQUEL","$ Anaquel","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("PRECIO_COMPETENCIA","$ Competencia","","",""+DATA_STRING,""));
+                break;
+            case ESTANTERIA_REPORT:
+                fieldList.add(getDataInfo("ID","ID","","",""+DATA_INT,""));
+                fieldList.add(getDataInfo("PRODUCTO","Producto","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CANTIDAD","Cantidad","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PRECIO","Precio","","",""+DATA_DECIMAL,""));
+                fieldList.add(getDataInfo("FECHA","Fecha","","",""+DATA_STRING,""));
                 break;
         }
         return fieldList;
@@ -414,6 +426,13 @@ public class ReportBO {
                 else
                     dataList = this.getDataListCompetencia(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, ""));
                 break;
+             case ESTANTERIA_REPORT:
+                if(params!=null && !params.equals(""))
+                    dataList = this.getDataListEstanteria(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, params));
+                else
+                    dataList = this.getDataListEstanteria(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, ""));
+                break;
+                
              
         }
         return dataList;
@@ -740,14 +759,29 @@ public class ReportBO {
             try{
                   ConceptoBO conceptoBO = new ConceptoBO(this.getConn());
                   Concepto concepto = conceptoBO.findConceptobyId(dto.getIdConcepto());
-                  nombreProducto = concepto.getNombre();
-            }catch(Exception e){}
+                  if(concepto != null){
+                    nombreProducto = concepto.getNombre();    
+                  }else{
+                      nombreProducto = "Sin producto";
+                  }
+                  
+            }catch(Exception e){nombreProducto = "Sin producto";}
+            String nombreCliente = "";
+            if (dto.getIdCliente() > 0){
+                Cliente clientesDto = null;
+                ClienteBO clienteBO = new ClienteBO(dto.getIdCliente(), this.conn);
+                clientesDto = clienteBO.getCliente();
+                nombreCliente = clientesDto!=null?clientesDto.getNombreComercial():"NA";
+            }else{
+                nombreCliente = "NA";
+            }
             
             
-            hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + DateManage.formatDateToNormal(dto.getFecha()))); ;
-            hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + nombreUsuario));
-            hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + nombreProducto));
-            hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + DateManage.formatDateToNormal(dto.getFechaCaducidad()) ));
+            hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + DateManage.formatDateToNormal(dto.getFecha()))); 
+            hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + nombreCliente)); 
+            hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + nombreUsuario));
+            hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + nombreProducto));
+            hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + DateManage.formatDateToNormal(dto.getFechaCaducidad()) ));
             dataList.add(hashData);
 
             hashData = new HashMap<String, String>();
@@ -772,9 +806,16 @@ public class ReportBO {
             try{
                   ConceptoBO conceptoBO = new ConceptoBO(this.getConn());
                   Concepto concepto = conceptoBO.findConceptobyId(dto.getIdConcepto());
-                  nombreProducto = concepto.getNombre();
-                  claveProducto = concepto.getClave();
-            }catch(Exception e){}
+                  if(concepto != null){
+                    nombreProducto = concepto.getNombre();
+                     claveProducto = concepto.getClave();
+                  }else{
+                    nombreProducto = "Sin producto";
+                    claveProducto = "NA";
+                  }
+               
+            }catch(Exception e){nombreProducto = "Sin producto";
+                    claveProducto = "NA";}
             String nombreCliente = "";
             if (dto.getIdCliente()> 0){
                 Cliente cliente = new ClienteBO(dto.getIdCliente(),this.getConn()).getCliente();
@@ -815,7 +856,7 @@ public class ReportBO {
 
         return dataList;
     }
-        private ArrayList<HashMap> getDataListCompetencia(Estanteria[] objectDto) {
+    private ArrayList<HashMap> getDataListCompetencia(Estanteria[] objectDto) {
         ArrayList<HashMap> dataList = new ArrayList<HashMap>();
         HashMap<String,String> hashData = new HashMap<String, String>();
         ArrayList<HashMap> dataInfo = getFieldList(COMPETENCIA_REPORT);        
@@ -827,8 +868,13 @@ public class ReportBO {
             try{
                   ConceptoBO conceptoBO = new ConceptoBO(this.getConn());
                   Concepto concepto = conceptoBO.findConceptobyId(dto.getIdConcepto());
-                  nombreProducto = concepto.getNombre(); 
-            }catch(Exception e){}
+                  if(concepto != null){
+                     nombreProducto = concepto.getNombre();  
+                  }else{
+                      nombreProducto = "Sin producto"; 
+                  }
+                  
+            }catch(Exception e){nombreProducto = "Sin producto"; }
             String nombreCliente = "";
             if (dto.getIdCliente()> 0){
                 Cliente cliente = new ClienteBO(dto.getIdCliente(),this.getConn()).getCliente();
@@ -858,9 +904,7 @@ public class ReportBO {
             if(competencias.equals("")){
                 competencias = "Sin competencias";
             }
-        
-            
-            
+                  
             hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + DateManage.formatDateToNormal(dto.getFecha()))); ;
             hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + nombreCliente));
             hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + nombreSucursal));
@@ -869,6 +913,39 @@ public class ReportBO {
             hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + competencias ));
             
             dataList.add(hashData);
+
+            hashData = new HashMap<String, String>();
+        }
+
+        return dataList;
+    }
+    private ArrayList<HashMap> getDataListEstanteria(Estanteria[] objectDto) {
+        ArrayList<HashMap> dataList = new ArrayList<HashMap>();
+        HashMap<String,String> hashData = new HashMap<String, String>();
+        ArrayList<HashMap> dataInfo = getFieldList(ESTANTERIA_REPORT);        
+    
+        for(Estanteria dto:objectDto){
+            String nombreProducto = "";
+            try{
+                  ConceptoBO conceptoBO = new ConceptoBO(this.getConn());
+                  Concepto concepto = conceptoBO.findConceptobyId(dto.getIdConcepto());
+                  if(concepto != null){
+                      nombreProducto = concepto.getNombre(); 
+                  }else{
+                      nombreProducto = "Sin producto"; 
+                  }
+                  
+                  
+            }catch(Exception e){nombreProducto = "Sin producto"; }
+           
+           // if(dto.getIdEstatus() != 1){
+                hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + dto.getIdEstanteria())); ;
+                hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + nombreProducto));
+                hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + dto.getCantidad()));
+                hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + dto.getPrecio()));
+                hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + DateManage.formatDateToNormal(dto.getFecha()) ));
+                dataList.add(hashData);
+        //}
 
             hashData = new HashMap<String, String>();
         }

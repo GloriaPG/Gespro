@@ -97,6 +97,9 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
         parametrosPaginacion+="q_idpromotor="+buscar_idpromotor;
         
     } 
+    if(!buscar.trim().equals("")){
+        filtroBusqueda = " AND ID_CONCEPTO IN (SELECT ID_CONCEPTO FROM CONCEPTO WHERE NOMBRE LIKE '%" + buscar + "%')";
+    }
     
     
     
@@ -299,7 +302,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                                     <img src="../../images/icon_mapa.png" alt="Gráfica" class="help" title="Mapa de Pedidos"/>    
                                                     </td>-->
                                                     <td>
-                                                        <!--
+                                                        
                                                         <div id="search">                                                                
                                                         <form action="report_caducidad_list.jsp" id="search_form" name="search_form" method="get">
                                                                 <input type="text" id="q" name="q" title="Buscar nombre del producto" class="" style="width: 300px; float: left; "
@@ -307,7 +310,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                                                 <input type="image" src="../../images/Search-32_2.png" id="buscar" name="buscar"  value="" style="cursor: pointer; width: 30px; height: 25px; float: left"/>
                                                         </form>
                                                         </div>
-                                                        -->
+                                                        
                                                     </td>
                                                     <td class="clear">&nbsp;&nbsp;&nbsp;</td>
                                                     <td>
@@ -328,6 +331,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                     <thead>
                                         <tr>
                                             <th>Fecha</th>
+                                            <th>Cliente</th>
                                             <th>Promotor</th>
                                             <th>Producto</th>
                                             <th>Fecha Caducidad</th>                    
@@ -347,15 +351,39 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                             <!--<td><input type="checkbox"/></td>-->
                                             <td><%=DateManage.formatDateToNormal(item.getFecha()) %></td>
                                             <%
+                                               Cliente cliente = new ClienteBO(item.getIdCliente(),user.getConn()).getCliente();
+                                            %>
+                                            <td><%=cliente!=null? (cliente.getNombreComercial()) :"Sin cliente" %></td>
+                                            <%
                                                DatosUsuario datosUsuarioVendedor = new UsuarioBO(item.getIdUsuario()).getDatosUsuario();
                                             %>
                                             <td><%=datosUsuarioVendedor!=null? (datosUsuarioVendedor.getNombre() +" " + datosUsuarioVendedor.getApellidoPat()) :"Sin promotor asignado" %></td>
                                             
+                                            
                                             <%
-                                              ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
-                                              Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());
+                                              //ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
+                                              //Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());
                                             %>
-                                            <td><%=concepto.getNombre() %></td>
+                                         
+                                           
+                                            <%
+                                                String producto = "";
+                                                   if(item.getIdConcepto() > 0){
+                                                       ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
+                                                       Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());
+                                                       if(concepto!=null){
+                                                          producto = concepto.getNombre();
+                                                       }else{
+                                                           producto = "Sin producto";
+                                                       }
+                                                   }else{
+                                                       producto = "Sin producto";
+                                                   }
+                                               
+                                               %>
+                                               <td><%=producto %></td>
+                                          
+                                            
                                             <td><%= DateManage.formatDateToNormal(item.getFechaCaducidad()) %></td>                             
                                         </tr>                                      
                                         

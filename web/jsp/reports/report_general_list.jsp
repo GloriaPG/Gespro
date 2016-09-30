@@ -429,20 +429,32 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                             <td><%=registroCheckSalida!=null?hora.format(registroCheckSalida.getFechaHora()):"" %></td>
                                             -->
                                             <%
-                                              ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
-                                              Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());
+                                              
                                               double unidadesTotal = 0;
                                               double unidadesAnaquel = 0;
                                               double unidadesAlmacen = 0;
                                               unidadesAnaquel = item.getCantidad();
                                               unidadesAlmacen = item.getUnidadesAlmacen();
                                               unidadesTotal = unidadesAnaquel + unidadesAlmacen;
-                                              
-
-                                              
+                                                String producto = "";
+                                                String clave = "";
+                                                   if(item.getIdConcepto() > 0){
+                                                       ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
+                                                        Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());     
+                                                       if(concepto!=null){
+                                                          producto = concepto.getNombre();
+                                                          clave = concepto.getClave();
+                                                       }else{
+                                                           producto = "Sin producto";
+                                                           clave = "NA";
+                                                       }
+                                                   }else{
+                                                       producto = "Sin producto";
+                                                       clave = "NA";
+                                                   }
                                             %>
-                                            <td><%=concepto.getClave()%></td>
-                                            <td><%=concepto.getNombre() %></td>
+                                            <td><%=clave%></td>
+                                            <td><%=producto %></td>                                      
                                             <td><%=unidadesAnaquel %></td>
                                             <td><%=item.getPrecio() %></td>
                                             <td><%=item.getPrecioOferta() %></td>
