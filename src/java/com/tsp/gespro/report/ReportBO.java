@@ -74,26 +74,15 @@ public class ReportBO {
     public static final int PRODUCTO_REPORT = 3;
     public static final int PROSPECTO_REPORT = 4;
     public static final int BITACORA_REPORT = 5;
-<<<<<<< Updated upstream
     public static final int PROYECTO_REPORT = 6;
     public static final int ACTIVIDAD_REPORT = 7;
-
-
-
-=======
-    public static final int PEDIDO_REPORT = 6;
-    public static final int DEGUSTACION_REPORT = 7;
-    public static final int CADUCIDAD_REPORT = 8;
-    public static final int GENERAL_REPORT = 9;
-    public static final int COMPETENCIA_REPORT = 10;
-//    public static final int ESTANTERIA_REPORT = 11;
-    
-    public static final int PROYECTO_REPORT = 11;
-    public static final int ACTIVIDAD_REPORT = 12;
-    
+    public static final int PEDIDO_REPORT = 8;
+    public static final int DEGUSTACION_REPORT = 9;
+    public static final int CADUCIDAD_REPORT = 10;
+    public static final int GENERAL_REPORT = 11;
+    public static final int COMPETENCIA_REPORT = 12;        
     public static final int ESTANTERIA_REPORT = 13;
     
->>>>>>> Stashed changes
     public static final int PEDIDO_REPRESENTACION_IMPRESA = 24;
     public static final int DEGUSTACION_REPRESENTACION_IMPRESA = 25;
 
@@ -162,7 +151,7 @@ public class ReportBO {
                 title = "Reporte de Prospectos";
                 break;
             case BITACORA_REPORT:
-                title = "Reporte de Prospectos";
+                title = "Reporte de Bitácora";
                 break;
             case PROYECTO_REPORT:
                 title = "Reporte de Proyectos";
@@ -718,71 +707,14 @@ public class ReportBO {
 
         return dataList;
     }
-<<<<<<< Updated upstream
 
     /**
      *  PROYECTO_REPORT
      * @param proyectos Arreglo de objetos tipo Proyecto para fabricar reporte.
      * @return ArrayList<HashMap> con todos los datos para el reporte.
      */
-    private ArrayList<HashMap> getDataList(List<Proyecto> proyectos) {
-=======
-               
-    
-    private ArrayList<HashMap> getDataList(Degustacion[] objectDto) {
-        ArrayList<HashMap> dataList = new ArrayList<HashMap>();
-        HashMap<String,String> hashData = new HashMap<String, String>();
-        ArrayList<HashMap> dataInfo = getFieldList(DEGUSTACION_REPORT);        
-    
-        for(Degustacion dto:objectDto){
-             
-            String nombreCliente = "";
-            if (dto.getIdCliente() > 0){
-                Cliente clientesDto = null;
-                ClienteBO clienteBO = new ClienteBO(dto.getIdCliente(), this.conn);
-                clientesDto = clienteBO.getCliente();
-                nombreCliente = clientesDto!=null?clientesDto.getNombreComercial():"NA";
-            }
-            String nombreProm = "";
-            try{
-                DatosUsuario datosUsuario = new UsuarioBO(dto.getIdUsuario()).getDatosUsuario();
-                                                        
-                if(datosUsuario!=null){
-                    nombreProm += datosUsuario.getNombre()!=null?datosUsuario.getNombre():"";
-                    nombreProm += " " +(datosUsuario.getApellidoPat()!=null?datosUsuario.getApellidoPat():"");
-                    nombreProm += " " +(datosUsuario.getApellidoMat()!=null?datosUsuario.getApellidoMat():"");
-                }
-            }catch(Exception e){}
-            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy" );
-            SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss" );
-            
-            long inicio = dto.getFechaApertura().getTime();
-            long fin = dto.getFechaCierre().getTime(); 
-            long diff = fin - inicio;
-            long diffMinutes = diff / (60 * 1000);
-            String resultFecha = diffMinutes<0?"0":""+diffMinutes;
-            double piezaDegustada = dto.getCantidad()-dto.getCantidadCierre();
-            
-            hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + dto.getIdDegustacion())); ;
-            hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + fecha.format(dto.getFechaApertura())));
-            hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + nombreProm));
-            hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + nombreCliente ));
-            hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + hora.format(dto.getFechaApertura())));
-            hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + hora.format(dto.getFechaCierre()) ));            
-            hashData.put((String)dataInfo.get(6).get("field"), getRealData(dataInfo.get(6), "" + resultFecha));
-            hashData.put((String)dataInfo.get(7).get("field"), getRealData(dataInfo.get(7), "" + piezaDegustada));
-
-            dataList.add(hashData);
-
-            hashData = new HashMap<String, String>();
-        }
-
-        return dataList;
-    }
-    
-    
-    private ArrayList<HashMap> getDataList(SgfensPedido[] objectDto) {
->>>>>>> Stashed changes
+   
+private ArrayList<HashMap> getDataList(List<Proyecto> proyectos) {
         ArrayList<HashMap> dataList = new ArrayList<HashMap>();
         HashMap<String,String> hashData = new HashMap<String, String>();
         ArrayList<HashMap> dataInfo = getFieldList(PROYECTO_REPORT);
@@ -842,8 +774,6 @@ public class ReportBO {
                         tipo_reparto_completas += 1;
                     }
                 }
-
-<<<<<<< Updated upstream
             }
             String actividades_resumen = tipo_actividad_completas + " de " + tipo_actividad;
             String repartos_resumen = tipo_reparto_completas + " de " + tipo_reparto;
@@ -870,9 +800,58 @@ public class ReportBO {
 
         return dataList;
     }
-=======
+               
+    
+    private ArrayList<HashMap> getDataList(Degustacion[] objectDto) {
+        ArrayList<HashMap> dataList = new ArrayList<HashMap>();
+        HashMap<String,String> hashData = new HashMap<String, String>();
+        ArrayList<HashMap> dataInfo = getFieldList(DEGUSTACION_REPORT);        
+    
+        for(Degustacion dto:objectDto){
+             
+            String nombreCliente = "";
+            if (dto.getIdCliente() > 0){
+                Cliente clientesDto = null;
+                ClienteBO clienteBO = new ClienteBO(dto.getIdCliente(), this.conn);
+                clientesDto = clienteBO.getCliente();
+                nombreCliente = clientesDto!=null?clientesDto.getNombreComercial():"NA";
+            }
+            String nombreProm = "";
+            try{
+                DatosUsuario datosUsuario = new UsuarioBO(dto.getIdUsuario()).getDatosUsuario();
+                                                        
+                if(datosUsuario!=null){
+                    nombreProm += datosUsuario.getNombre()!=null?datosUsuario.getNombre():"";
+                    nombreProm += " " +(datosUsuario.getApellidoPat()!=null?datosUsuario.getApellidoPat():"");
+                    nombreProm += " " +(datosUsuario.getApellidoMat()!=null?datosUsuario.getApellidoMat():"");
+                }
+            }catch(Exception e){}
+            SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy" );
+            SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss" );
+            
+            long inicio = dto.getFechaApertura().getTime();
+            long fin = dto.getFechaCierre().getTime(); 
+            long diff = fin - inicio;
+            long diffMinutes = diff / (60 * 1000);
+            String resultFecha = diffMinutes<0?"0":""+diffMinutes;
+            double piezaDegustada = dto.getCantidad()-dto.getCantidadCierre();
+            
+            hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + dto.getIdDegustacion())); ;
+            hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + fecha.format(dto.getFechaApertura())));
+            hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + nombreProm));
+            hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + nombreCliente ));
+            hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + hora.format(dto.getFechaApertura())));
+            hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + hora.format(dto.getFechaCierre()) ));            
+            hashData.put((String)dataInfo.get(6).get("field"), getRealData(dataInfo.get(6), "" + resultFecha));
+            hashData.put((String)dataInfo.get(7).get("field"), getRealData(dataInfo.get(7), "" + piezaDegustada));
+
+            dataList.add(hashData);
+
+            hashData = new HashMap<String, String>();
+        }
+
         return dataList;
-    }
+    }     
     
     private ArrayList<HashMap> getDataList(Estanteria[] objectDto) {
         ArrayList<HashMap> dataList = new ArrayList<HashMap>();
@@ -914,7 +893,10 @@ public class ReportBO {
             hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + nombreProducto));
             hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + DateManage.formatDateToNormal(dto.getFechaCaducidad()) ));
             dataList.add(hashData);
->>>>>>> Stashed changes
+        }
+        return dataList;
+    }
+
 
 
     /**
