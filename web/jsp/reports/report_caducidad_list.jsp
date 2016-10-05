@@ -369,11 +369,15 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                             <%
                                                 String producto = "";
                                                    if(item.getIdConcepto() > 0){
-                                                       ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
-                                                       Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());
-                                                       if(concepto!=null){
-                                                          producto = concepto.getNombre();
-                                                       }else{
+                                                       try{
+                                                        ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
+                                                        Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());
+                                                        if(concepto!=null){
+                                                            producto = concepto.getNombre();
+                                                        }else{
+                                                           producto = "Sin producto";
+                                                        }
+                                                       }catch(Exception ex){
                                                            producto = "Sin producto";
                                                        }
                                                    }else{
@@ -384,7 +388,7 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                                <td><%=producto %></td>
                                           
                                             
-                                            <td><%= DateManage.formatDateToNormal(item.getFechaCaducidad()) %></td>                             
+                                            <td><%= (item.getFechaCaducidad() != null)? DateManage.formatDateToNormal(item.getFechaCaducidad()):"-" %></td>                             
                                         </tr>                                      
                                         
                                                                                 

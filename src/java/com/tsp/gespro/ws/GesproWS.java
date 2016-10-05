@@ -22,6 +22,7 @@ import com.tsp.gespro.ws.response.ConsultaConceptosResponse;
 import com.tsp.gespro.ws.response.ConsultaEmbalajeResponse;
 import com.tsp.gespro.ws.response.ConsultaEmpleadoResponse;
 import com.tsp.gespro.ws.response.ConsultaMensajesMovilResponse;
+import com.tsp.gespro.ws.response.ConsultaProspectosResponse;
 import com.tsp.gespro.ws.response.ConsultaRutasResponse;
 import com.tsp.gespro.ws.response.SendEstatusMensajesMovilResponse;
 import com.tsp.gespro.ws.response.SendMensajesMovilResponse;
@@ -599,5 +600,28 @@ public class GesproWS {
         
     }
     */
+        /**
+     * Método para obtener el catalogo de Prospectos de una Empresa
+     * haciendo autenticación por empleado desde un dispositivo móvil
+     * @param usuarioDtoRequestJson String con formato JSON representando un objeto de tipo ConsultaConceptosResponse
+     * @return String con formato JSON representando un objeto de tipo ConsultaConceptosResponse
+     */
+    @WebMethod(operationName = "getCatalogoProspectosByusuario", action="getCatalogoProspectosByusuario")
+    public String getCatalogoProspectosByusuario(
+            @WebParam(name = "usuarioDtoRequestJson") String usuarioDtoRequestJson ) {
+        
+        System.out.println("METODO: getCatalogoProspectosByusuario \n");
+        System.out.println("REQUEST JSON: \n" + usuarioDtoRequestJson);
+        
+        ConsultaWsBO consultaWsBO = new ConsultaWsBO();
+        
+        ConsultaProspectosResponse response = consultaWsBO.getCatalogoProspectosByUsuario(usuarioDtoRequestJson);
+        
+        //Transformamos de objeto a formato JSON
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(response);
+        
+        return jsonResponse;
+    }
     
 }

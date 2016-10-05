@@ -777,6 +777,8 @@ public class InsertaActualizaWsBO {
                 estanteriaDto.setFecha(estanteriaDtoRequest.getFecha());
                 estanteriaDto.setFechaCaducidad(estanteriaDtoRequest.getFechaCaducidad());
                 estanteriaDto.setNombreEmbalaje(estanteriaDtoRequest.getNombreEmbalaje());                
+                estanteriaDto.setUnidadesAlmacen(estanteriaDtoRequest.getUnidadesAlmacen());
+                estanteriaDto.setPrecioOferta(estanteriaDtoRequest.getPrecioOferta());
                 estanteriaDtoDaoImpl.update(estanteriaDto.createPk(), estanteriaDto);
                 response.setIdObjetoCreado(estanteriaDto.getIdEstanteria());
                 
@@ -797,6 +799,8 @@ public class InsertaActualizaWsBO {
                     estanDesc.setFechaCaducidad(descripcion.getFechaCaducidad());
                     estanDesc.setNombreEmbalaje(descripcion.getNombreEmbalaje());
                     estanDesc.setIdRelacionConceptoCompetencia(descripcion.getIdRelacionConceptoCompetencia());
+                    estanDesc.setUnidadesAlmacen(descripcion.getUnidadesAlmacen());
+                    estanDesc.setPrecioOferta(descripcion.getPrecioOferta());
                     estanteriaDescripcionDtoDaoImpl.insert(estanDesc);
                 }
                 
@@ -812,6 +816,8 @@ public class InsertaActualizaWsBO {
                 estanteriaDto.setFecha(estanteriaDtoRequest.getFecha());
                 estanteriaDto.setFechaCaducidad(estanteriaDtoRequest.getFechaCaducidad());
                 estanteriaDto.setNombreEmbalaje(estanteriaDtoRequest.getNombreEmbalaje());
+                estanteriaDto.setUnidadesAlmacen(estanteriaDtoRequest.getUnidadesAlmacen());
+                estanteriaDto.setPrecioOferta(estanteriaDtoRequest.getPrecioOferta());
                 
                 EstanteriaPk estanteriaDtoPk = estanteriaDtoDaoImpl.insert(estanteriaDto);
                 response.setIdObjetoCreado(estanteriaDtoPk.getIdEstanteria());
@@ -829,6 +835,8 @@ public class InsertaActualizaWsBO {
                     estanDesc.setFechaCaducidad(descripcion.getFechaCaducidad());
                     estanDesc.setNombreEmbalaje(descripcion.getNombreEmbalaje());
                     estanDesc.setIdRelacionConceptoCompetencia(descripcion.getIdRelacionConceptoCompetencia());
+                    estanDesc.setUnidadesAlmacen(descripcion.getUnidadesAlmacen());
+                    estanDesc.setPrecioOferta(descripcion.getPrecioOferta());
                     estanteriaDescripcionDtoDaoImpl.insert(estanDesc);
                 }
                 

@@ -5,6 +5,12 @@
 --%>
  
 
+<%@page import="com.tsp.gespro.util.DateManage"%>
+<%@page import="com.tsp.gespro.jdbc.RelacionProspectoVendedorDaoImpl"%>
+<%@page import="com.tsp.gespro.dto.RelacionProspectoVendedor"%>
+<%@page import="com.tsp.gespro.bo.RelacionProspectoVendedorBO"%>
+<%@page import="com.tsp.gespro.dto.DatosUsuario"%>
+<%@page import="com.tsp.gespro.bo.UsuarioBO"%>
 <%@page import="com.tsp.gespro.report.ReportBO"%>
 <%@page import="com.tsp.gespro.bo.ProspectoBO"%>
 <%@page import="com.tsp.gespro.dto.Prospecto"%>
@@ -101,6 +107,20 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                     }
                 });
             }
+            function asignarPromotor(idProspecto,asignado,idUsuarioEmpleado){              
+                var mensaje = '';
+                if(asignado == 0){
+                    mensaje = '¿Asignar promotor?';
+                }else{
+                    mensaje = '¿Reasignar promotor?';
+                }
+                apprise(mensaje, {'verify':true, 'animate':true, 'textYes':'Si', 'textNo':'Cancelar'}, function(r)
+                {
+                    if(r){
+                        location.href = "../catEmpleados/catEmpleado_Relacion_Prospecto_form.jsp?idProspecto="+idProspecto+"&asignado="+asignado+"&idUsuarioEmpleado="+idUsuarioEmpleado;
+                    }
+                });
+            }
         </script>
 
     </head>
@@ -162,6 +182,8 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                             <th>Razón Social</th>
                                             <th>Contacto</th>
                                             <th>Correo</th>
+                                            <th>Fecha de registro</th>
+                                            <th>Usuario registro</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -176,11 +198,48 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                             <td><%=item.getRazonSocial() %></td>
                                             <td><%=item.getContacto() %></td>
                                             <td><%=item.getCorreo() %></td>
+                                            <td><%=DateManage.dateTimeToStringEspanol(item.getFechaRegistro())%></td>
+                                            <%
+                                               DatosUsuario datosUsuarioVendedor = new UsuarioBO(item.getIdUsuarioVendedor()).getDatosUsuario();
+                                            %>
+                                            <td><%=datosUsuarioVendedor!=null? (datosUsuarioVendedor.getNombre() +" " + datosUsuarioVendedor.getApellidoPat()) :"Sin promotor asignado" %></td>
+                              
+                                            <%
+                                                int asignado = 0;//0 no asignado, 1 asignado
+                                                int idUsuarioEmpleado = 0;
+                                                RelacionProspectoVendedorBO relacionProspectoVendedorBO = new RelacionProspectoVendedorBO(user.getConn());
+                                                RelacionProspectoVendedor relacionProspectoVendedorsDto = null;
+                                                if (item.getIdProspecto() > 0){
+                                                    try
+                                                    {
+                                                        relacionProspectoVendedorsDto = new RelacionProspectoVendedorDaoImpl(user.getConn()).findWhereIdProspectoEquals(item.getIdProspecto())[0];
+                                                        if(relacionProspectoVendedorsDto != null)
+                                                        {
+                                                            if(relacionProspectoVendedorsDto.getIdProspecto() > 0)
+                                                            {
+                                                                asignado = 1;
+                                                                idUsuarioEmpleado = relacionProspectoVendedorsDto.getIdUsuario();
+                                                            }else
+                                                            {
+                                                                asignado = 0;
+                                                            }
+                                                        }else
+                                                        {
+                                                             asignado = 0;
+                                                        }
+                                                    }catch(Exception ex){
+                                                         asignado = 0;
+                                                    }
+                                                }
+                                                
+                                            %>
                                             <td>
                                                
                                                 <a href="<%=urlTo%>?<%=paramName%>=<%=item.getIdProspecto()%>&acc=1&pagina=<%=paginaActual%>"><img src="../../images/icon_edit.png" alt="editar" class="help" title="Editar"/></a>
                                                 &nbsp;&nbsp;
                                                 <a href="#" onclick="convertirACliente(<%=item.getIdProspecto()%>);"><img src="../../images/icon_cliente.png" alt="convertir" class="help" title="Convertir a Cliente"/></a>
+                                                &nbsp;&nbsp;
+                                                <a href="#" onclick="asignarPromotor(<%=item.getIdProspecto()%>,<%= asignado %>,<%= idUsuarioEmpleado %>);"><img src="../../images/icon_users.png" alt="convertir" class="help" title="<%= (asignado == 0)?"Asignar promotor":"Reasignar promotor" %>"/></a>
                                                 
                                             </td>
                                         </tr>

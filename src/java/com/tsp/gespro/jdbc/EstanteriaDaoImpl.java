@@ -37,7 +37,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * All finder methods in this class use this SELECT constant to build their queries
 	 */
-	protected final String SQL_SELECT = "SELECT ID_ESTANTERIA, ID_EMPRESA, ID_ESTATUS, ID_CLIENTE, ID_CONCEPTO, ID_USUARIO, CANTIDAD, PRECIO, FECHA, NOMBRE_EMBALAJE, FECHA_CADUCIDAD FROM " + getTableName() + "";
+	protected final String SQL_SELECT = "SELECT ID_ESTANTERIA, ID_EMPRESA, ID_ESTATUS, ID_CLIENTE, ID_CONCEPTO, ID_USUARIO, CANTIDAD, PRECIO, FECHA, NOMBRE_EMBALAJE, FECHA_CADUCIDAD,UNIDADES_ALMACEN, PRECIO_OFERTA FROM " + getTableName() + "";
 
 	/** 
 	 * Finder methods will pass this value to the JDBC setMaxRows method
@@ -47,12 +47,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	/** 
 	 * SQL INSERT statement for this table
 	 */
-	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( ID_ESTANTERIA, ID_EMPRESA, ID_ESTATUS, ID_CLIENTE, ID_CONCEPTO, ID_USUARIO, CANTIDAD, PRECIO, FECHA, NOMBRE_EMBALAJE, FECHA_CADUCIDAD ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+	protected final String SQL_INSERT = "INSERT INTO " + getTableName() + " ( ID_ESTANTERIA, ID_EMPRESA, ID_ESTATUS, ID_CLIENTE, ID_CONCEPTO, ID_USUARIO, CANTIDAD, PRECIO, FECHA, NOMBRE_EMBALAJE, FECHA_CADUCIDAD,UNIDADES_ALMACEN, PRECIO_OFERTA ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
 	/** 
 	 * SQL UPDATE statement for this table
 	 */
-	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET ID_ESTANTERIA = ?, ID_EMPRESA = ?, ID_ESTATUS = ?, ID_CLIENTE = ?, ID_CONCEPTO = ?, ID_USUARIO = ?, CANTIDAD = ?, PRECIO = ?, FECHA = ?, NOMBRE_EMBALAJE = ?, FECHA_CADUCIDAD = ? WHERE ID_ESTANTERIA = ?";
+	protected final String SQL_UPDATE = "UPDATE " + getTableName() + " SET ID_ESTANTERIA = ?, ID_EMPRESA = ?, ID_ESTATUS = ?, ID_CLIENTE = ?, ID_CONCEPTO = ?, ID_USUARIO = ?, CANTIDAD = ?, PRECIO = ?, FECHA = ?, NOMBRE_EMBALAJE = ?, FECHA_CADUCIDAD = ?, UNIDADES_ALMACEN = ?, PRECIO_OFERTA = ? WHERE ID_ESTANTERIA = ?";
 
 	/** 
 	 * SQL DELETE statement for this table
@@ -113,11 +113,19 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 * Index of column FECHA_CADUCIDAD
 	 */
 	protected static final int COLUMN_FECHA_CADUCIDAD = 11;
+                 /** 
+	 * Index of column UNIDADES ALMACEN
+	 */
+	protected static final int COLUMN_UNIDADES_ALMACEN = 12;
+         /** 
+	 * Index of column PRECIO OFERTA
+	 */
+	protected static final int COLUMN_PRECIO_OFERTA = 13;
 
 	/** 
 	 * Number of columns
 	 */
-	protected static final int NUMBER_OF_COLUMNS = 11;
+	protected static final int NUMBER_OF_COLUMNS = 13;
 
 	/** 
 	 * Index of primary-key column ID_ESTANTERIA
@@ -231,6 +239,28 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				values.append( "?" );
 				modifiedCount++;
 			}
+                        
+                        if (dto.isUnidadesAlmacenModified()) {
+				if (modifiedCount>0) {
+					sql.append( ", " );
+					values.append( ", " );
+				}
+		
+				sql.append( "UNIDADES_ALMACEN" );
+				values.append( "?" );
+				modifiedCount++;
+			}
+                        if (dto.isPrecioOfertaModified()) {
+				if (modifiedCount>0) {
+					sql.append( ", " );
+					values.append( ", " );
+				}
+		
+				sql.append( "PRECIO_OFERTA" );
+				values.append( "?" );
+				modifiedCount++;
+			}
+		
 		
 			if (dto.isFechaModified()) {
 				if (modifiedCount>0) {
@@ -338,6 +368,22 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 					stmt.setNull( index++, java.sql.Types.DOUBLE );
 				} else {
 					stmt.setDouble( index++, dto.getPrecio() );
+				}
+		
+			}
+                        if (dto.isUnidadesAlmacenModified()) {
+				if (dto.isUnidadesAlmacenNull()) {
+					stmt.setNull( index++, java.sql.Types.DOUBLE );
+				} else {
+					stmt.setDouble( index++, dto.getUnidadesAlmacen() );
+				}
+		
+			}
+                        if (dto.isPrecioOfertaModified()) {
+				if (dto.isPrecioOfertaNull()) {
+					stmt.setNull( index++, java.sql.Types.DOUBLE );
+				} else {
+					stmt.setDouble( index++, dto.getPrecioOferta() );
 				}
 		
 			}
@@ -471,6 +517,22 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 				sql.append( "PRECIO=?" );
 				modified=true;
 			}
+                        if (dto.isUnidadesAlmacenModified()) {
+				if (modified) {
+					sql.append( ", " );
+				}
+		
+				sql.append( "UNIDADES_ALMACEN=?" );
+				modified=true;
+			}
+                        if (dto.isPrecioOfertaModified()) {
+				if (modified) {
+					sql.append( ", " );
+				}
+		
+				sql.append( "PRECIO_OFERTA=?" );
+				modified=true;
+			}
 		
 			if (dto.isFechaModified()) {
 				if (modified) {
@@ -571,6 +633,22 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 					stmt.setNull( index++, java.sql.Types.DOUBLE );
 				} else {
 					stmt.setDouble( index++, dto.getPrecio() );
+				}
+		
+			}
+                        if (dto.isUnidadesAlmacenModified()) {
+				if (dto.isUnidadesAlmacenNull()) {
+					stmt.setNull( index++, java.sql.Types.DOUBLE );
+				} else {
+					stmt.setDouble( index++, dto.getUnidadesAlmacen() );
+				}
+		
+			}
+                        if (dto.isPrecioOfertaModified()) {
+				if (dto.isPrecioOfertaNull()) {
+					stmt.setNull( index++, java.sql.Types.DOUBLE );
+				} else {
+					stmt.setDouble( index++, dto.getPrecioOferta() );
 				}
 		
 			}
@@ -872,6 +950,14 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		if (rs.wasNull()) {
 			dto.setPrecioNull( true );
 		}
+                dto.setUnidadesAlmacen( rs.getDouble( COLUMN_UNIDADES_ALMACEN ) );
+		if (rs.wasNull()) {
+			dto.setUnidadesAlmacenNull( true );
+		}
+                dto.setPrecioOferta( rs.getDouble( COLUMN_PRECIO_OFERTA ) );
+		if (rs.wasNull()) {
+			dto.setPrecioOfertaNull( true );
+		}
 		
 		dto.setFecha( rs.getDate(COLUMN_FECHA ) );
 		dto.setNombreEmbalaje( rs.getString( COLUMN_NOMBRE_EMBALAJE ) );
@@ -895,6 +981,8 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 		dto.setFechaModified( false );
 		dto.setNombreEmbalajeModified( false );
 		dto.setFechaCaducidadModified( false );
+                dto.setUnidadesAlmacenModified(false);
+                dto.setPrecioOfertaModified(false);
 	}
 
 	/** 

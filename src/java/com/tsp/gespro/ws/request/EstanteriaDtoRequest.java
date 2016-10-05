@@ -24,6 +24,8 @@ public class EstanteriaDtoRequest {
     private Date fecha;
     private Date fechaCaducidad;
     private String nombreEmbalaje;
+    private double precioOferta;
+    private double unidadesAlmacen;
     
     private List<EstanteriaDescripcionDtoRequest> estanteriaDescripcionDtoRequest;
 
@@ -165,6 +167,32 @@ public class EstanteriaDtoRequest {
      */
     public void setNombreEmbalaje(String nombreEmbalaje) {
         this.nombreEmbalaje = nombreEmbalaje;
+    }
+    /**
+     * @return the unidadesAlmacen
+     */
+    public double getUnidadesAlmacen() {
+    	return unidadesAlmacen;
+    }
+
+    /**
+     * @param unidadesAlmacen the unidadesAlmacen to set
+     */
+    public void setUnidadesAlmacen(double unidadesAlmacen) {
+    	this.unidadesAlmacen = unidadesAlmacen;
+    }
+    /**
+     * @return the precioOferta
+     */
+    public double getPrecioOferta() {
+	return precioOferta;
+    }
+
+    /**
+     * @param precioOferta the precioOferta to set
+     */
+    public void setPrecioOferta(double precioOferta) {
+    	this.precioOferta = precioOferta;
     }
 
    

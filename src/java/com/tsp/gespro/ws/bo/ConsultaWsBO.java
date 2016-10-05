@@ -18,6 +18,7 @@ import com.tsp.gespro.bo.EmpresaBO;
 import com.tsp.gespro.bo.ExistenciaAlmacenBO;
 import com.tsp.gespro.bo.MarcaBO;
 import com.tsp.gespro.bo.MovilMensajeBO;
+import com.tsp.gespro.bo.ProspectoBO;
 import com.tsp.gespro.bo.UsuarioBO;
 import com.tsp.gespro.bo.UsuariosBO;
 import com.tsp.gespro.bo.ZonaHorariaBO;
@@ -28,6 +29,7 @@ import com.tsp.gespro.dto.DatosUsuario;
 import com.tsp.gespro.dto.Embalaje;
 import com.tsp.gespro.dto.Empresa;
 import com.tsp.gespro.dto.MovilMensaje;
+import com.tsp.gespro.dto.Prospecto;
 import com.tsp.gespro.dto.RelacionConceptoCompetencia;
 import com.tsp.gespro.dto.RelacionConceptoEmbalaje;
 import com.tsp.gespro.dto.Ruta;
@@ -37,6 +39,7 @@ import com.tsp.gespro.dto.Usuarios;
 import com.tsp.gespro.jdbc.ClienteDaoImpl;
 import com.tsp.gespro.jdbc.ConceptoDaoImpl;
 import com.tsp.gespro.jdbc.MovilMensajeDaoImpl;
+import com.tsp.gespro.jdbc.ProspectoDaoImpl;
 import com.tsp.gespro.jdbc.RelacionConceptoCompetenciaDaoImpl;
 import com.tsp.gespro.jdbc.RelacionConceptoEmbalajeDaoImpl;
 import com.tsp.gespro.jdbc.ResourceManager;
@@ -53,6 +56,7 @@ import com.tsp.gespro.ws.response.ConsultaConceptosResponse;
 import com.tsp.gespro.ws.response.ConsultaEmbalajeResponse;
 import com.tsp.gespro.ws.response.ConsultaEmpleadoResponse;
 import com.tsp.gespro.ws.response.ConsultaMensajesMovilResponse;
+import com.tsp.gespro.ws.response.ConsultaProspectosResponse;
 import com.tsp.gespro.ws.response.ConsultaRutasResponse;
 import com.tsp.gespro.ws.response.LoginUsuarioMovilResponse;
 import com.tsp.gespro.ws.response.WsItemCliente;
@@ -61,6 +65,7 @@ import com.tsp.gespro.ws.response.WsItemConcepto;
 import com.tsp.gespro.ws.response.WsItemEmbalaje;
 import com.tsp.gespro.ws.response.WsItemEmpleado;
 import com.tsp.gespro.ws.response.WsItemMovilMensaje;
+import com.tsp.gespro.ws.response.WsItemProspecto;
 import com.tsp.gespro.ws.response.WsItemRelacionConceptoCompetencia;
 import com.tsp.gespro.ws.response.WsItemRelacionConceptoEmbalaje;
 import com.tsp.gespro.ws.response.WsItemRuta;
@@ -1276,5 +1281,128 @@ public class ConsultaWsBO {
 
         return consultaResponse;
     }
+    
+    /**
+     * Obtiene el catalogo de Prospectos por usuario
+     * @param userName 
+     */
+    public ConsultaProspectosResponse getCatalogoProspectosByUsuario(String usuarioDtoRequestJSON) {
+        ConsultaProspectosResponse response;
+                
+        UsuarioDtoRequest usuarioDtoRequest = null;
+        try{
+            //Transformamos de formato JSON a objeto
+            usuarioDtoRequest = gson.fromJson(usuarioDtoRequestJSON, UsuarioDtoRequest.class);
+            
+            response = this.getCatalogoProspectoByUsuario(usuarioDtoRequest);
+        }catch(Exception ex){
+            response = new ConsultaProspectosResponse();
+            response.setError(true);
+            response.setNumError(901);
+            response.setMsgError("Los datos enviados no corresponden a los requeridos. No se pudo transformar de un cadena JSON a objetos. " + ex.toString());
+            ex.printStackTrace();
+        }
+        
+        return response;
+    }
+
+    private ConsultaProspectosResponse getCatalogoProspectoByUsuario(UsuarioDtoRequest usuarioDtoRequest) {
+        
+        int idEmpresa = 0;
+        int idUsuario = 0;
+        ConsultaProspectosResponse consultaResponse = new ConsultaProspectosResponse();
+        try {
+            //Consultamos y obtenemos el ID de Empresa del Usuario
+            UsuarioBO usuarioBO = new UsuarioBO(getConn());
+            if (usuarioBO.login(usuarioDtoRequest.getUsuarioUsuario(), usuarioDtoRequest.getUsuarioPassword())) {
+                idEmpresa = usuarioBO.getUser().getIdEmpresa();
+                idUsuario = usuarioBO.getUser().getIdUsuarios();
+                //Si se encontro el registro buscamos su catalogo de clientes
+                if (idEmpresa > 0) {
+                    consultaResponse.setError(false);
+                    //Filtramos con Estatus Activo y que esten asignados a este empleado
+                    consultaResponse.setWsItemProspecto(this.getListaProspectos(idEmpresa, 
+                            " AND (ID_ESTATUS = 1 )  "
+                          + " AND ( ID_PROSPECTO IN (SELECT ID_PROSPECTO FROM relacion_prospecto_vendedor WHERE ID_USUARIO=" + idUsuario + " )"                         
+                          + " ) "
+                    ));
+                }
+                
+                //registramos ubicacion
+                try{new InsertaActualizaWsBO(getConn()).actualizarUbicacionUsuario(usuarioDtoRequest);}catch(Exception ex){}
+            } else {
+                consultaResponse.setError(true);
+                consultaResponse.setNumError(901);
+                consultaResponse.setMsgError("El usuario y/o contraseña del Usuario son inválidos.");
+            }
+        } catch (Exception e) {
+            consultaResponse.setError(true);
+            consultaResponse.setNumError(902);
+            consultaResponse.setMsgError("Error inesperado al consultar catalogos del usuario. " + e.getLocalizedMessage());
+        }finally{
+            try{ if (this.conn!=null) getConn().close(); }catch(Exception ex){}
+        }
+
+        return consultaResponse;
+        
+        
+    }
+    
+    /**
+     * Consulta los prospectos de una empresa.
+     * @param idEmpresa
+     * @return 
+     */
+    private ArrayList<WsItemProspecto> getListaProspectos(int idEmpresa, String filtroBusqueda){//int idEmpresa) {
+        
+        ArrayList<WsItemProspecto> listaWsItemProspecto = new ArrayList<>();
+        //Buscamos los prospectos definidos para el usuario/empresa
+        ProspectoDaoImpl prospetoDao = new ProspectoDaoImpl(getConn());
+        ProspectoBO prospectoBO = new ProspectoBO(getConn());
+        Prospecto[] arrayProspectoDto;
+
+        
+        
+        try {
+            arrayProspectoDto = prospectoBO.findProspecto(-1, idEmpresa, 0, 0, filtroBusqueda);
+            if (arrayProspectoDto.length > 0) {
+                //Llenamos la lista de prospectos del objeto respuesta
+                for (Prospecto item : arrayProspectoDto) {
+                    try {
+                        if(item.getIdEstatus() != 2){
+                            WsItemProspecto wsItemProspecto = new WsItemProspecto();
+                            wsItemProspecto.setIdProspecto(item.getIdProspecto());   
+                            wsItemProspecto.setIdEmpresa(item.getIdEmpresa());
+                            wsItemProspecto.setRazonSocial(item.getRazonSocial());
+                            wsItemProspecto.setLada(item.getLada());
+                            wsItemProspecto.setTelefono(item.getTelefono());
+                            wsItemProspecto.setCelular(item.getCelular());
+                            wsItemProspecto.setCorreo(item.getCorreo());
+                            wsItemProspecto.setContacto(item.getContacto());
+                            wsItemProspecto.setIdEstatus(item.getIdEstatus());
+                            wsItemProspecto.setDescripcion(item.getDescripcion());
+                            wsItemProspecto.setLatitud(item.getLatitud());
+                            wsItemProspecto.setLongitud(item.getLongitud());
+                            wsItemProspecto.setDireccion(item.getDireccion());
+                            wsItemProspecto.setNombreImagenProspecto(item.getNombreImagenProspecto());
+                            wsItemProspecto.setIdUsuarioVendedor(item.getIdUsuarioVendedor());
+                            wsItemProspecto.setFechaRegistro(item.getFechaRegistro());
+                            wsItemProspecto.setDirNumeroExterior(item.getDirNumeroExterior());
+                            wsItemProspecto.setDirNumeroInterior(item.getDirNumeroInterior());
+                            wsItemProspecto.setDirCodigoPostal(item.getDirCodigoPostal());
+                            wsItemProspecto.setDirColonia(item.getDirColonia());
+                            listaWsItemProspecto.add(wsItemProspecto);
+                    }
+                        
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        } catch (Exception e) {
+        }
+
+        return listaWsItemProspecto;
+    }
+    
     
 }

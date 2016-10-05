@@ -100,10 +100,9 @@ public class EstanteriaBO {
             }
             if(idConcepto > 0){
                 sqlFiltro +=" AND ID_CONCEPTO  = " + idConcepto;
+            }else{
+                sqlFiltro +=" AND ID_CONCEPTO  >0 ";
             } 
-            if(idConcepto > 0){
-                sqlFiltro +=" AND ID_CONCEPTO  = " + idConcepto;
-            }
             if(idUsuarioPromotor > 0){
                 sqlFiltro +=" AND ID_USUARIO  = " + idUsuarioPromotor;
             }
@@ -122,6 +121,58 @@ public class EstanteriaBO {
             estanteriaDto = estanteriaDao.findByDynamicWhere( 
                     sqlFiltro
                     + " ORDER BY ID_ESTANTERIA DESC"
+                    + sqlLimit
+                    , new Object[0]);
+            
+        } catch (Exception ex) {
+            System.out.println("Error de consulta a Base de Datos: " + ex.toString());
+            ex.printStackTrace();
+        }
+        
+        return estanteriaDto;
+    }
+    /**
+     * Realiza una búsqueda por ID estanteria en busca de
+     * coincidencias
+     * @param idEstanteria ID De la estanteria, -1 para mostrar todos los registros
+     * @param idEmpresa ID de la Empresa a filtrar pedido, -1 para evitar filtro
+     *  @param minLimit Limite inferior de la paginación (Desde) 0 en caso de no existir limite inferior
+     * @param maxLimit Limite superior de la paginación (Hasta) 0 en caso de no existir limite superior
+     * @param filtroBusqueda Cadena con un filtro de búsqueda personalizado
+     * @return DTO SgfensPedido
+     */
+    public Estanteria[] findEstanteria(int idEstanteria, int idEmpresa, int minLimit,int maxLimit, String filtroBusqueda) {
+        Estanteria[] estanteriaDto = new Estanteria[0];
+        EstanteriaDaoImpl estanteriaDao = new EstanteriaDaoImpl(this.conn);
+        try {
+            String sqlFiltro="";
+            if (idEstanteria>0){
+                sqlFiltro ="ID_ESTANTERIA=" + idEstanteria + " AND ";
+            }else{
+                sqlFiltro ="ID_ESTANTERIA>0 AND ";
+            }
+            if (idEmpresa>0){
+                sqlFiltro += " ID_EMPRESA IN (SELECT ID_EMPRESA FROM EMPRESA WHERE ID_EMPRESA_PADRE = " + idEmpresa + " OR ID_EMPRESA= " + idEmpresa + ") ";
+            }else{
+                sqlFiltro +=" ID_EMPRESA>0 ";
+            }
+            
+            if (!filtroBusqueda.trim().equals("")){
+                sqlFiltro += filtroBusqueda;
+            }
+            
+            if (minLimit<0)
+                minLimit=0;
+            
+            String sqlLimit="";
+            if ((minLimit>0 && maxLimit>0) || (minLimit==0 && maxLimit>0))
+                sqlLimit = " LIMIT " + minLimit + "," + maxLimit;
+            
+            String orderBy = " ORDER BY FECHA DESC ";
+            
+            estanteriaDto = estanteriaDao.findByDynamicWhere( 
+                    sqlFiltro
+                    + orderBy
                     + sqlLimit
                     , new Object[0]);
             

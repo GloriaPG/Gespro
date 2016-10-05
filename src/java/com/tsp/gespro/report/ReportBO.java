@@ -32,6 +32,7 @@ import com.tsp.gespro.jdbc.SgfensPedidoDaoImpl;
 import com.tsp.gespro.jdbc.SgfensPedidoProductoDaoImpl;
 import com.tsp.gespro.jdbc.UsuariosDaoImpl;
 import com.tsp.gespro.bo.UsuarioBO;
+import com.tsp.gespro.exceptions.SgfensPedidoProductoDaoException;
 import com.tsp.gespro.hibernate.dao.CampoAdicionalClienteDAO;
 import com.tsp.gespro.hibernate.dao.UsuariosDAO;
 import com.tsp.gespro.hibernate.pojo.CampoAdicionalCliente;
@@ -158,6 +159,24 @@ public class ReportBO {
                 break;
             case ACTIVIDAD_REPORT:
                 title = "Reporte de Actividades";
+                break;
+            case PEDIDO_REPORT:
+                title = "Reporte de Pedidos";
+                break;
+            case DEGUSTACION_REPORT:
+                title = "Reporte de Degustaciones";
+                break;
+            case CADUCIDAD_REPORT:
+                title = "Reporte de Caducidad";
+                break;
+            case GENERAL_REPORT:
+                title = "Reporte general";
+                break;
+            case COMPETENCIA_REPORT:
+                title = "Reporte de competencia";
+                break;
+            case ESTANTERIA_REPORT:
+                title = "Reporte de estanteria";
                 break;
         }
 
@@ -338,6 +357,62 @@ public class ReportBO {
                 fieldList.add(getDataInfo("COMENTARIO","Comentarios","","",""+DATA_STRING,""));
                 fieldList.add(getDataInfo("Estatus","Estatus","","",""+DATA_STRING,""));
                 break;
+            case PEDIDO_REPORT:
+                fieldList.add(getDataInfo("ID_PEDIDO","ID","","",""+DATA_INT,""));
+                fieldList.add(getDataInfo("FOLIO_PEDIDO","Folio","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("VENDEDOR","Vendedor","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CLIENTE","Cliente","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("FECHA","Fecha","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("ESTADO","Estado","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CANTIDAD","Cantidad Productos","","",""+DATA_INT,""));
+                fieldList.add(getDataInfo("VENTA_TOTAL","Venta total","","",""+DATA_DECIMAL,""));
+                fieldList.add(getDataInfo("TIPO","Tipo","","",""+DATA_STRING,""));
+                break;
+            case DEGUSTACION_REPORT:
+                fieldList.add(getDataInfo("ID_DEGUSTACION","ID","","",""+DATA_INT,""));
+                fieldList.add(getDataInfo("FECHA","Fecha","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PROMOTOR","Promotor","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CLIENTE","Cliente","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("HR_INICIO","Hr inicio","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("HR_TERMINO","Hr termino","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("TIEMPO_DEGUSTACION","Tiempo degustación(min)","","",""+DATA_INT,""));
+                fieldList.add(getDataInfo("PIEZAS_DEGUSTADAS","Piezas degustadas","","",""+DATA_DECIMAL,""));
+                break;
+            case CADUCIDAD_REPORT:
+                fieldList.add(getDataInfo("FECHA","Fecha","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CLIENTE","Cliente","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PROMOTOR","Promotor","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PRODUCTO","Producto","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("FECHA_CADUCIDAD","Fecha caducidad","","",""+DATA_STRING,""));
+                break;
+            case GENERAL_REPORT:
+                fieldList.add(getDataInfo("FECHA","Fecha","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PROMOTOR","Promotor","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CLIENTE","Cliente","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("SUCURSAL","Sucursal","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CLAVE_PRODUCTO","Clave producto","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("NOMBRE_PRODUCTO","Nombre producto","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("UNIDAD_ANAQUEL","Unidades anaquel","","",""+DATA_DECIMAL,""));
+                fieldList.add(getDataInfo("PRECIO_ANAQUEL","Precio anaquel","","",""+DATA_DECIMAL,""));
+                fieldList.add(getDataInfo("PRECIO_OFERTA","Precio oferta","","",""+DATA_DECIMAL,""));
+                fieldList.add(getDataInfo("UNIDAD_ALMACEN","Unidades almacen","","",""+DATA_DECIMAL,""));
+                fieldList.add(getDataInfo("UNIDAD_TOTAL","Unidades totales","","",""+DATA_DECIMAL,""));
+                break;
+            case COMPETENCIA_REPORT:
+                fieldList.add(getDataInfo("FECHA","Fecha","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CLIENTE","Cliente","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("SUCURSAL","Sucursal","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PRODUCTO","Producto","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PRECIO_ANAQUEL","$ Anaquel","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PRECIO_COMPETENCIA","$ Competencia","","",""+DATA_STRING,""));
+                break;
+            case ESTANTERIA_REPORT:
+                fieldList.add(getDataInfo("ID","ID","","",""+DATA_INT,""));
+                fieldList.add(getDataInfo("PRODUCTO","Producto","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("CANTIDAD","Cantidad","","",""+DATA_STRING,""));
+                fieldList.add(getDataInfo("PRECIO","Precio","","",""+DATA_DECIMAL,""));
+                fieldList.add(getDataInfo("FECHA","Fecha","","",""+DATA_STRING,""));
+                break;    
         }
         return fieldList;
     }
@@ -424,6 +499,42 @@ public class ReportBO {
                 Allservices allservices2 = new Allservices();
                 List<Actividad> actividades = allservices2.QueryActividadDAO(params);
                 dataList = this.getDataList(actividades,1);
+                break;
+            case PEDIDO_REPORT:
+                if(params!=null && !params.equals(""))
+                    dataList = this.getDataList(new SGPedidoBO(this.conn).findPedido(-1,idEmpresa, 0, 0, params));
+                else
+                    dataList = this.getDataList(new SGPedidoBO(this.conn).findPedido(-1,idEmpresa, 0, 0, ""));
+                break;
+             case DEGUSTACION_REPORT:
+                if(params!=null && !params.equals(""))
+                    dataList = this.getDataList(new DegustacionBO(this.conn).findDegustaciones(-1,idEmpresa, 0, 0, params));
+                else
+                    dataList = this.getDataList(new DegustacionBO(this.conn).findDegustaciones(-1,idEmpresa, 0, 0, ""));
+                break;
+             case CADUCIDAD_REPORT:
+                if(params!=null && !params.equals(""))
+                    dataList = this.getDataList(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, params));
+                else
+                    dataList = this.getDataList(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, ""));
+                break;
+            case GENERAL_REPORT:
+                if(params!=null && !params.equals(""))
+                    dataList = this.getDataListGeneral(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, params));
+                else
+                    dataList = this.getDataListGeneral(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, ""));
+                break;
+            case COMPETENCIA_REPORT:
+                if(params!=null && !params.equals(""))
+                    dataList = this.getDataListCompetencia(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, params));
+                else
+                    dataList = this.getDataListCompetencia(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, ""));
+                break;
+             case ESTANTERIA_REPORT:
+                if(params!=null && !params.equals(""))
+                    dataList = this.getDataListEstanteria(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, params));
+                else
+                    dataList = this.getDataListEstanteria(new EstanteriaBO(this.conn).findEstanteria(-1,idEmpresa, 0, 0, ""));
                 break;
         }
         return dataList;
@@ -976,6 +1087,242 @@ private ArrayList<HashMap> getDataList(List<Proyecto> proyectos) {
         dataList.add(hashData);
         return dataList;
 
+    }
+     private ArrayList<HashMap> getDataList(SgfensPedido[] objectDto) {
+        ArrayList<HashMap> dataList = new ArrayList<HashMap>();
+        HashMap<String,String> hashData = new HashMap<String, String>();
+        ArrayList<HashMap> dataInfo = getFieldList(PEDIDO_REPORT);        
+    
+        SGPedidoBO sgPedidoBO = new SGPedidoBO(this.conn);
+        for(SgfensPedido dto:objectDto){
+             
+            String nombreCliente = "";
+            String nombreVendedor = "";
+            if (dto.getIdCliente() > 0){
+                Cliente clientesDto = null;
+                ClienteBO clienteBO = new ClienteBO(dto.getIdCliente(), this.conn);
+                clientesDto = clienteBO.getCliente();
+                nombreCliente = clientesDto!=null?clientesDto.getNombreComercial():"NA";
+            }
+            if (dto.getIdUsuarioVendedor()> 0){
+                Usuarios usuariosDto = null;
+                UsuariosBO usuariosBO = new UsuariosBO(dto.getIdUsuarioVendedor(), this.conn);
+                usuariosDto = usuariosBO.getUsuario();
+                
+                nombreVendedor = usuariosDto!=null?usuariosDto.getUserName():"NA";
+            }
+            SgfensPedidoProducto[] spp;
+            int cantidadProductos = 0;
+            try {
+                spp = new SgfensPedidoProductoDaoImpl(this.conn).findWhereIdPedidoEquals(dto.getIdPedido());
+                cantidadProductos = spp.length;
+            } catch (SgfensPedidoProductoDaoException ex) {
+                Logger.getLogger(ReportBO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String estatus = "";
+            if(dto.getIdEstatusPedido() == 1 || dto.getIdEstatusPedido() == 2){
+                estatus = "Vigente";
+            }else if(dto.getIdEstatusPedido() == 3){
+                estatus = "Cancelado";
+            }
+            String tipoVenta = "";
+            switch(dto.getIdTipoPedido()){
+                case 1:
+                    tipoVenta = "Faltante a Cliente";
+                    break;
+                case 2: 
+                    tipoVenta = "Degustación";
+                    break;
+                case 3:
+                    tipoVenta = "Venta";
+                    break;
+                case 4: 
+                    tipoVenta = "Devolución";
+                    break;
+                    
+               
+            }
+            
+            hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + dto.getIdPedido())); ;
+            hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + dto.getFolioPedido()));
+            hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + nombreVendedor));
+            hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + nombreCliente ));
+            hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + dto.getFechaPedido()));
+            hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + estatus ));            
+            hashData.put((String)dataInfo.get(6).get("field"), getRealData(dataInfo.get(6), "" + cantidadProductos));
+            hashData.put((String)dataInfo.get(7).get("field"), getRealData(dataInfo.get(7), "" + dto.getTotal()));
+            hashData.put((String)dataInfo.get(8).get("field"), getRealData(dataInfo.get(8), "" + tipoVenta));
+
+            dataList.add(hashData);
+
+            hashData = new HashMap<String, String>();
+        }
+
+        return dataList;
+    }
+    
+    private ArrayList<HashMap> getDataListGeneral(Estanteria[] objectDto) {
+        ArrayList<HashMap> dataList = new ArrayList<HashMap>();
+        HashMap<String,String> hashData = new HashMap<String, String>();
+        ArrayList<HashMap> dataInfo = getFieldList(GENERAL_REPORT);        
+    
+        for(Estanteria dto:objectDto){
+             
+            String nombreUsuario = "";
+            if (dto.getIdUsuario()> 0){
+                DatosUsuario datosUsuarioPromotor = new UsuarioBO(dto.getIdUsuario()).getDatosUsuario();
+                nombreUsuario = datosUsuarioPromotor!=null? (datosUsuarioPromotor.getNombre() +" " + datosUsuarioPromotor.getApellidoPat()) :"Sin promotor asignado";
+            }
+            String nombreProducto = "";
+            String claveProducto = "";
+            try{
+                  ConceptoBO conceptoBO = new ConceptoBO(this.getConn());
+                  Concepto concepto = conceptoBO.findConceptobyId(dto.getIdConcepto());
+                  if(concepto != null){
+                    nombreProducto = concepto.getNombre();
+                     claveProducto = concepto.getClave();
+                  }else{
+                    nombreProducto = "Sin producto";
+                    claveProducto = "NA";
+                  }
+               
+            }catch(Exception e){nombreProducto = "Sin producto";
+                    claveProducto = "NA";}
+            String nombreCliente = "";
+            if (dto.getIdCliente()> 0){
+                Cliente cliente = new ClienteBO(dto.getIdCliente(),this.getConn()).getCliente();
+                nombreCliente = cliente!=null? (cliente.getNombreComercial()) :"Sin cliente";
+            }
+            String nombreSucursal = "";
+            if(dto.getIdEmpresa() >0){
+                try {
+                    Empresa empresa = new EmpresaBO(this.getConn()).getEmpresaGenericoByEmpresa(dto.getIdEmpresa());
+                    nombreSucursal = empresa!=null? (empresa.getNombreComercial()) :"Sin sucursal";
+                } catch (Exception ex) {
+                    Logger.getLogger(ReportBO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            double unidadesTotal = 0;
+            double unidadesAnaquel = 0;
+            double unidadesAlmacen = 0;
+            unidadesAnaquel = dto.getCantidad();
+            unidadesAlmacen = dto.getUnidadesAlmacen();
+            unidadesTotal = unidadesAnaquel + unidadesAlmacen;
+            
+            
+            hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + DateManage.formatDateToNormal(dto.getFecha()))); ;
+            hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + nombreUsuario));
+            hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + nombreCliente));
+            hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + nombreSucursal ));
+            hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + claveProducto ));
+            hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + nombreProducto ));
+            hashData.put((String)dataInfo.get(6).get("field"), getRealData(dataInfo.get(6), "" + dto.getCantidad() ));
+            hashData.put((String)dataInfo.get(7).get("field"), getRealData(dataInfo.get(7), "" + dto.getPrecio() ));
+            hashData.put((String)dataInfo.get(8).get("field"), getRealData(dataInfo.get(8), "" + dto.getPrecioOferta() ));
+            hashData.put((String)dataInfo.get(9).get("field"), getRealData(dataInfo.get(9), "" + dto.getUnidadesAlmacen() ));
+            hashData.put((String)dataInfo.get(10).get("field"), getRealData(dataInfo.get(10), "" + unidadesTotal ));
+            dataList.add(hashData);
+
+            hashData = new HashMap<String, String>();
+        }
+
+        return dataList;
+    }
+    private ArrayList<HashMap> getDataListCompetencia(Estanteria[] objectDto) {
+        ArrayList<HashMap> dataList = new ArrayList<HashMap>();
+        HashMap<String,String> hashData = new HashMap<String, String>();
+        ArrayList<HashMap> dataInfo = getFieldList(COMPETENCIA_REPORT);        
+    
+        for(Estanteria dto:objectDto){
+             
+            
+            String nombreProducto = "";
+            try{
+                  ConceptoBO conceptoBO = new ConceptoBO(this.getConn());
+                  Concepto concepto = conceptoBO.findConceptobyId(dto.getIdConcepto());
+                  if(concepto != null){
+                     nombreProducto = concepto.getNombre();  
+                  }else{
+                      nombreProducto = "Sin producto"; 
+                  }
+                  
+            }catch(Exception e){nombreProducto = "Sin producto"; }
+            String nombreCliente = "";
+            if (dto.getIdCliente()> 0){
+                Cliente cliente = new ClienteBO(dto.getIdCliente(),this.getConn()).getCliente();
+                nombreCliente = cliente!=null? (cliente.getNombreComercial()) :"Sin cliente";
+            }
+            String nombreSucursal = "";
+            if(dto.getIdEmpresa() >0){
+                try {
+                    Empresa empresa = new EmpresaBO(this.getConn()).getEmpresaGenericoByEmpresa(dto.getIdEmpresa());
+                    nombreSucursal = empresa!=null? (empresa.getNombreComercial()) :"Sin sucursal";
+                } catch (Exception ex) {
+                    Logger.getLogger(ReportBO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            String competencias = "";
+            EstanteriaDescripcion[] estanteriaDesc = new EstanteriaDescripcionBO(this.getConn()).findEstanteriaDescripcions(0, dto.getIdEstanteria(), 0, 0, 0, "");
+            for(EstanteriaDescripcion estanteriaDescripcion : estanteriaDesc){
+            Competencia competencia;
+                try {
+                    competencia = new CompetenciaBO(this.getConn()).findMarcabyId(estanteriaDescripcion.getIdCompetencia());
+                    competencias += competencia.getNombre()+": "+estanteriaDescripcion.getPrecio()+",";  
+                } catch (Exception ex) {
+                    Logger.getLogger(ReportBO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                                                      
+           }
+            if(competencias.equals("")){
+                competencias = "Sin competencias";
+            }
+                  
+            hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + DateManage.formatDateToNormal(dto.getFecha()))); ;
+            hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + nombreCliente));
+            hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + nombreSucursal));
+            hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + nombreProducto ));
+            hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + dto.getPrecio() ));
+            hashData.put((String)dataInfo.get(5).get("field"), getRealData(dataInfo.get(5), "" + competencias ));
+            
+            dataList.add(hashData);
+
+            hashData = new HashMap<String, String>();
+        }
+
+        return dataList;
+    }
+    private ArrayList<HashMap> getDataListEstanteria(Estanteria[] objectDto) {
+        ArrayList<HashMap> dataList = new ArrayList<HashMap>();
+        HashMap<String,String> hashData = new HashMap<String, String>();
+        ArrayList<HashMap> dataInfo = getFieldList(ESTANTERIA_REPORT);        
+    
+        for(Estanteria dto:objectDto){
+            String nombreProducto = "";
+            try{
+                  ConceptoBO conceptoBO = new ConceptoBO(this.getConn());
+                  Concepto concepto = conceptoBO.findConceptobyId(dto.getIdConcepto());
+                  if(concepto != null){
+                      nombreProducto = concepto.getNombre(); 
+                  }else{
+                      nombreProducto = "Sin producto"; 
+                  }
+                  
+                  
+            }catch(Exception e){nombreProducto = "Sin producto"; }
+           
+           // if(dto.getIdEstatus() != 1){
+                hashData.put((String)dataInfo.get(0).get("field"), getRealData(dataInfo.get(0), "" + dto.getIdEstanteria())); ;
+                hashData.put((String)dataInfo.get(1).get("field"), getRealData(dataInfo.get(1), "" + nombreProducto));
+                hashData.put((String)dataInfo.get(2).get("field"), getRealData(dataInfo.get(2), "" + dto.getCantidad()));
+                hashData.put((String)dataInfo.get(3).get("field"), getRealData(dataInfo.get(3), "" + dto.getPrecio()));
+                hashData.put((String)dataInfo.get(4).get("field"), getRealData(dataInfo.get(4), "" + DateManage.formatDateToNormal(dto.getFecha()) ));
+                dataList.add(hashData);
+        //}
+
+            hashData = new HashMap<String, String>();
+        }
+
+        return dataList;
     }
 
 }

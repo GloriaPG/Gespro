@@ -439,12 +439,17 @@ if (user == null || !user.permissionToTopicByURL(request.getRequestURI().replace
                                                 String producto = "";
                                                 String clave = "";
                                                    if(item.getIdConcepto() > 0){
-                                                       ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
-                                                        Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());     
-                                                       if(concepto!=null){
-                                                          producto = concepto.getNombre();
-                                                          clave = concepto.getClave();
-                                                       }else{
+                                                       try{
+                                                            ConceptoBO conceptoBO = new ConceptoBO(user.getConn());
+                                                            Concepto concepto = conceptoBO.findConceptobyId(item.getIdConcepto());     
+                                                            if(concepto!=null){
+                                                                producto = concepto.getNombre();
+                                                                clave = concepto.getClave();
+                                                            }else{
+                                                                producto = "Sin producto";
+                                                                clave = "NA";
+                                                            }
+                                                       }catch(Exception ex){
                                                            producto = "Sin producto";
                                                            clave = "NA";
                                                        }

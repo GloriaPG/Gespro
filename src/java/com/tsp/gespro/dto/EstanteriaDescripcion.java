@@ -136,7 +136,36 @@ public class EstanteriaDescripcion implements Serializable
 	 * This attribute represents whether the attribute idRelacionConceptoCompetencia has been modified since being read from the database.
 	 */
 	protected boolean idRelacionConceptoCompetenciaModified = false;
+        /** 
+	 * This attribute maps to the column UNIDADES ALMACEN in the estanteria table.
+	 */
+	protected double unidadesAlmacen;
 
+	/** 
+	 * This attribute represents whether the primitive attribute UNIDADES ALMACEN is null.
+	 */
+	protected boolean unidadesAlmacenNull = true;
+
+	/** 
+	 * This attribute represents whether the attribute UNIDADES ALMACEN has been modified since being read from the database.
+	 */
+	protected boolean unidadesAlmacenModified = false;
+        
+        /** 
+	 * This attribute maps to the column PRECIO OFERTA in the estanteria table.
+	 */
+	protected double precioOferta;
+
+	/** 
+	 * This attribute represents whether the primitive attribute PRECIO OFERTA is null.
+	 */
+	protected boolean precioOfertaNull = true;
+
+	/** 
+	 * This attribute represents whether the attribute PRECIO OFERTA has been modified since being read from the database.
+	 */
+	protected boolean precioOfertaModified = false;
+        
 	/**
 	 * Method 'EstanteriaDescripcion'
 	 * 
@@ -726,6 +755,30 @@ public class EstanteriaDescripcion implements Serializable
 		if (idRelacionConceptoCompetenciaModified != _cast.idRelacionConceptoCompetenciaModified) {
 			return false;
 		}
+                 if (precioOferta != _cast.precioOferta) {
+			return false;
+		}
+		
+		if (precioOfertaNull != _cast.precioOfertaNull) {
+			return false;
+		}
+		
+		if (precioOfertaModified != _cast.precioOfertaModified) {
+			return false;
+		}
+                
+                 if (unidadesAlmacen != _cast.unidadesAlmacen) {
+			return false;
+		}
+		
+		if (unidadesAlmacenNull != _cast.unidadesAlmacenNull) {
+			return false;
+		}
+		
+		if (unidadesAlmacenModified != _cast.unidadesAlmacenModified) {
+			return false;
+		}
+		
 		
 		return true;
 	}
@@ -757,6 +810,15 @@ public class EstanteriaDescripcion implements Serializable
 		_hashCode = 29 * _hashCode + (int) (temp_precio ^ (temp_precio >>> 32));
 		_hashCode = 29 * _hashCode + (precioNull ? 1 : 0);
 		_hashCode = 29 * _hashCode + (precioModified ? 1 : 0);
+                
+                long temp_unidades_almacen = Double.doubleToLongBits(unidadesAlmacen);
+		_hashCode = 29 * _hashCode + (int) (temp_unidades_almacen ^ (temp_unidades_almacen >>> 32));
+		_hashCode = 29 * _hashCode + (unidadesAlmacenNull ? 1 : 0);
+		_hashCode = 29 * _hashCode + (unidadesAlmacenModified ? 1 : 0);
+		long temp_precio_oferta = Double.doubleToLongBits(precioOferta);
+		_hashCode = 29 * _hashCode + (int) (temp_precio_oferta ^ (temp_precio_oferta >>> 32));
+		_hashCode = 29 * _hashCode + (precioOfertaNull ? 1 : 0);
+		_hashCode = 29 * _hashCode + (precioOfertaModified ? 1 : 0);
 		if (nombreEmbalaje != null) {
 			_hashCode = 29 * _hashCode + nombreEmbalaje.hashCode();
 		}
@@ -782,6 +844,123 @@ public class EstanteriaDescripcion implements Serializable
 	{
 		return new EstanteriaDescripcionPk(idDescripcion);
 	}
+        	/**
+	 * Method 'getUnidadesAlmacen'
+	 * 
+	 * @return double
+	 */
+	public double getUnidadesAlmacen()
+	{
+		return unidadesAlmacen;
+	}
+
+	/**
+	 * Method 'setUnidadesAlmacen'
+	 * 
+	 * @param unidadesAlmacen
+	 */
+	public void setUnidadesAlmacen(double unidadesAlmacen)
+	{
+		this.unidadesAlmacen = unidadesAlmacen;
+		this.unidadesAlmacenNull = false;
+		this.unidadesAlmacenModified = true;
+	}
+
+	/**
+	 * Method 'setUnidadesAlmacenNull'
+	 * 
+	 * @param value
+	 */
+	public void setUnidadesAlmacenNull(boolean value)
+	{
+		this.unidadesAlmacenNull = value;
+		this.unidadesAlmacenModified = true;
+	}
+
+	/**
+	 * Method 'isUnidadesAlmacenNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isUnidadesAlmacenNull()
+	{
+		return unidadesAlmacenNull;
+	}
+
+	/** 
+	 * Sets the value of setUnidadesAlmacenModified
+	 */
+	public void setUnidadesAlmacenModified(boolean unidadesAlmacenModified)
+	{
+		this.unidadesAlmacenModified = unidadesAlmacenModified;
+	}
+
+	/** 
+	 * Gets the value of isUnidadesAlmacenModified
+	 */
+	public boolean isUnidadesAlmacenModified()
+	{
+		return unidadesAlmacenModified;
+	}
+        
+        	/**
+	 * Method 'getPrecioOferta'
+	 * 
+	 * @return double
+	 */
+	public double getPrecioOferta()
+	{
+		return precioOferta;
+	}
+
+	/**
+	 * Method 'setPrecioOferta'
+	 * 
+	 * @param precioOferta
+	 */
+	public void setPrecioOferta(double precioOferta)
+	{
+		this.precioOferta = precioOferta;
+		this.precioOfertaNull = false;
+		this.precioOfertaModified = true;
+	}
+
+	/**
+	 * Method 'setPrecioOfertaNull'
+	 * 
+	 * @param value
+	 */
+	public void setPrecioOfertaNull(boolean value)
+	{
+		this.precioOfertaNull = value;
+		this.precioOfertaModified = true;
+	}
+
+	/**
+	 * Method 'isprecioOfertaNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isPrecioOfertaNull()
+	{
+		return precioOfertaNull;
+	}
+
+	/** 
+	 * Sets the value of setPrecioOfertaModified
+	 */
+	public void setPrecioOfertaModified(boolean precioOfertaModified)
+	{
+		this.precioOfertaModified = precioOfertaModified;
+	}
+
+	/** 
+	 * Gets the value of precioModified
+	 */
+	public boolean isPrecioOfertaModified()
+	{
+		return precioOfertaModified;
+	}
 
 	/**
 	 * Method 'toString'
@@ -801,6 +980,8 @@ public class EstanteriaDescripcion implements Serializable
 		ret.append( ", nombreEmbalaje=" + nombreEmbalaje );
 		ret.append( ", fechaCaducidad=" + fechaCaducidad );
 		ret.append( ", idRelacionConceptoCompetencia=" + idRelacionConceptoCompetencia );
+                ret.append( ", unidadesAlmacen=" + unidadesAlmacen );
+		ret.append( ", precioOferta=" + precioOferta );
 		return ret.toString();
 	}
 
